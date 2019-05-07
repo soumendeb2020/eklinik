@@ -8,10 +8,7 @@
         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
             <h1 class="page-title txt-color-blueDark">
                 <i class="fa fa-table fa-fw "></i>
-                MBPJ
-                <span>
-                    Staff List
-                </span>
+                Eklinik <span> Dashboard </span>
             </h1>
         </div>
     </div>
@@ -597,7 +594,7 @@
                 }
             });
         } else {
-            $('.saveQueAlert').html('Alert : Please Fill All Fields.');
+            $('.saveQueAlert').html('Alert : Please Fill All Fields or Check your all data is correct.');
             $('.saveQueAlert').css('display','block');
         }
     }

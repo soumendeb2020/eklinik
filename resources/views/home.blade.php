@@ -10,10 +10,7 @@
         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
             <h1 class="page-title txt-color-blueDark">
                 <i class="fa fa-table fa-fw "></i>
-                MBPJ
-                <span>
-                    Staff List
-                </span>
+                Eklinik <span> Dashboard </span>
             </h1>
         </div>
     </div>
@@ -420,6 +417,16 @@
                         </section>
                         <section>
                             <div class="row">
+                                <label class="label col col-3">Queue Number : </label>
+                                <div class="col col-9">
+                                    <label class="input">
+                                        <input type="text" class="delAllval" name="queueno" id="queueno" value="">
+                                    </label>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="row">
                                 <label class="label col col-3">Sympthoms : </label>
                                 <div class="col col-9">
                                     <label class="input">
@@ -599,7 +606,7 @@
                 }
             });
         } else {
-            $('.saveQueAlert').html('Alert : Please Fill All Fields.');
+            $('.saveQueAlert').html('Alert : Please Fill All Fields or Check your all data is correct.');
             $('.saveQueAlert').css('display','block');
         }
     }
