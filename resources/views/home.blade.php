@@ -318,7 +318,7 @@
                                     </label>
                                 </div>
                                 <div class="col col-2">
-                                    <button type="button" onclick="getSearcResult();" class="btn btn-default">Search</button>
+                                    <button type="button" onclick="getSearcResult();" class="btn btn-primary submitBtn">Search</button>
                                 </div>
                             </div>
                         </section>
@@ -339,7 +339,7 @@
                                     </label>
                                 </div>
                                 <div class="col col-2">
-                                    <button type="button" onclick="getSearcResult();" class="btn btn-default">Search</button>
+                                    <button type="button" onclick="getSearcResult();" class="btn btn-primary submitBtn">Search</button>
                                 </div>
                             </div>
                         </section>
@@ -360,13 +360,13 @@
                                     </label>
                                 </div>
                                 <div class="col col-2">
-                                    <button type="button" onclick="getSearcResult();" class="btn btn-default">Search</button>
+                                    <button type="button" onclick="getSearcResult();" class="btn btn-primary submitBtn">Search</button>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col col-3"></div>
                                 <div class="col col-4">
-                                    <button type="button" onclick="addNewPatient();" class="btn btn-primary submitBtn">Add New</button>
+                                    <button type="button" onclick="addNewPatient();" class="btn btn-primary submitBtn submitBtn">Add New</button>
                                 </div>
                             </div>
                         </section>
@@ -551,6 +551,7 @@
         var ic_number = $("#icno").val();
         var name = $("#pname").val();
         var isnew = $("#isnew").val();
+        var queueno = $("#queueno").val();
         var symptopms = $("#sympthom").val();
         var department_id = $("#department").val();
         
@@ -564,7 +565,13 @@
                 triger = 0;
             }
         }
-        
+
+        if(triger){
+            if(queueno == ''){
+                triger = 0;
+            }
+        }
+
         if(triger){
             if(symptopms == ''){
                 triger = 0;
@@ -584,7 +591,7 @@
                 url: url,
                 async: false,
                 type: 'POST',
-                data: {_token: "{{ csrf_token() }}", type: patType, cat: cat, staff_id: staff_id, dept_id: dept_id, ic_number: ic_number, name: name, symptopms: symptopms, department_id: department_id},
+                data: {_token: "{{ csrf_token() }}", type: patType, cat: cat, staff_id: staff_id, dept_id: dept_id, ic_number: ic_number, name: name, queueno: queueno, symptopms: symptopms, department_id: department_id},
             }).done(function (response) {
                 if(response != 0){
                     $('#cosuting').html(response['depart_name']);

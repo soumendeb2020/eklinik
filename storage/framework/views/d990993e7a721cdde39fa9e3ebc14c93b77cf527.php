@@ -316,7 +316,7 @@
                                     </label>
                                 </div>
                                 <div class="col col-2">
-                                    <button type="button" onclick="getSearcResult();" class="btn btn-default">Search</button>
+                                    <button type="button" onclick="getSearcResult();" class="btn btn-primary submitBtn">Search</button>
                                 </div>
                             </div>
                         </section>
@@ -337,7 +337,7 @@
                                     </label>
                                 </div>
                                 <div class="col col-2">
-                                    <button type="button" onclick="getSearcResult();" class="btn btn-default">Search</button>
+                                    <button type="button" onclick="getSearcResult();" class="btn btn-primary submitBtn">Search</button>
                                 </div>
                             </div>
                         </section>
@@ -358,13 +358,13 @@
                                     </label>
                                 </div>
                                 <div class="col col-2">
-                                    <button type="button" onclick="getSearcResult();" class="btn btn-default">Search</button>
+                                    <button type="button" onclick="getSearcResult();" class="btn btn-primary submitBtn">Search</button>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col col-3"></div>
                                 <div class="col col-4">
-                                    <button type="button" onclick="addNewPatient();" class="btn btn-primary submitBtn">Add New</button>
+                                    <button type="button" onclick="addNewPatient();" class="btn btn-primary submitBtn submitBtn">Add New</button>
                                 </div>
                             </div>
                         </section>
@@ -410,6 +410,16 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="row">
+                                <label class="label col col-3">Queue Number : </label>
+                                <div class="col col-9">
+                                    <label class="input">
+                                        <input type="text" class="delAllval" name="queueno" id="queueno" value="">
+                                    </label>
                                 </div>
                             </div>
                         </section>
