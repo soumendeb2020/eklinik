@@ -223,15 +223,31 @@ class HomeController extends Controller {
             $savedata['dept_id'] = $_POST['dept_id'];  
             $savedata['ic_number'] = $_POST['ic_number'];
             $savedata['name'] = $_POST['name'];
-            $savedata['utype'] = $_POST['cat'];
-            $savedata['ptype'] = $_POST['type'];
+            $savedata['utype'] = $typename;
+            $savedata['ptype'] = $_POST['cat'];
             $savedata['created_at'] = date("Y-m-d h:i:s", time());
             $savedata['updated_at'] = date("Y-m-d h:i:s", time());
             $lid = DB::table('patient')->insertGetId($savedata);
         }
 
         $dept = DB::table('department')->select('department.*')->where('id', '=', $_POST['department_id'])->first();
-        $count = DB::table('patientqueue')->count();
+        
+        
+        $queueExist = DB::table('queuelist')->select('queuelist.*')->where('name', '=', $_POST['queueno'])->first();
+        if($queueExist){
+            $lqno = $queueExist->id;
+            $qname = $_POST['queueno'];
+        } else {
+            
+            $saveque['name'] = $_POST['queueno'];
+            $saveque['is_active'] = 1;
+            $saveque['created_at'] = date("Y-m-d h:i:s", time());
+            $saveque['updated_at'] = date("Y-m-d h:i:s", time());
+            $lqno = DB::table('queuelist')->insertGetId($saveque);
+            $qname = $_POST['queueno'];
+        }
+        
+        $count = DB::table('patientqueue')->where('queueno', '=', $qname)->count();   
         
         $savePatQue['patient_id'] = $lid;
         $savePatQue['staff_id'] = $_POST['staff_id'];    
@@ -242,6 +258,8 @@ class HomeController extends Controller {
         $savePatQue['depart_name'] = $dept->name;
         $savePatQue['utype'] = $_POST['cat'];
         $savePatQue['ptype'] = $_POST['type'];
+        $savePatQue['queue_id'] = $lqno;
+        $savePatQue['queueno'] = $qname;
         $savePatQue['token_no'] = "C-".str_pad($count + 1, 5, '0', STR_PAD_LEFT);
         $savePatQue['ptype'] = 1;
         $savePatQue['created_time'] = date("h:i:s a", time());

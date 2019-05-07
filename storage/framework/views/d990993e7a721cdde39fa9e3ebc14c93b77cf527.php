@@ -105,38 +105,25 @@
                 </div>
             </div>
         </div>
-        <!-- row -->
         <div class="row">
-            <!-- NEW WIDGET START -->
             <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"/>
         </div>
         <div class="row">
-            <!-- NEW WIDGET START -->
             <article class="col-sm-12 col-md-12 col-lg-4">
-                <!-- Widget ID (each widget will need unique ID)-->
-                <!-- Widget ID (each widget will need unique ID)-->
-                <!-- Widget ID (each widget will need unique ID)-->
                 <div class="jarviswidget" id="wid-id-4" data-widget-colorbutton="false" data-widget-editbutton="false">
                     <header >
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                         <h2>Room 1 Queue List </h2>
                     </header>
-                    <!-- widget div-->
                     <div>
-                        <!-- widget edit box -->
                         <div class="jarviswidget-editbox">
-                            <!-- This area used as dropdown edit box -->
                         </div>
-                        <!-- end widget edit box -->
-                        <!-- widget content -->
                         <div class=" widget-body no-padding">
                             <table  class="table table-striped table-bordered table-hover" width="100%">
                                 <thead>
                                     <tr>
                                         <th data-hide="phone">Queue Num</th>
-
                                         <th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>Patient Name</th>
-
                                         <th data-hide="phone,tablet"><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> Status</th>
                                     </tr>
                                 </thead>
@@ -153,32 +140,18 @@
                                 </tbody>
                             </table>
                         </div>
-                        <!-- end widget content -->
                     </div>
                 </div>
-                <!-- end widget -->
             </article>
-            <!-- WIDGET END -->
-
-            <!-- NEW WIDGET START -->
-            <!-- NEW WIDGET START -->
             <article class="col-sm-12 col-md-12 col-lg-4">
-                <!-- Widget ID (each widget will need unique ID)-->
-                <!-- Widget ID (each widget will need unique ID)-->
-                <!-- Widget ID (each widget will need unique ID)-->
                 <div class="jarviswidget" id="wid-id-4" data-widget-colorbutton="false" data-widget-editbutton="false">
                     <header >
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                         <h2>Room 2 Queue List </h2>
                     </header>
-                    <!-- widget div-->
                     <div>
-                        <!-- widget edit box -->
                         <div class="jarviswidget-editbox">
-                            <!-- This area used as dropdown edit box -->
                         </div>
-                        <!-- end widget edit box -->
-                        <!-- widget content -->
                         <div class=" widget-body no-padding">
                             <table  class="table table-striped table-bordered table-hover" width="100%">
                                 <thead>
@@ -201,30 +174,18 @@
                                 </tbody>
                             </table>
                         </div>
-                        <!-- end widget content -->
                     </div>
                 </div>
-                <!-- end widget -->
             </article>
-            <!-- WIDGET END -->
-            <!-- NEW WIDGET START -->
             <article class="col-sm-12 col-md-12 col-lg-4">
-                <!-- Widget ID (each widget will need unique ID)-->
-                <!-- Widget ID (each widget will need unique ID)-->
-                <!-- Widget ID (each widget will need unique ID)-->
                 <div class="jarviswidget" id="wid-id-4" data-widget-colorbutton="false" data-widget-editbutton="false">
                     <header >
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                         <h2>Counter 1 Queue List </h2>
                     </header>
-                    <!-- widget div-->
                     <div>
-                        <!-- widget edit box -->
                         <div class="jarviswidget-editbox">
-                            <!-- This area used as dropdown edit box -->
                         </div>
-                        <!-- end widget edit box -->
-                        <!-- widget content -->
                         <div class=" widget-body no-padding">
                             <table  class="table table-striped table-bordered table-hover" width="100%">
                                 <thead>
@@ -289,7 +250,7 @@
                                 <label class="label col col-3">Category : </label>
                                 <div class="col col-3">
                                    <label class="input">
-                                       <select onchange="getCategorySearch(this.value);" class="delAllval" name="category" id="category">
+                                       <select onchange="getCategorySearch(this.value);" class="delvalcat" name="category" id="category">
                                             <option value="staffSection">Staff</option>
                                             <option value="dependentSection">Dependant</option>
                                             <option value="otherSection">Others</option>
@@ -298,12 +259,12 @@
                                 </div>
                             </div>
                         </section>
-                        <section class="modalSearcSec" id="staffSection" >
+                        <section class="modalSearcSec" id="staffSection" > 
                             <div class="row">
                                 <label class="label col col-3">Search By : </label>
                                 <div class="col col-3">
                                     <label class="input">
-                                        <select class="searchcat searchcatstaffSection delAllval" name="searchcat" id="searchcat" >
+                                        <select class="searchcat searchcatstaffSection delvalcat1" name="searchcat" id="searchcat" >
                                             <option value="sid" >Staff Id</option>
                                             <option value="ic" >I/C</option>
                                             <option value="name" >Name</option>
@@ -325,12 +286,12 @@
                                 <label class="label col col-3">Search By : </label>
                                 <div class="col col-3">
                                     <label class="input">
-                                        <select class="searchcat searchcatdependentSection delAllval" name="searchcat" id="searchcat" >
+                                        <select class="searchcat searchcatdependentSection delvalcat2" name="searchcat" id="searchcat" >
                                             <option value="ic" >I/C</option>
                                             <option value="name" >Name</option>
                                         </select>
                                     </label>
-                                </div>
+                                </div>  
                                 <div class="col col-4">
                                     <label class="input"> 
                                         <input type="text" class="search searchdependentSection delAllval" name="search" id="search" value="">
@@ -438,11 +399,11 @@
                                 <label class="label col col-3">Department: </label>
                                 <div class="col col-3">
                                     <label class="input">
-                                        <select class="searchcat searchcatdependentSection delAllval" name="department" id="department" >
+                                        <select class="searchcat searchcatdependentSection delDeptval" name="department" id="department" >
                                             <?php $__currentLoopData = $department; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <option value="<?php echo e($d->id); ?>" ><?php echo e($d->name); ?></option>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                        </select>
+                                        </select> 
                                     </label>
                                 </div>
                             </div>
@@ -450,11 +411,11 @@
                     </fieldset>
                     <input type="hidden" class="delAllval" name="patType" id="patType" value="staffSection" >
                     <input type="hidden" class="delAllval" name="patCat" id="patCat" value="" >
-                    <input type="hidden" class="delAllval" name="staff_id" id="staff_id" value="0" >
+                    <input type="hidden" class="delAllvalInt" name="staff_id" id="staff_id" value="0" >
                     <input type="hidden" class="delAllval" class="delAllval" name="department_id" id="department_id" value="0" >
                     <input type="hidden" class="delAllval" name="icno" id="icno" value="" >
                     <input type="hidden" class="delAllval" name="pname" id="pname" value="" >
-                    <input type="hidden" class="delAllval" name="isnew" id="isnew" value="0" >
+                    <input type="hidden" class="delAllvalInt" name="isnew" id="isnew" value="0" >
                 </form>
                 <fieldset>
                     <section>
@@ -462,7 +423,7 @@
                             <label class="label col col-12 saveQueAlert" style="color: red; font-weight: bold; display: none"></label>
                         </div>
                     </section>
-                </fieldset>
+                </fieldset>  
             </div>
             <!-- Modal Footer -->
             <div class="modal-footer">
@@ -485,27 +446,28 @@
                 <h4 class="modal-title" id="myModalLabel"></h4>
             </div>
             <!-- Modal Body -->
-            <div class="modal-body">
-                <fieldset>
-                    <section>
-                        <div class="row" id="regResults" style="display: block">
-                            
-                            <div class="col-md-12 text-center">
-                                <h3><strong>Eklinik</strong></h3>
-                                <p><strong id="cosuting" ></strong></p>
-                                <p>Your Token No</p>
-                                <h1><strong id="token"></strong></h1>
-                                <p>Please Wait For Your Turn</p>
-                                <p>Total Customer Waiting (5)</p>
-                                <div class="">
-                                    <div class="col-md-6 text-left" id="datef"></div>
-                                    <div class="col-md-6 text-right" id="timef"></div>
+            <div class="modal-body" id="modalDiv"> 
+                <div id="printThis">
+                    <fieldset>
+                        <section>
+                            <div class="row" id="regResults" style="display: block">
+                                <p style="text-align-last: end"><button id="btnPrint">Print this page</button></p>
+                                <div class="col-md-12 text-center">
+                                    <h3><strong>Eklinik</strong></h3>
+                                    <p><strong id="cosuting" ></strong></p>
+                                    <p>Your Token No</p>
+                                    <h1><strong id="token"></strong></h1>
+                                    <p>Please Wait For Your Turn</p>
+                                    <p>Total Customer Waiting (5)</p>
+                                    <div class="">
+                                        <div class="col-md-6 text-left" id="datef"></div>
+                                        <div class="col-md-6 text-right" id="timef"></div>
+                                    </div>
                                 </div>
-
                             </div>
-                        </div>
-                    </section>
-                </fieldset>
+                        </section>
+                    </fieldset>
+                </div>    
             </div>
             <!-- Modal Footer -->
             <div class="modal-footer">
@@ -517,7 +479,67 @@
 
 
 
+<!---------------------->
+<style>
+    @media  screen {
+      #printSection {
+          display: none;
+      }
+    }
+
+    @media  print {
+      body * {
+        visibility:hidden;
+      }
+      #printSection, #printSection * {
+        visibility:visible;
+      }
+      #printSection {
+        position:absolute;
+        left:0;
+        top:0;
+      }
+    }
+</style>
+
 <script>
+    
+    document.getElementById("btnPrint").onclick = function () {
+        printElement(document.getElementById("printThis"));
+    }
+
+    function printElement(elem) {
+        var domClone = elem.cloneNode(true);
+
+        var $printSection = document.getElementById("printSection");
+
+        if (!$printSection) {
+            var $printSection = document.createElement("div");
+            $printSection.id = "printSection";
+            document.body.appendChild($printSection);
+        }
+
+        $printSection.innerHTML = "";
+        $printSection.appendChild(domClone);
+        window.print();
+    }
+    
+    function myPrintFunction() {
+        //window.print();
+        $("#modalDiv").printThis({ 
+            debug: false,              
+            importCSS: true,             
+            importStyle: true,         
+            printContainer: true,       
+            loadCSS: "../css/style.css", 
+            pageTitle: "My Modal",             
+            removeInline: true,        
+            printDelay: 333,            
+            header: null,             
+            formValues: true          
+        });
+    }
+
     function openAddPatientModal(dt){
         $('#transModel').modal('show');
         $('#patCat').val(dt);
@@ -534,6 +556,11 @@
         $("#sympthom").val('');
         $("#department").val('');
         $('.delAllval').val('');
+        $('.delAllvalInt').val(0);
+        $('.delvalcat').val('staffSection');
+        $('.delvalcat1').val('sid');
+        $('.delvalcat2').val('ic');
+        $('.delDeptval').val('1');
         $("#isnew").val('');
         $('#transModel').modal('hide');
         //$('#transModelToken').modal('hide');
@@ -549,6 +576,7 @@
         var ic_number = $("#icno").val();
         var name = $("#pname").val();
         var isnew = $("#isnew").val();
+        var queueno = $("#queueno").val();
         var symptopms = $("#sympthom").val();
         var department_id = $("#department").val();
         
@@ -562,7 +590,13 @@
                 triger = 0;
             }
         }
-        
+
+        if(triger){
+            if(queueno == ''){
+                triger = 0;
+            }
+        }
+
         if(triger){
             if(symptopms == ''){
                 triger = 0;
@@ -582,7 +616,7 @@
                 url: url,
                 async: false,
                 type: 'POST',
-                data: {_token: "<?php echo e(csrf_token()); ?>", type: patType, cat: cat, staff_id: staff_id, dept_id: dept_id, ic_number: ic_number, name: name, symptopms: symptopms, department_id: department_id},
+                data: {_token: "<?php echo e(csrf_token()); ?>", type: patType, cat: cat, staff_id: staff_id, dept_id: dept_id, ic_number: ic_number, name: name, queueno: queueno, symptopms: symptopms, department_id: department_id},
             }).done(function (response) {
                 if(response != 0){
                     $('#cosuting').html(response['depart_name']);
@@ -600,9 +634,14 @@
                     $("#sympthom").val('');
                     $("#department").val('');
                     $('.delAllval').val('');
+                    $('.delAllvalInt').val(0);
+                    $('.delvalcat').val('staffSection');
+                    $('.delvalcat1').val('sid');
+                    $('.delvalcat2').val('ic');
+                    $('.delDeptval').val('1');
                     $("#isnew").val('');
                 }
-            });
+            }); 
         } else {
             $('.saveQueAlert').html('Alert : Please Fill All Fields or Check your all data is correct.');
             $('.saveQueAlert').css('display','block');
