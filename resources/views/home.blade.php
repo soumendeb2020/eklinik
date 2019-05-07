@@ -12,7 +12,7 @@
                 <i class="fa fa-table fa-fw "></i>
                 MBPJ
                 <span>
-                    Staff Lists
+                    Staff List
                 </span>
             </h1>
         </div>
