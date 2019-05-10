@@ -40,7 +40,7 @@
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="panel panel-green">
-                    <div onclick="openAddPatientModal('ty2');" class="panel-heading">
+                    <div onclick="openAddTy2Modal('ty2');" class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
                                 <i class="fa fa-shield fa-5x"></i>
@@ -226,8 +226,6 @@
 <!-- end widget grid -->
 </div>
 <!-- END MAIN CONTENT -->
-
-
 <!-- ##################################  Out Patient Start   ################################################# -->
 <div class="modal fade" id="transModel" role="dialog">
     <div class="modal-dialog">
@@ -244,13 +242,12 @@
             <div class="modal-body">
                 <form id="login-form" class="smart-form"  >
                     <!--<input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>" >-->
-                    <fieldset>
                         <section>
                             <div class="row">
-                                <label class="label col col-3">Category : </label>
-                                <div class="col col-3">
-                                   <label class="input">
-                                       <select onchange="getCategorySearch(this.value);" class="delvalcat" name="category" id="category">
+                                <label class="cel-gap label col-xs-12">Category : </label>
+                                <div class="cel-gap col-xs-12">
+                                    <label class="input">
+                                        <select onchange="getCategorySearch(this.value);" class="delvalcat dropdown-wrap" name="category" id="category">
                                             <option value="staffSection">Staff</option>
                                             <option value="dependentSection">Dependant</option>
                                             <option value="otherSection">Others</option>
@@ -261,113 +258,94 @@
                         </section>
                         <section class="modalSearcSec" id="staffSection" > 
                             <div class="row">
-                                <label class="label col col-3">Search By : </label>
-                                <div class="col col-3">
+                                <label class="cel-gap label col-xs-12">Search By : </label>
+                                <div class="cel-gap col-xs-4">
                                     <label class="input">
-                                        <select class="searchcat searchcatstaffSection delvalcat1" name="searchcat" id="searchcat" >
+                                        <select class="searchcat searchcatstaffSection delvalcat1 dropdown-wrap" name="searchcat" id="searchcat">
                                             <option value="sid" >Staff Id</option>
                                             <option value="ic" >I/C</option>
                                             <option value="name" >Name</option>
                                         </select>
                                     </label>
                                 </div>
-                                <div class="col col-4">
+                                <div class="cel-gap col-xs-6">
                                     <label class="input"> 
                                         <input type="text" class="search searchstaffSection delAllval" name="search" id="search" value="">
                                     </label>
                                 </div>
-                                <div class="col col-2">
-                                    <button type="button" onclick="getSearcResult();" class="btn btn-primary submitBtn">Search</button>
+                                <div class="cel-gap col-xs-2">
+                                    <button type="button" onclick="getSearcResult();" class="btn btn-primary btn-submit submitBtn">Search</button>
                                 </div>
                             </div>
                         </section>
                         <section class="modalSearcSec" id="dependentSection" style="display: none" >
                             <div class="row">
-                                <label class="label col col-3">Search By : </label>
-                                <div class="col col-3">
+                                <label class="cel-gap label col-xs-12">Search By : </label>
+                                <div class="cel-gap col-xs-4">
                                     <label class="input">
-                                        <select class="searchcat searchcatdependentSection delvalcat2" name="searchcat" id="searchcat" >
+                                        <select class="searchcat dropdown-wrap searchcatdependentSection delvalcat2" name="searchcat" id="searchcat" >
                                             <option value="ic" >I/C</option>
                                             <option value="name" >Name</option>
                                         </select>
                                     </label>
                                 </div>  
-                                <div class="col col-4">
+                                <div class="cel-gap col-xs-6">
                                     <label class="input"> 
                                         <input type="text" class="search searchdependentSection delAllval" name="search" id="search" value="">
                                     </label>
                                 </div>
-                                <div class="col col-2">
-                                    <button type="button" onclick="getSearcResult();" class="btn btn-primary submitBtn">Search</button>
+                                <div class="cel-gap col-xs-2">
+                                    <button type="button" onclick="getSearcResult();" class="btn btn-primary btn-submit submitBtn">Search</button>
                                 </div>
                             </div>
                         </section>
                         <section class="modalSearcSec" id="otherSection" style="display: none" >
                             <div class="row">
-                                <label class="label col col-3">Search By : </label>
-                                <div class="col col-3">
+                                <label class="cel-gap label col-xs-12">Search By : </label>
+                                <div class="cel-gap col-xs-4">
                                     <label class="input">
-                                        <select class="searchcat searchcatotherSection delAllval" name="searchcat" id="searchcat" >
+                                        <select class="searchcat dropdown-wrap searchcatotherSection delAllval" name="searchcat" id="searchcat" >
                                             <option value="ic" >I/C</option>
                                             <option value="name" >Name</option>
                                         </select>
                                     </label>
                                 </div>
-                                <div class="col col-4">
+                                <div class="cel-gap col-xs-6">
                                     <label class="input"> 
                                         <input type="text" class="search searchotherSection delAllval" name="search" id="search" value="">
                                     </label>
                                 </div>
-                                <div class="col col-2">
-                                    <button type="button" onclick="getSearcResult();" class="btn btn-primary submitBtn">Search</button>
+                                <div class="cel-gap col-xs-2">
+                                    <button type="button" onclick="getSearcResult();" class="btn btn-primary btn-submit submitBtn">Search</button>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col col-3"></div>
-                                <div class="col col-4">
-                                    <button type="button" onclick="addNewPatient();" class="btn btn-primary submitBtn submitBtn">Add New</button>
+                                <div class="cel-gap col-xs-9"></div>
+                                <div class="cel-gap col-xs-3 text-right" style="margin-top: 10px;">
+                                    <button type="button" onclick="addNewPatient();" class="btn btn-primary btn-submit submitBtn">Add New</button>
                                 </div>
                             </div>
                         </section>
-                        
                         <section>
-                            <div class="row" id="regResult" style="display: none">
-                                <label class="label col col-3">Result : </label>
-                                <div class="col col-9">
-                                    <table class="table table-striped table-bordered table-hover" width="100%">
-                                        <tbody>
-                                            <tr>
-                                                <td rowspan="4">Staff</td>
-                                                <td>Name: Nadia Izzati bt Hashim</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Staff Id: I0001</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Department: Ict</td>
-                                            </tr>
-                                            <tr>
-                                                <td>I/C: 961231-12-5162</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2">Dependant: Ahzam bin Ismail</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            <div class="row" id="regResult" style="display: none"></div>
                         </section>
                         <section>
                             <div class="row" id="newPatient" style="display: none">
-                                <label class="label col col-3">New Patient : </label>
-                                <div class="col col-9">
+                                <label class="cel-gap label col-xs-12">New Patient : </label>
+                                <div class="cel-gap col-xs-12">
                                     <table class="table table-striped table-bordered table-hover" width="100%">
                                         <tbody>
                                             <tr>
-                                                <td>Name: <input type="text" class="search searchstaffSection delAllval" onkeyup="getValuename(this.value);" name="pnamedt" id="pnamedt" value=""> </td>
+                                                <td>
+                                                    <div class="col-xs-3">Name: </div>
+                                                    <div class="col-xs-9"><input type="text" class="search input-wrap searchstaffSection delAllval" onkeyup="getValuename(this.value);" name="pnamedt" id="pnamedt" value=""></div>
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <td>I/C: <input type="text" class="search searchstaffSection delAllval" onkeyup="getValueicno(this.value);" name="icnodt" id="icnodt" value=""></td>
+                                                <td>
+                                                    <div class="col-xs-3">I/C: </div>
+                                                    <div class="col-xs-9"><input type="text" class="search input-wrap searchstaffSection delAllval" onkeyup="getValueicno(this.value);" name="icnodt" id="icnodt" value=""></div>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -376,8 +354,8 @@
                         </section>
                         <section>
                             <div class="row">
-                                <label class="label col col-3">Queue Number : </label>
-                                <div class="col col-9">
+                                <label class="cel-gap label col-xs-12">Queue Number : </label>
+                                <div class="cel-gap col-xs-12">
                                     <label class="input">
                                         <input type="text" class="delAllval" name="queueno" id="queueno" value="">
                                     </label>
@@ -386,8 +364,8 @@
                         </section>
                         <section>
                             <div class="row">
-                                <label class="label col col-3">Sympthoms : </label>
-                                <div class="col col-9">
+                                <label class="cel-gap label col-xs-12">Sympthoms : </label>
+                                <div class="cel-gap col-xs-12">
                                     <label class="input">
                                         <input type="text" class="delAllval" name="sympthom" id="sympthom" value="">
                                     </label>
@@ -396,23 +374,23 @@
                         </section>
                         <section>
                             <div class="row">
-                                <label class="label col col-3">Department: </label>
-                                <div class="col col-3">
+                                <label class="cel-gap label col-xs-12">Department: </label>
+                                <div class="cel-gap col-xs-12">
                                     <label class="input">
-                                        <select class="searchcat searchcatdependentSection delDeptval" name="department" id="department" >
+                                        <select class="searchcat dropdown-wrap searchcatdependentSection delDeptval" name="department" id="department" >
                                             <?php $__currentLoopData = $department; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <option value="<?php echo e($d->id); ?>" ><?php echo e($d->name); ?></option>
+                                            <option value="<?php echo e($d->id); ?>" ><?php echo e($d->name); ?></option>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select> 
                                     </label>
                                 </div>
                             </div>
                         </section>
-                    </fieldset>
                     <input type="hidden" class="delAllval" name="patType" id="patType" value="staffSection" >
                     <input type="hidden" class="delAllval" name="patCat" id="patCat" value="" >
                     <input type="hidden" class="delAllvalInt" name="staff_id" id="staff_id" value="0" >
                     <input type="hidden" class="delAllval" class="delAllval" name="department_id" id="department_id" value="0" >
+                    <input type="hidden" class="delAllval" class="delAllval" name="departmentname" id="departmentname" value="" >
                     <input type="hidden" class="delAllval" name="icno" id="icno" value="" >
                     <input type="hidden" class="delAllval" name="pname" id="pname" value="" >
                     <input type="hidden" class="delAllvalInt" name="isnew" id="isnew" value="0" >
@@ -481,72 +459,87 @@
 
 <!---------------------->
 <style>
+    .cel-gap  {
+      padding:0 15px;
+      box-sizing: border-box;  
+    }
+    .dropdown-wrap {
+      width: 100%; 
+      height: 32px;
+      line-height: 32px;
+      padding: 5px;
+      box-sizing: border-box;  
+    }
+    .input-wrap {
+      width: 100%; 
+      height: 32px;
+      line-height: 32px;
+      padding: 5px 10px;
+      box-sizing: border-box;  
+    }
+    .btn-submit {
+        padding: 6px 12px;
+    }
     @media  screen {
-      #printSection {
-          display: none;
-      }
+        #printSection {
+            display: none;
+        }
     }
 
     @media  print {
-      body * {
-        visibility:hidden;
-      }
-      #printSection, #printSection * {
-        visibility:visible;
-      }
-      #printSection {
-        position:absolute;
-        left:0;
-        top:0;
-      }
+        body * {
+            visibility:hidden;
+        }
+        #printSection, #printSection * {
+            visibility:visible;
+        }
+        #printSection {
+            position:absolute;
+            left:0;
+            top:0;
+        }
     }
 </style>
 
 <script>
-    
     document.getElementById("btnPrint").onclick = function () {
         printElement(document.getElementById("printThis"));
     }
-
     function printElement(elem) {
         var domClone = elem.cloneNode(true);
-
         var $printSection = document.getElementById("printSection");
-
         if (!$printSection) {
             var $printSection = document.createElement("div");
             $printSection.id = "printSection";
             document.body.appendChild($printSection);
         }
-
         $printSection.innerHTML = "";
         $printSection.appendChild(domClone);
         window.print();
     }
-    
+
     function myPrintFunction() {
         //window.print();
-        $("#modalDiv").printThis({ 
-            debug: false,              
-            importCSS: true,             
-            importStyle: true,         
-            printContainer: true,       
-            loadCSS: "../css/style.css", 
-            pageTitle: "My Modal",             
-            removeInline: true,        
-            printDelay: 333,            
-            header: null,             
-            formValues: true          
+        $("#modalDiv").printThis({
+            debug: false,
+            importCSS: true,
+            importStyle: true,
+            printContainer: true,
+            loadCSS: "../css/style.css",
+            pageTitle: "My Modal",
+            removeInline: true,
+            printDelay: 333,
+            header: null,
+            formValues: true
         });
     }
 
-    function openAddPatientModal(dt){
+    function openAddPatientModal(dt) {
         $('#transModel').modal('show');
         $('#patCat').val(dt);
-        
     }
-    
-    function closemoDal(){
+
+    function closemoDal() {
         $("#category").val('');
         $("#searchcat").val('');
         $("#search").val('');
@@ -565,60 +558,61 @@
         $('#transModel').modal('hide');
         //$('#transModelToken').modal('hide');
         $('.saveQueAlert').html('');
-        $('.saveQueAlert').css('display','none');
+        $('.saveQueAlert').css('display', 'none');
     }
-    
-    function submitPatientRegistrationForm(){
+
+    function submitPatientRegistrationForm() {
         var patType = $("#patType").val();
         var cat = $("#patCat").val();
         var staff_id = $("#staff_id").val();
         var dept_id = $("#department_id").val();
+        var dept = $("#department").val();
         var ic_number = $("#icno").val();
         var name = $("#pname").val();
         var isnew = $("#isnew").val();
         var queueno = $("#queueno").val();
         var symptopms = $("#sympthom").val();
         var department_id = $("#department").val();
-        
+
         var triger = 1;
-        
-        if(ic_number == ''){
+
+        if (ic_number == '') {
             triger = 0;
         }
-        if(triger){
-            if(name == ''){
+        if (triger) {
+            if (name == '') {
                 triger = 0;
             }
         }
 
-        if(triger){
-            if(queueno == ''){
+        if (triger) {
+            if (queueno == '') {
                 triger = 0;
             }
         }
 
-        if(triger){
-            if(symptopms == ''){
+        if (triger) {
+            if (symptopms == '') {
                 triger = 0;
             }
         }
-        
-        if(triger){
-            if(department_id == ''){
+
+        if (triger) {
+            if (department_id == '') {
                 triger = 0;
             }
         }
-        
-        if(triger){
-            $('.saveQueAlert').css('display','none');
+
+        if (triger) {
+            $('.saveQueAlert').css('display', 'none');
             url = "<?php echo URL::to('saveNewPatient'); ?>";
             $.ajax({
                 url: url,
                 async: false,
                 type: 'POST',
-                data: {_token: "<?php echo e(csrf_token()); ?>", type: patType, cat: cat, staff_id: staff_id, dept_id: dept_id, ic_number: ic_number, name: name, queueno: queueno, symptopms: symptopms, department_id: department_id},
+                data: {_token: "<?php echo e(csrf_token()); ?>", type: patType, cat: cat, staff_id: staff_id, dept_id: dept_id, ic_number: ic_number, name: name, queueno: queueno, symptopms: symptopms, dept: dept, department_id: department_id},
             }).done(function (response) {
-                if(response != 0){
+                if (response != 0) {
                     $('#cosuting').html(response['depart_name']);
                     $('#token').html(response['token_no']);
                     $('#datef').html(response['created_at']);
@@ -641,47 +635,47 @@
                     $('.delDeptval').val('1');
                     $("#isnew").val('');
                 }
-            }); 
+            });
         } else {
             $('.saveQueAlert').html('Alert : Please Fill All Fields or Check your all data is correct.');
-            $('.saveQueAlert').css('display','block');
+            $('.saveQueAlert').css('display', 'block');
         }
     }
-    
-    function getValuename(dt){
+
+    function getValuename(dt) {
         $("#pname").val(dt);
     }
-    
-    function getValueicno(dt){
+
+    function getValueicno(dt) {
         $("#icno").val(dt);
     }
-    
-    function addNewPatient(){
-        $('#newPatient').css('display','block');
-        $('#regResult').css('display','none');
-        $('.modalSearcSec').css('display','none');
+
+    function addNewPatient() {
+        $('#newPatient').css('display', 'block');
+        $('#regResult').css('display', 'none');
+        $('.modalSearcSec').css('display', 'none');
         $("#isnew").val(1);
     }
-    
-    
-    function getCategorySearch(dt){
-        $('#regResult').css('display','none');
-        $('#newPatient').css('display','none');
-        $('.modalSearcSec').css('display','none');
-        $('#' + dt).css('display','block');
-        $('#searchcat option:first').prop('selected',true);
+
+
+    function getCategorySearch(dt) {
+        $('#regResult').css('display', 'none');
+        $('#newPatient').css('display', 'none');
+        $('.modalSearcSec').css('display', 'none');
+        $('#' + dt).css('display', 'block');
+        $('#searchcat option:first').prop('selected', true);
         $("#search").val("");
         $("#patType").val(dt);
         $("#isnew").val(0);
     }
-    
-    function getSearcResult(){
+
+    function getSearcResult() {
         var pttype = $("#patType").val();
         var scat = $(".searchcat" + pttype).val();
         var sdt = $(".search" + pttype).val();
         var stype = $("#patType").val();
         $("#isnew").val(0);
-        
+
         url = "<?php echo URL::to('getAddPatientResult'); ?>";
         $.ajax({
             url: url,
@@ -689,10 +683,9 @@
             type: 'POST',
             data: {_token: "<?php echo e(csrf_token()); ?>", scat: scat, sdt: sdt, stype: stype},
         }).done(function (response) {
-            $('#regResult').css('display','block');
+            $('#regResult').css('display', 'block');
             $('#regResult').html(response);
         });
-        
         url = "<?php echo URL::to('getAddPatientResultdata'); ?>";
         $.ajax({
             url: url,
@@ -700,61 +693,181 @@
             type: 'POST',
             data: {_token: "<?php echo e(csrf_token()); ?>", scat: scat, sdt: sdt, stype: stype},
         }).done(function (response) {
-            if(response != 1){
+            if (response != 1) {
+                //console.log(response);
+                //alert(response['department']);
                 $("#staff_id").val(response['staffid']);
                 $("#icno").val(response['ic']);
                 $("#pname").val(response['name']);
+                $("#department_id").val(response['departmentid']);
+                $("#departmentname").val(response['department']);
             }
-        });  
+        });
     }
-    
+
 </script>    
 <!-- ##################################  Out Patient Start   ################################################# -->
 
 
 
-<?php /* ?>
-<div class="modal fade" id="transModel" role="dialog">
-    <div class="modal-dialog">
+
+
+
+
+
+
+
+
+<!-- ##################################  TY2 Patient Start   ################################################# -->
+<script>
+    // AJAX call for autocomplete 
+    function getCompanyList(){
+        var cname = $('#companyname').val()
+        url = "<?php echo URL::to('getExistingCompany'); ?>";
+        $.ajax({
+            type: "POST",
+            url: url,
+            async: false,
+            data: {_token: "<?php echo e(csrf_token()); ?>", cname: cname},
+            beforeSend: function () {
+                $("#search-box").css("background", "#FFF url(LoaderIcon.gif) no-repeat 165px");
+            },
+            success: function (data) {
+                $("#suggesstion-box").show();
+                $("#suggesstion-box").html(data);
+                $("#search-box").css("background", "#FFF");
+            }
+        });
+    }
+    //To select country name
+    function selectCountry(val) {
+        $("#companyname").val(val);
+        $("#suggesstion-box").hide();
+        
+    }
+    
+    function addMoreEmp(){
+        var newTr = '<tr class="removeaddedtr">'+
+                        '<td><div class="input"><input type="text" class="delAllTY2val" name="name[]" id="name" value=""></div></td>'+
+                        '<td><div class="input"><input type="text" class="delAllTY2val" name="sex[]" id="name" value=""></div></td>'+
+                        '<td><div class="input"><input type="text" class="delAllTY2val" name="icno[]" id="name" value=""></div></td>'+
+                        '<td onclick="deleteCurTr(this)" align="center">X</td>'+
+                    '</tr>';
+        $('.newEmpDt').append(newTr);
+    }
+    
+    function deleteCurTr(dt){
+        $(dt).parent('tr').remove();
+    }
+    
+    function closeTY2moDal() {
+        $('.removeaddedtr').remove();
+        $('#ty2Model').modal('hide');
+
+    }
+
+    function openAddTy2Modal() {
+        $('#ty2Model').modal('show');
+        $('.savety2QueAlert').html('');
+        $('.savety2QueAlert').css('display', 'none');
+    }
+    
+    function submitTY2RegistrationForm(){
+        $('.savety2QueAlert').html('');
+        $('.savety2QueAlert').css('display', 'none');
+        var trig = false;
+        $('.delAllTY2val').each(function(){
+            if (this.value == ''){
+                trig = true;
+                return false;
+            } else {
+                trig = false;
+                //
+            }    
+        });
+        if(trig){
+            $('.savety2QueAlert').html('Alert : Please Fill All Fields or Check your all data is correct.');
+            $('.savety2QueAlert').css('display', 'block');
+        } else {
+            $('#ty2-form').submit();
+        }
+    }
+    
+    
+</script>  
+
+<style>
+.frmSearch {border: 1px solid #a8d4b1;background-color: #c6f7d0;margin: 2px 0px;padding:40px;border-radius:4px;}
+#country-list{float:left;list-style:none;margin-top:-3px;padding:0;width:190px;position: absolute;z-index: 999;}
+#country-list li{padding: 10px; background: #f0f0f0; border-bottom: #bbb9b9 1px solid;}
+#country-list li:hover{background:#ece3d2;cursor: pointer;}
+#search-box{padding: 10px;border: #a8d4b1 1px solid;border-radius:4px;}
+</style>
+<div class="modal fade" id="ty2Model" role="dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <!-- Modal Header -->
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="close" onclick="closeTY2moDal();">
+                    <span aria-hidden="true">x</span>
                     <span class="sr-only">Close</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">Search</h4>
+                <h4 class="modal-title" id="myModalLabel">TY2</h4>
             </div>
-            <!-- Modal Body -->
             <div class="modal-body">
-                <form id="login-form" class="smart-form">
+                <form id="ty2-form" class="smart-form" action="<?php echo e(action('HomeController@savenewty2')); ?>" method="post" >
+                    <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>" >
                     <fieldset>
                         <section>
                             <div class="row">
-                                <label class="label col col-3">Queue Number : </label>
+                                <label class="label col col-3">Company : </label>
                                 <div class="col col-9">
-                                        <label class="input"> <!--<i class="icon-append fa fa-user"></i>-->
-                                        <input type="text" name="role" placeholder="Queue Number">
+                                    <label class="input">
+                                        <input type="text" onkeyup="getCompanyList(this);" class="delAllTY2val" name="companyname" id="companyname" value="">
+                                        <div id="suggesstion-box"></div>
                                     </label>
                                 </div>
                             </div>
                         </section>
                         <section>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Sex</th>
+                                        <th>IC Number/Passport</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="newEmpDt">
+                                  <tr>
+                                      <td><div class="input"><input type="text" class="delAllTY2val" name="name[]" id="name" value=""></div></td>
+                                      <td><div class="input"><input type="text" class="delAllTY2val" name="sex[]" id="name" value=""></div></td>
+                                      <td><div class="input"><input type="text" class="delAllTY2val" name="icno[]" id="name" value=""></div></td>
+                                      <td align="center"></td>
+                                  </tr>
+                                </tbody>
+                            </table>
+                            <div style="height: 10px; width: 100%;"></div>
+                            <div class="col-12 pull-right"><button style="padding: 6px 12px;" type="button" class="btn btn-default" onclick="addMoreEmp();">Add More</button></div>
+                            <div style="height: 20px; width: 100%;"></div>
+                        </section>
+                        <section>
                             <div class="row">
-                                <label class="label col col-3">Search By : </label>
-                                <div class="col col-3">
-                                        <label class="input"><!-- <i class="icon-append fa fa-user"></i>-->
-                                                <!--<input type="text" name="role">-->
-                                        <select><option>Emp. No</option>
-                                            <option>Name</option>
-                                            <option>NRIC</option>
-                                        </select>
-
+                                <label class="label col col-3">Queue Number : </label>
+                                <div class="col col-9">
+                                    <label class="input">
+                                        <input type="text" class="delAllTY2val" name="ty2queueno" id="ty2queueno" value="">
                                     </label>
                                 </div>
-                                <div class="col col-6">
-                                        <label class="input"> <!--<i class="icon-append fa fa-user"></i>-->
-                                        <input type="text" name="search">
+                            </div>
+                        </section>
+                        <?php /* ?> 
+                        <section>
+                            <div class="row">
+                                <label class="label col col-3">Queue Number : </label>
+                                <div class="col col-9">
+                                    <label class="input">
+                                        <input type="text" class="delAllTY2val" name="queueno" id="queueno" value="">
                                     </label>
                                 </div>
                             </div>
@@ -763,19 +876,164 @@
                             <div class="row">
                                 <label class="label col col-3">Sympthoms : </label>
                                 <div class="col col-9">
-                                        <label class="input"> <!--<i class="icon-append fa fa-lock"></i>-->
-                                        <input type="text" name="sympthom">
+                                    <label class="input">
+                                        <input type="text" class="delAllTY2val" name="sympthom" id="sympthom" value="">
                                     </label>
                                 </div>
                             </div>
                         </section>
+                        <section>
+                            <div class="row">
+                                <label class="label col col-3">Department: </label>
+                                <div class="col col-9">
+                                    <label class="input">
+                                        <select class="searchcat searchcatdependentSection delAllTY2val" name="department" id="department" style="width: 100%;line-height: 32px;height: 32px;" >
+                                            @foreach($department as $d)
+                                            <option value="{{$d->id}}" >{{$d->name}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </label>
+                                </div>
+                            </div>
+                        </section>
+                        <?php */ ?>
                     </fieldset>
+                    <input type="hidden" class="delAllval" name="patType" id="patType" value="ty2Section" >
+                    <input type="hidden" class="delAllval" name="patCat" id="patCat" value="company" >
                 </form>
+                <fieldset>
+                    <section>
+                        <div class="row">
+                            <label class="label col col-12 savety2QueAlert" style="color: red; font-weight: bold; display: none"></label>
+                        </div>
+                    </section>
+                </fieldset>  
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="closeTY2moDal();" >Close</button>
+                <button type="button" class="btn btn-primary submitBtn" onclick="submitTY2RegistrationForm()" >Submit</button>
             </div>
         </div>
     </div>
 </div>
-<?php */ ?>
+
+<div class="modal fade" id="ty2ModelToken" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">x</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body" id="modalDiv"> 
+                <div id="printThis">
+                    <fieldset>
+                        <section>
+                            <div class="row" id="regResults" style="display: block">
+                                <p style="text-align-last: end"><button id="btnPrint">Print this page</button></p>
+                                <div class="col-md-12 text-center">
+                                    <h3><strong>Eklinik</strong></h3>
+                                    <p><strong id="cosuting" ></strong></p>
+                                    <p>Your Token No</p>
+                                    <h1><strong id="token"></strong></h1>
+                                    <p>Please Wait For Your Turn</p>
+                                    <p>Total Customer Waiting (5)</p>
+                                    <div class="">
+                                        <div class="col-md-6 text-left" id="datef"></div>
+                                        <div class="col-md-6 text-right" id="timef"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </fieldset>
+                </div>    
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+
+
+
+
+
+</script>
+<!-- ##################################  TY2 Patient End   ################################################# -->
+
+
+
+
+
+
+<?php /* ?>
+  <div class="modal fade" id="transModel" role="dialog">
+  <div class="modal-dialog">
+  <div class="modal-content">
+  <!-- Modal Header -->
+  <div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal">
+  <span aria-hidden="true">&times;</span>
+  <span class="sr-only">Close</span>
+  </button>
+  <h4 class="modal-title" id="myModalLabel">Search</h4>
+  </div>
+  <!-- Modal Body -->
+  <div class="modal-body">
+  <form id="login-form" class="smart-form">
+  <fieldset>
+  <section>
+  <div class="row">
+  <label class="label col col-3">Queue Number : </label>
+  <div class="col col-9">
+  <label class="input"> <!--<i class="icon-append fa fa-user"></i>-->
+  <input type="text" name="role" placeholder="Queue Number">
+  </label>
+  </div>
+  </div>
+  </section>
+  <section>
+  <div class="row">
+  <label class="label col col-3">Search By : </label>
+  <div class="col col-3">
+  <label class="input"><!-- <i class="icon-append fa fa-user"></i>-->
+  <!--<input type="text" name="role">-->
+  <select><option>Emp. No</option>
+  <option>Name</option>
+  <option>NRIC</option>
+  </select>
+
+  </label>
+  </div>
+  <div class="col col-6">
+  <label class="input"> <!--<i class="icon-append fa fa-user"></i>-->
+  <input type="text" name="search">
+  </label>
+  </div>
+  </div>
+  </section>
+  <section>
+  <div class="row">
+  <label class="label col col-3">Sympthoms : </label>
+  <div class="col col-9">
+  <label class="input"> <!--<i class="icon-append fa fa-lock"></i>-->
+  <input type="text" name="sympthom">
+  </label>
+  </div>
+  </div>
+  </section>
+  </fieldset>
+  </form>
+  </div>
+  </div>
+  </div>
+  </div>
+  <?php */ ?>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), array('__data', '__path')))->render(); ?>

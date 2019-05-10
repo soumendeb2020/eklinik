@@ -71,7 +71,7 @@
                                     <th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> IC No</th>
                                     <th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>Patient Name</th>
                                     <th data-hide="phone"><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> Visit Date/Time</th>
-                                    <th>Doctor</th>
+                                    <th>Sympthom</th>
                                     <th data-hide="phone,tablet"><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> Status</th>
                                     <th data-hide="phone,tablet">Action</th>
 
@@ -85,7 +85,7 @@
                                             <td>{{$p->ic_number}}</td>
                                             <td>{{$p->name}}</td>
                                             <td>{{$p->created_at}}</td>
-                                            <td></td>
+                                            <td>{{$p->symptopms}}</td>
                                             <td><span type="button" class=" center-block btn btn-success btn-lg padding-5 ">{{ $p->is_active == 1 ? 'Waiting' : 'Serving' }}</span></td>
                                             <td>
                                                 <button class="btn btn-info" onclick=""><i class="glyphicon glyphicon-edit"></i>Profile</button>

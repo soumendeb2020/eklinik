@@ -23,6 +23,7 @@
   * [Using Blade directives](#using-blade-directives)
   * [Defining a Super-Admin](#defining-a-super-admin)
   * [Best Practices -- roles vs permissions](#best-practices----roles-vs-permissions)
+  * [Best Practices -- Using Policies](#best-practices----using-policies)
   * [Using multiple guards](#using-multiple-guards)
   * [Using a middleware](#using-a-middleware)
   * [Using artisan commands](#using-artisan-commands)
@@ -71,7 +72,7 @@ You can install the package via composer:
 composer require spatie/laravel-permission
 ```
 
-In Laravel 5.5 the service provider will automatically get registered. In older versions of the framework just add the service provider in `config/app.php` file:
+The service provider will automatically get registered. Or you may manually add the service provider in your `config/app.php` file:
 
 ```php
 'providers' => [
@@ -198,14 +199,14 @@ return [
     'cache' => [
 
         /*
-         * By default all permissions will be cached for 24 hours unless a permission or
-         * role is updated. Then the cache will be flushed immediately.
+         * By default all permissions are cached for 24 hours to speed up performance.
+         * When permissions or roles are updated the cache is flushed automatically.
          */
 
-        'expiration_time' => 60 * 24,
+        'expiration_time' => \DateInterval::createFromDateString('24 hours'),
 
         /*
-         * The key to use when tagging and prefixing entries in the cache.
+         * The cache key used to store all permissions.
          */
 
         'key' => 'spatie.permission.cache',
@@ -226,6 +227,7 @@ return [
          * role caching using any of the `store` drivers listed in the cache.php config
          * file. Using 'default' here means to use the `default` set in cache.php.
          */
+
         'store' => 'default',
     ],
 ];
@@ -348,7 +350,8 @@ The `HasRoles` trait adds Eloquent relationships to your models, which can be ac
 
 ```php
 // get a list of all permissions directly assigned to the user
-$permissions = $user->permissions;
+$permissionNames = $user->getPermissionNames(); // collection of name strings
+$permissions = $user->permissions; // collection of permission objects
 
 // get all permissions for the user, either directly, or from roles, or from both
 $permissions = $user->getDirectPermissions();
@@ -639,6 +642,10 @@ It is generally best to code your app around `permissions` only. That way you ca
 
 Roles can still be used to group permissions for easy assignment, and you can still use the role-based helper methods if truly necessary. But most app-related logic can usually be best controlled using the `can` methods, which allows Laravel's Gate layer to do all the heavy lifting.
 
+## Best Practices -- Using Policies
+
+The best way to incorporate access control for access to app features is with Model Policies. This way your application logic can be combined with your permission rules, keeping your implementation simpler. You can find an example of implementing a model policy with this Laravel Permissions package in this demo app: https://github.com/drbyte/spatie-permissions-demo/blob/master/app/Policies/PostPolicy.php
+
 
 ## Using multiple guards
 
@@ -671,7 +678,7 @@ $user->hasPermissionTo('publish articles', 'admin');
 
 > **Note**: When using other than the default `web` guard, you will need to declare which `guard_name` you wish each model to use by setting the `$guard_name` property in your model. One per model is simplest. 
 
-> **Note**: If your app uses only a single guard, but is not `web` then change the order of your listed guards in your `config/app.php` to list your primary guard as the default and as the first in the list of defined guards.
+> **Note**: If your app uses only a single guard, but is not `web` then change the order of your listed guards in your `config/auth.php` to list your primary guard as the default and as the first in the list of defined guards.
 
 ### Assigning permissions and roles to guard users
 
@@ -899,7 +906,7 @@ HOWEVER, if you manipulate permission/role data directly in the database instead
 ### Manual cache reset
 To manually reset the cache for this package, you can run the following in your app code:
 ```php
-$this->app->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
 ```
 
 Or you can use an Artisan command:

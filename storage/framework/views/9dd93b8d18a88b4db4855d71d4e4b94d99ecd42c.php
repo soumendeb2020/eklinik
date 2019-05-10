@@ -89,7 +89,7 @@
 		<!-- Full Calendar -->
 		<script src="<?php echo e(URL::asset('js/plugin/moment/moment.min.js')); ?>"></script>
 		<script src="<?php echo e(URL::asset('js/plugin/fullcalendar/fullcalendar.min.js')); ?>"></script>
-
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 		<script>
 			$(document).ready(function() {
 

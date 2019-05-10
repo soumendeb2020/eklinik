@@ -1,23 +1,9 @@
 <?php return array (
-  'nesbot/carbon' => 
+  'beyondcode/laravel-dump-server' => 
   array (
     'providers' => 
     array (
-      0 => 'Carbon\\Laravel\\ServiceProvider',
-    ),
-  ),
-  'laravel/slack-notification-channel' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Illuminate\\Notifications\\SlackChannelServiceProvider',
-    ),
-  ),
-  'laravel/nexmo-notification-channel' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Illuminate\\Notifications\\NexmoChannelServiceProvider',
+      0 => 'BeyondCode\\DumpServer\\DumpServerServiceProvider',
     ),
   ),
   'fideloper/proxy' => 
@@ -36,6 +22,20 @@
     'aliases' => 
     array (
       'Flash' => 'Laracasts\\Flash\\Flash',
+    ),
+  ),
+  'laravel/nexmo-notification-channel' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Illuminate\\Notifications\\NexmoChannelServiceProvider',
+    ),
+  ),
+  'laravel/slack-notification-channel' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Illuminate\\Notifications\\SlackChannelServiceProvider',
     ),
   ),
   'laravel/tinker' => 
@@ -57,18 +57,11 @@
       'Html' => 'Collective\\Html\\HtmlFacade',
     ),
   ),
-  'spatie/laravel-permission' => 
+  'nesbot/carbon' => 
   array (
     'providers' => 
     array (
-      0 => 'Spatie\\Permission\\PermissionServiceProvider',
-    ),
-  ),
-  'beyondcode/laravel-dump-server' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'BeyondCode\\DumpServer\\DumpServerServiceProvider',
+      0 => 'Carbon\\Laravel\\ServiceProvider',
     ),
   ),
   'nunomaduro/collision' => 
@@ -76,6 +69,24 @@
     'providers' => 
     array (
       0 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
+    ),
+  ),
+  'spatie/laravel-permission' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Spatie\\Permission\\PermissionServiceProvider',
+    ),
+  ),
+  'yoeunes/toastr' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Yoeunes\\Toastr\\ToastrServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Toastr' => 'Yoeunes\\Toastr\\Facades\\Toastr',
     ),
   ),
 );

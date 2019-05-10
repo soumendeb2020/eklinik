@@ -17,11 +17,16 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
+ 
 //  Ajax Routes
 Route::post('getAddPatientResult', array('as' => 'getAddPatientResult', 'uses' => 'HomeController@getAddPatientResult'));
 Route::post('getAddPatientResultdata', array('as' => 'getAddPatientResultdata', 'uses' => 'HomeController@getAddPatientResultdata'));
 Route::post('saveNewPatient', array('as' => 'saveNewPatient', 'uses' => 'HomeController@saveNewPatient'));
+Route::post('getExistingCompany', array('as' => 'getExistingCompany', 'uses' => 'HomeController@getExistingCompany'));
+Route::post('savenewty2', array('as' => 'savenewty2', 'uses' => 'HomeController@savenewty2'));
+
+
+
 
 
 Route::group( ['middleware' => ['auth']], function() {

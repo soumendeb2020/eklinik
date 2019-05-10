@@ -1,25 +1,28 @@
-<label class="label col col-3">Result : </label>
-<div class="col col-9">
+<label class="cel-gap label col-xs-12">Result : </label>
+<div class="cel-gap col-xs-12">
     <table class="table table-striped table-bordered table-hover" width="100%">
         <tbody>
             <tr>
-                <td rowspan="4"></td>
-                <td>Name: {{$data['name']}}</td>
+                <td rowspan="5"><img src="https://via.placeholder.com/80" alt="" /></td>
+                <td>Name:</td>
+                <td>{{$data['name']}}</td>
             </tr>
             <tr>
-                <td>Staff Id: {{$data['staffid']}}</td>
+                <td>Staff Id:</td>
+                <td>{{$data['staffid']}}</td>
             </tr>
             <tr>
-                <td>Department: {{$data['department']}}</td>
+                <td>Department:</td>
+                <td>{{$data['department']}}</td>
             </tr>
             <tr>
-                <td>I/C: {{$data['ic']}}</td>
+                <td>I/C:</td>
+                <td>{{$data['ic']}}</td>
             </tr>
-            <!--
             <tr>
-                <td colspan="2">Dependant: {{$data['dependent']}}</td>
+                <td>Related:</td>
+                <td>{{$data['related']}}</td>
             </tr>
-            -->
         </tbody>
     </table>
 </div>
