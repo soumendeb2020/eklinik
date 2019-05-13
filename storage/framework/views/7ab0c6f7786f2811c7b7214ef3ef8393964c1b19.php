@@ -2,15 +2,15 @@
 <label class="cel-gap label col-xs-12">Result : </label>
 <?php $__currentLoopData = $data['detail']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 <div class="cel-gap col-xs-12">
-    <div id="gtVal<?php echo e($d['id']); ?>" data-sid="<?php echo e($d['staffid']); ?>" data-name="<?php echo e($d['name']); ?>" data-dept="<?php echo e($d['department']); ?>" data-deptid="<?php echo e($d['departmentid']); ?>" data-ic="<?php echo e($d['ic']); ?>" data-ic="<?php echo e($d['related']); ?>"></div>
+    <div id="gtVal<?php echo e($d['id']); ?>" data-sid="<?php echo e($d['staffid']); ?>" data-name="<?php echo e($d['name']); ?>" data-dept="<?php echo e($d['department']); ?>" data-deptid="<?php echo e($d['departmentid']); ?>" data-ic="<?php echo e($d['ic']); ?>" data-rel="<?php echo e($d['related']); ?>"></div>
     <table class="table table-striped table-bordered table-hover" width="100%">
         <tbody>
             <tr>
-                <td rowspan="5">
+                <td width="90" rowspan="5">
                     <input onclick="changeStaffData('<?php echo e($d['id']); ?>')" type="radio" name="dtinp" value="1"><br>
                     <img src="https://via.placeholder.com/80" alt="" />
                 </td>
-                <td>Name:</td>
+                <td width="90">Name:</td>
                 <td><?php echo e($d['name']); ?></td>
             </tr>
             <tr>
@@ -37,7 +37,7 @@
 <label class="cel-gap label col-xs-12">Result : </label>
 <?php $__currentLoopData = $data['detail']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 <div class="cel-gap col-xs-12">
-    <div id="gtVal<?php echo e($d['id']); ?>" data-sid="<?php echo e($d['staffid']); ?>" data-name="<?php echo e($d['name']); ?>" data-dept="<?php echo e($d['department']); ?>" data-deptid="<?php echo e($d['departmentid']); ?>" data-ic="<?php echo e($d['ic']); ?>" data-ic="<?php echo e($d['related']); ?>"></div>
+    <div id="gtVal<?php echo e($d['id']); ?>" data-sid="<?php echo e($d['staffid']); ?>" data-name="<?php echo e($d['name']); ?>" data-dept="<?php echo e($d['department']); ?>" data-deptid="<?php echo e($d['departmentid']); ?>" data-ic="<?php echo e($d['ic']); ?>" data-rel="<?php echo e($d['related']); ?>"></div>
     <table class="table table-striped table-bordered table-hover" width="100%">
         <tbody>
             <tr>
@@ -68,30 +68,30 @@
     </table>
 </div>
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-    <!--
-    <label class="label col col-3">Result : </label>
-    <div class="col col-9">
-        <table class="table table-striped table-bordered table-hover" width="100%">
-            <tbody>
-                <?php $__currentLoopData = $data['detail']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <tr>
-                    <td> <input onclick="changeStaffData('<?php echo e($d['id']); ?>')" type="radio" name="dtinp" value="1"> </td>
-                    <td>
-                        <div id="gtVal<?php echo e($d['id']); ?>" data-sid="<?php echo e($d['staffid']); ?>" data-name="<?php echo e($d['name']); ?>" data-dept="<?php echo e($d['department']); ?>" data-ic="<?php echo e($d['ic']); ?>"> 
-                            Name: <?php echo e($d['name']); ?> <br>
-                            Staff Id: <?php echo e($d['staffid']); ?> <br>
-                            Department: <?php echo e($d['department']); ?><br>
-                            I/C: <?php echo e($d['ic']); ?> <br>
-                        </div>
-                    </td>
-                </tr>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </tbody>
-        </table>
-    </div>
-    -->
+<?php elseif($data['group'] == 'otherSection'): ?>
+<label class="cel-gap label col-xs-12">Result : </label>
+<?php $__currentLoopData = $data['detail']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<div class="cel-gap col-xs-12">
+    <div id="gtVal<?php echo e($d['id']); ?>" data-sid="<?php echo e($d['staffid']); ?>" data-name="<?php echo e($d['name']); ?>" data-dept="<?php echo e($d['department']); ?>" data-deptid="<?php echo e($d['departmentid']); ?>" data-ic="<?php echo e($d['ic']); ?>" data-rel="<?php echo e($d['related']); ?>"></div>
+    <table class="table table-striped table-bordered table-hover" width="100%">
+        <tbody>
+            <tr>
+                <td rowspan="2">
+                    <input onclick="changeStaffData('<?php echo e($d['id']); ?>')" type="radio" name="dtinp" value="1"><br>
+                    <img src="https://via.placeholder.com/80" alt="" />
+                </td>
+                <td>Name:</td>
+                <td><?php echo e($d['name']); ?></td>
+            </tr>
+            <tr>
+                <td>I/C:</td>
+                <td><?php echo e($d['ic']); ?></td>
+            </tr>  
+        </tbody>
+    </table>
+</div>
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 <?php endif; ?>
-
 <script>
     function changeData(dt){
         var msglist = document.getElementById("gtVal" + dt);

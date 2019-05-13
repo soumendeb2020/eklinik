@@ -2,15 +2,15 @@
 <label class="cel-gap label col-xs-12">Result : </label>
 @foreach ($data['detail'] as $d)
 <div class="cel-gap col-xs-12">
-    <div id="gtVal{{$d['id']}}" data-sid="{{$d['staffid']}}" data-name="{{$d['name']}}" data-dept="{{$d['department']}}" data-deptid="{{$d['departmentid']}}" data-ic="{{$d['ic']}}" data-ic="{{$d['related']}}"></div>
+    <div id="gtVal{{$d['id']}}" data-sid="{{$d['staffid']}}" data-name="{{$d['name']}}" data-dept="{{$d['department']}}" data-deptid="{{$d['departmentid']}}" data-ic="{{$d['ic']}}" data-rel="{{$d['related']}}"></div>
     <table class="table table-striped table-bordered table-hover" width="100%">
         <tbody>
             <tr>
-                <td rowspan="5">
+                <td width="90" rowspan="5">
                     <input onclick="changeStaffData('{{$d['id']}}')" type="radio" name="dtinp" value="1"><br>
                     <img src="https://via.placeholder.com/80" alt="" />
                 </td>
-                <td>Name:</td>
+                <td width="90">Name:</td>
                 <td>{{$d['name']}}</td>
             </tr>
             <tr>
@@ -37,7 +37,7 @@
 <label class="cel-gap label col-xs-12">Result : </label>
 @foreach ($data['detail'] as $d)
 <div class="cel-gap col-xs-12">
-    <div id="gtVal{{$d['id']}}" data-sid="{{$d['staffid']}}" data-name="{{$d['name']}}" data-dept="{{$d['department']}}" data-deptid="{{$d['departmentid']}}" data-ic="{{$d['ic']}}" data-ic="{{$d['related']}}"></div>
+    <div id="gtVal{{$d['id']}}" data-sid="{{$d['staffid']}}" data-name="{{$d['name']}}" data-dept="{{$d['department']}}" data-deptid="{{$d['departmentid']}}" data-ic="{{$d['ic']}}" data-rel="{{$d['related']}}"></div>
     <table class="table table-striped table-bordered table-hover" width="100%">
         <tbody>
             <tr>
@@ -68,30 +68,30 @@
     </table>
 </div>
 @endforeach
-    <!--
-    <label class="label col col-3">Result : </label>
-    <div class="col col-9">
-        <table class="table table-striped table-bordered table-hover" width="100%">
-            <tbody>
-                @foreach ($data['detail'] as $d)
-                <tr>
-                    <td> <input onclick="changeStaffData('{{$d['id']}}')" type="radio" name="dtinp" value="1"> </td>
-                    <td>
-                        <div id="gtVal{{$d['id']}}" data-sid="{{$d['staffid']}}" data-name="{{$d['name']}}" data-dept="{{$d['department']}}" data-ic="{{$d['ic']}}"> 
-                            Name: {{$d['name']}} <br>
-                            Staff Id: {{$d['staffid']}} <br>
-                            Department: {{$d['department']}}<br>
-                            I/C: {{$d['ic']}} <br>
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-    -->
+@elseif ($data['group'] == 'otherSection')
+<label class="cel-gap label col-xs-12">Result : </label>
+@foreach ($data['detail'] as $d)
+<div class="cel-gap col-xs-12">
+    <div id="gtVal{{$d['id']}}" data-sid="{{$d['staffid']}}" data-name="{{$d['name']}}" data-dept="{{$d['department']}}" data-deptid="{{$d['departmentid']}}" data-ic="{{$d['ic']}}" data-rel="{{$d['related']}}"></div>
+    <table class="table table-striped table-bordered table-hover" width="100%">
+        <tbody>
+            <tr>
+                <td rowspan="2">
+                    <input onclick="changeStaffData('{{$d['id']}}')" type="radio" name="dtinp" value="1"><br>
+                    <img src="https://via.placeholder.com/80" alt="" />
+                </td>
+                <td>Name:</td>
+                <td>{{$d['name']}}</td>
+            </tr>
+            <tr>
+                <td>I/C:</td>
+                <td>{{$d['ic']}}</td>
+            </tr>  
+        </tbody>
+    </table>
+</div>
+@endforeach
 @endif
-
 <script>
     function changeData(dt){
         var msglist = document.getElementById("gtVal" + dt);

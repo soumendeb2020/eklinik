@@ -6,7 +6,7 @@
                 <td rowspan="5"><img src="https://via.placeholder.com/80" alt="" /></td>
                 <td>Name:</td>
                 <td>{{$data['name']}}</td>
-            </tr>
+            </tr> 
             <tr>
                 <td>Staff Id:</td>
                 <td>{{$data['staffid']}}</td>

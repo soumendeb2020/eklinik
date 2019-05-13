@@ -36,41 +36,50 @@ class HomeController extends Controller {
         if ($type == 'staffSection') {
             if ($searchby == 'sid') {
                 $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $searchname)->first();
-                $det = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $searchname)->first();
-                $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
-                $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
-                $dept = DB::table('ge_jabatan')->select('ge_jabatan.*')->where('GE_KOD_JABATAN', '=', $staff->HR_JABATAN)->first();
+                if($staff){
+                    $det = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $searchname)->first();
+                    $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
+                    $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
+                    $dept = DB::table('ge_jabatan')->select('ge_jabatan.*')->where('GE_KOD_JABATAN', '=', $staff->HR_JABATAN)->first();
 
-                $data['name'] = $det->HR_NAMA_PEKERJA;
-                $data['staffid'] = $det->HR_NO_PEKERJA;
-                $data['departmentid'] = $dept->GE_KOD_JABATAN;
-                $data['department'] = $dept->GE_KETERANGAN_JABATAN;
-                $data['ic'] = $det->HR_NO_KPBARU;
-                $data['related'] = '';
-                
-                return View('ajax.getAddPatientResult')->with(compact('data'));
+                    $data['name'] = $det->HR_NAMA_PEKERJA;
+                    $data['staffid'] = $det->HR_NO_PEKERJA;
+                    $data['departmentid'] = $dept->GE_KOD_JABATAN;
+                    $data['department'] = $dept->GE_KETERANGAN_JABATAN;
+                    $data['ic'] = $det->HR_NO_KPBARU;
+                    $data['related'] = '';
+                    
+                    return View('ajax.getAddPatientResult')->with(compact('data'));
+                } else {
+                    return 0;
+                }
             } else if ($searchby == 'ic') {
                 $det = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_KPBARU', '=', $searchname)->first();
-                $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
-                $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
-                $dept = DB::table('ge_jabatan')->select('ge_jabatan.*')->where('GE_KOD_JABATAN', '=', $staff->HR_JABATAN)->first();
+                if($det){
+                    $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
+                    $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
+                    $dept = DB::table('ge_jabatan')->select('ge_jabatan.*')->where('GE_KOD_JABATAN', '=', $staff->HR_JABATAN)->first();
 
-                $data['name'] = $det->HR_NAMA_PEKERJA;
-                $data['staffid'] = $det->HR_NO_PEKERJA;
-                $data['departmentid'] = $dept->GE_KOD_JABATAN;
-                $data['department'] = $dept->GE_KETERANGAN_JABATAN;
-                $data['ic'] = $det->HR_NO_KPBARU;
-                $data['related'] = '';
-                
-                return View('ajax.getAddPatientResult')->with(compact('data'));
+                    $data['name'] = $det->HR_NAMA_PEKERJA;
+                    $data['staffid'] = $det->HR_NO_PEKERJA;
+                    $data['departmentid'] = $dept->GE_KOD_JABATAN;
+                    $data['department'] = $dept->GE_KETERANGAN_JABATAN;
+                    $data['ic'] = $det->HR_NO_KPBARU;
+                    $data['related'] = '';
+                    
+                    return View('ajax.getAddPatientResult')->with(compact('data'));
+                } else {
+                    return 0;
+                }
             } else if ($searchby == 'name') {
                 $det = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NAMA_PEKERJA', '=', $searchname)->first();
-                $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
+                //$staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
 
                 $cnt = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NAMA_PEKERJA', '=', $searchname)->count();
-                if($cnt > 1){
+                if($cnt < 1){
+                    return 0;
+                } else if($cnt > 1){
                     $det = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NAMA_PEKERJA', '=', $searchname)->get();
-
                     $k = 1;
                     foreach ($det as $d){
                         $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $d->HR_NO_PEKERJA)->first();
@@ -91,7 +100,7 @@ class HomeController extends Controller {
                     
                     $data['group'] = "staffSection";
                     return View('ajax.getAddPatientResultList')->with(compact('data'));
-                } else {
+                } else if($cnt == 1){
                     $det = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NAMA_PEKERJA', '=', $searchname)->first();
                     $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
                     $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
@@ -110,22 +119,28 @@ class HomeController extends Controller {
         } else if ($type == 'dependentSection') {
             if ($searchby == 'ic') {
                 $det = DB::table('hr_maklumat_tanggungan')->select('hr_maklumat_tanggungan.*')->where('HR_NO_KP', '=', $searchname)->first();
-                $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
-                $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
-                $dept = DB::table('ge_jabatan')->select('ge_jabatan.*')->where('GE_KOD_JABATAN', '=', $staff->HR_JABATAN)->first();
+                if($det){
+                    $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
+                    $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
+                    $dept = DB::table('ge_jabatan')->select('ge_jabatan.*')->where('GE_KOD_JABATAN', '=', $staff->HR_JABATAN)->first();
 
+                    $data['name'] = $det->HR_NAMA_TANGGUNGAN;
+                    $data['staffid'] = $staffdet->HR_NO_PEKERJA;
+                    $data['departmentid'] = $dept->GE_KOD_JABATAN;
+                    $data['department'] = $dept->GE_KETERANGAN_JABATAN;
+                    $data['ic'] = $det->HR_NO_KP;
+                    $data['related'] = $staffdet->HR_NAMA_PEKERJA;
 
-                $data['name'] = $det->HR_NAMA_TANGGUNGAN;
-                $data['staffid'] = $staffdet->HR_NO_PEKERJA;
-                $data['departmentid'] = $dept->GE_KOD_JABATAN;
-                $data['department'] = $dept->GE_KETERANGAN_JABATAN;
-                $data['ic'] = $d->HR_NO_KP;
-                $data['related'] = $staffdet->HR_NAMA_PEKERJA;
-                
-                return View('ajax.getAddPatientResult')->with(compact('data'));
+                    return View('ajax.getAddPatientResult')->with(compact('data'));
+                } else {
+                    return 0;
+                }
+
             } else if ($searchby == 'name') {
                 $cnt = DB::table('hr_maklumat_tanggungan')->select('hr_maklumat_tanggungan.*')->where('HR_NAMA_TANGGUNGAN', '=', $searchname)->count();
-                if($cnt != 1){
+                if($cnt < 1){
+                    return 0;
+                } else if($cnt > 1){
                     $det = DB::table('hr_maklumat_tanggungan')->select('hr_maklumat_tanggungan.*')->where('HR_NAMA_TANGGUNGAN', '=', $searchname)->get();
                     $k = 1;
                     foreach ($det as $d){
@@ -146,7 +161,7 @@ class HomeController extends Controller {
                     
                     $data['group'] = "dependentSection";
                     return View('ajax.getAddPatientResultList')->with(compact('data'));
-                } else {
+                } else if($cnt == 1){
                     $det = DB::table('hr_maklumat_tanggungan')->select('hr_maklumat_tanggungan.*')->where('HR_NAMA_TANGGUNGAN', '=', $searchname)->first();
                     $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
                     $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
@@ -166,24 +181,50 @@ class HomeController extends Controller {
         } else if ($type == 'otherSection') {
             if ($searchby == 'ic') {
                 $det = DB::table('patient')->select('patient.*')->where('ic_number', '=', $searchname)->where('utype', '=', 'other')->first();
-            } else if ($searchby == 'name') {
-                $det = DB::table('patient')->select('patient.*')->where('name', '=', $searchname)->where('utype', '=', 'other')->first();
-            }
-            if($det){
-                $data['name'] = $det->name;
-                $data['staffid'] = $det->staff_id;
-                $data['department'] = '';
-                $data['ic'] = $det->ic_number;
-                $data['dependent'] = '';
                 
-                $data['name'] = $det->name;
-                $data['staffid'] = $det->staff_id;
-                $data['departmentid'] = '';
-                $data['department'] = '';
-                $data['ic'] = $det->ic_number;
-                $data['related'] = '';
+                if($det){
+                    $data['name'] = $det->name;
+                    $data['staffid'] = $det->staff_id;
+                    $data['departmentid'] = '';
+                    $data['department'] = '';
+                    $data['ic'] = $det->ic_number;
+                    $data['related'] = '';
 
-                return View('ajax.getAddPatientResult')->with(compact('data'));
+                    return View('ajax.getAddPatientResult')->with(compact('data'));
+                } else {
+                    return 0;
+                }
+                
+            } else if ($searchby == 'name') {
+                $cnt = DB::table('patient')->select('patient.*')->where('name', '=', $searchname)->where('utype', '=', 'other')->count();
+                if($cnt == 0){
+                    return 0;
+                } else if($cnt > 1){
+                    $det = DB::table('patient')->select('patient.*')->where('name', '=', $searchname)->where('utype', '=', 'other')->get();
+                    $k = 1;
+                    foreach ($det as $d){
+                        $dt['id'] = $k;
+                        $dt['name'] = $d->name;
+                        $dt['staffid'] = 0;
+                        $dt['departmentid'] = 0;
+                        $dt['department'] = '';
+                        $dt['ic'] = $d->ic_number;
+                        $dt['related'] = '';
+                        $data['detail'][$k] = $dt;
+                        $k ++;
+                    }
+                    $data['group'] = "otherSection";
+                    return View('ajax.getAddPatientResultList')->with(compact('data'));
+                } else if($cnt == 1){
+                    $det = DB::table('patient')->select('patient.*')->where('name', '=', $searchname)->where('utype', '=', 'other')->first();
+                    $data['name'] = $det->name;
+                    $data['staffid'] = $det->staff_id;
+                    $data['departmentid'] = '';
+                    $data['department'] = '';
+                    $data['ic'] = $det->ic_number;
+                    $data['related'] = '';
+                    return View('ajax.getAddPatientResult')->with(compact('data'));
+                } 
             }
         }
     }
@@ -197,64 +238,67 @@ class HomeController extends Controller {
         if ($type == 'staffSection') {
             if ($searchby == 'sid') {
                 $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $searchname)->first();
-                $det = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $searchname)->first();
+                if($staff){
+                    $det = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $searchname)->first();
 
-                $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
-                $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
-                $dept = DB::table('ge_jabatan')->select('ge_jabatan.*')->where('GE_KOD_JABATAN', '=', $staff->HR_JABATAN)->first();
+                    $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
+                    $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
+                    $dept = DB::table('ge_jabatan')->select('ge_jabatan.*')->where('GE_KOD_JABATAN', '=', $staff->HR_JABATAN)->first();
 
-                $data['name'] = $det->HR_NAMA_PEKERJA;
-                $data['staffid'] = $det->HR_NO_PEKERJA;
-                $data['departmentid'] = $dept->GE_KOD_JABATAN;
-                $data['department'] = $dept->GE_KETERANGAN_JABATAN;
-                $data['ic'] = $det->HR_NO_KPBARU;
-                $data['related'] = '';
-                
+                    $data['name'] = $det->HR_NAMA_PEKERJA;
+                    $data['staffid'] = $det->HR_NO_PEKERJA;
+                    $data['departmentid'] = $dept->GE_KOD_JABATAN;
+                    $data['department'] = $dept->GE_KETERANGAN_JABATAN;
+                    $data['ic'] = $det->HR_NO_KPBARU;
+                    $data['related'] = '';
+                } else {
+                    $data = 0;
+                }
             } else if ($searchby == 'ic') {
                 $det = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_KPBARU', '=', $searchname)->first();
-                $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
-                $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
-                $dept = DB::table('ge_jabatan')->select('ge_jabatan.*')->where('GE_KOD_JABATAN', '=', $staff->HR_JABATAN)->first();
+                if($det){
+                    $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
+                    $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
+                    $dept = DB::table('ge_jabatan')->select('ge_jabatan.*')->where('GE_KOD_JABATAN', '=', $staff->HR_JABATAN)->first();
 
-                $data['name'] = $det->HR_NAMA_PEKERJA;
-                $data['staffid'] = $det->HR_NO_PEKERJA;
-                $data['departmentid'] = $dept->GE_KOD_JABATAN;
-                $data['department'] = $dept->GE_KETERANGAN_JABATAN;
-                $data['ic'] = $det->HR_NO_KPBARU;
-                $data['related'] = '';
+                    $data['name'] = $det->HR_NAMA_PEKERJA;
+                    $data['staffid'] = $det->HR_NO_PEKERJA;
+                    $data['departmentid'] = $dept->GE_KOD_JABATAN;
+                    $data['department'] = $dept->GE_KETERANGAN_JABATAN;
+                    $data['ic'] = $det->HR_NO_KPBARU;
+                    $data['related'] = '';
+                } else {
+                    $data = 0;
+                }
             } else if ($searchby == 'name') {
-                $det = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NAMA_PEKERJA', '=', $searchname)->first();
-                $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
-                $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
-                $dept = DB::table('ge_jabatan')->select('ge_jabatan.*')->where('GE_KOD_JABATAN', '=', $staff->HR_JABATAN)->first();
+                $cnt = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NAMA_PEKERJA', '=', $searchname)->count();
+                if($cnt == 0){
+                    $data = 0;
+                } else if($cnt > 1){
+                    $data = 1;
+                } else if($cnt == 1){
+                    $det = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NAMA_PEKERJA', '=', $searchname)->first();
+                    if($det){
+                        $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
+                        $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
+                        $dept = DB::table('ge_jabatan')->select('ge_jabatan.*')->where('GE_KOD_JABATAN', '=', $staff->HR_JABATAN)->first();
 
-                $data['name'] = $det->HR_NAMA_PEKERJA;
-                $data['staffid'] = $det->HR_NO_PEKERJA;
-                $data['departmentid'] = $dept->GE_KOD_JABATAN;
-                $data['department'] = $dept->GE_KETERANGAN_JABATAN;
-                $data['ic'] = $det->HR_NO_KPBARU;
-                $data['related'] = '';
+                        $data['name'] = $det->HR_NAMA_PEKERJA;
+                        $data['staffid'] = $det->HR_NO_PEKERJA;
+                        $data['departmentid'] = $dept->GE_KOD_JABATAN;
+                        $data['department'] = $dept->GE_KETERANGAN_JABATAN;
+                        $data['ic'] = $det->HR_NO_KPBARU;
+                        $data['related'] = '';
+                    } else {
+                        $data = 0;
+                    }
+                }
             }
 
         } else if ($type == 'dependentSection') {
             if ($searchby == 'ic') {
                 $det = DB::table('hr_maklumat_tanggungan')->select('hr_maklumat_tanggungan.*')->where('HR_NO_KP', '=', $searchname)->first();
-                $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
-                $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
-                $dept = DB::table('ge_jabatan')->select('ge_jabatan.*')->where('GE_KOD_JABATAN', '=', $staff->HR_JABATAN)->first();
-
-                $data['name'] = $det->HR_NAMA_TANGGUNGAN;
-                $data['staffid'] = $det->HR_NO_PEKERJA;
-                $data['departmentid'] = $staff->HR_JABATAN;
-                $data['department'] = $dept->GE_KETERANGAN_JABATAN;
-                $data['ic'] = $det->HR_NO_KP;
-                $data['related'] = $staffdet->HR_NAMA_PEKERJA;
-            } else if ($searchby == 'name') {
-                $cnt = DB::table('hr_maklumat_tanggungan')->select('hr_maklumat_tanggungan.*')->where('HR_NAMA_TANGGUNGAN', '=', $searchname)->count();
-                if($cnt > 1){
-                    $data = 1;
-                } else {
-                    $det = DB::table('hr_maklumat_tanggungan')->select('hr_maklumat_tanggungan.*')->where('HR_NAMA_TANGGUNGAN', '=', $searchname)->first();
+                if($det){
                     $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
                     $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
                     $dept = DB::table('ge_jabatan')->select('ge_jabatan.*')->where('GE_KOD_JABATAN', '=', $staff->HR_JABATAN)->first();
@@ -265,28 +309,64 @@ class HomeController extends Controller {
                     $data['department'] = $dept->GE_KETERANGAN_JABATAN;
                     $data['ic'] = $det->HR_NO_KP;
                     $data['related'] = $staffdet->HR_NAMA_PEKERJA;
+                } else {
+                    $data = 0;
+                }
+            } else if ($searchby == 'name') {
+                $cnt = DB::table('hr_maklumat_tanggungan')->select('hr_maklumat_tanggungan.*')->where('HR_NAMA_TANGGUNGAN', '=', $searchname)->count();
+                if($cnt > 1){
+                    $data = 1;
+                } else {
+                    $det = DB::table('hr_maklumat_tanggungan')->select('hr_maklumat_tanggungan.*')->where('HR_NAMA_TANGGUNGAN', '=', $searchname)->first();
+                    if($det){
+                        $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
+                        $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
+                        $dept = DB::table('ge_jabatan')->select('ge_jabatan.*')->where('GE_KOD_JABATAN', '=', $staff->HR_JABATAN)->first();
+
+                        $data['name'] = $det->HR_NAMA_TANGGUNGAN;
+                        $data['staffid'] = $det->HR_NO_PEKERJA;
+                        $data['departmentid'] = $staff->HR_JABATAN;
+                        $data['department'] = $dept->GE_KETERANGAN_JABATAN;
+                        $data['ic'] = $det->HR_NO_KP;
+                        $data['related'] = $staffdet->HR_NAMA_PEKERJA;
+                    } else {
+                        $data = 0;
+                    }
                 }
             }
 
         } else if ($type == 'otherSection') {
             if ($searchby == 'ic') {
                 $det = DB::table('patient')->select('patient.*')->where('ic_number', '=', $searchname)->where('utype', '=', 'other')->first();
+                if($det){
+                    $data['name'] = $det->name;
+                    $data['staffid'] = $det->staff_id;
+                    $data['departmentid'] = '';
+                    $data['department'] = '';
+                    $data['ic'] = $det->ic_number;
+                    $data['related'] = '';
+                } else {
+                    $data = 0;
+                }
             } else if ($searchby == 'name') {
                 $det = DB::table('patient')->select('patient.*')->where('name', '=', $searchname)->where('utype', '=', 'other')->first();
+                if($det){
+                    $data['name'] = $det->name;
+                    $data['staffid'] = $det->staff_id;
+                    $data['departmentid'] = '';
+                    $data['department'] = '';
+                    $data['ic'] = $det->ic_number;
+                    $data['related'] = '';
+                } else {
+                    $data = 0;
+                }
             }
-            
-            $data['name'] = $det->name;
-            $data['staffid'] = $det->staff_id;
-            $data['departmentid'] = '';
-            $data['department'] = '';
-            $data['ic'] = $det->ic_number;
-            $data['related'] = '';
         }
         return $data;
     }
 
     public function saveNewPatient() {
-        //echo "<pre>"; print_r($_POST); 
+        //echo "<pre>"; print_r($_POST); exit;    
         ///    $_POST['staff_id']
         
         if($_POST['type'] == 'otherSection'){
@@ -297,6 +377,17 @@ class HomeController extends Controller {
             $typename = 'staff';
         }
         
+        if($_POST['dept_id'] != ''){
+            if($_POST['dept_id'] != 0){
+                $deptdt = DB::table('ge_jabatan')->select('ge_jabatan.*')->where('GE_KOD_JABATAN', '=', $_POST['dept_id'])->first();
+                $dname = $deptdt->GE_KETERANGAN_JABATAN;
+            } else {
+                $dname = '';
+            }
+        } else {
+            $dname = '';
+        }
+        
         $patientExist = DB::table('patient')->select('patient.*')->where('ic_number', '=', $_POST['ic_number'])->first();
         
         //echo "<pre>"; print_r($patientExist); echo "ok"; //exit;
@@ -304,8 +395,10 @@ class HomeController extends Controller {
         if($patientExist){
             $lid = $patientExist->id;
         } else {
+
             $savedata['staff_id'] = $_POST['staff_id'] != '' ? $_POST['staff_id'] : 0; 
             $savedata['dept_id'] =  $_POST['dept_id'] != '' ? $_POST['dept_id'] : 0;
+            $savedata['dept_name'] = $dname;
             $savedata['ic_number'] = $_POST['ic_number'];
             $savedata['name'] = $_POST['name'];
             $savedata['utype'] = $typename;

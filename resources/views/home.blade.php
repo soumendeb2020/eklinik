@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <!-- <div class="container"> -->
 
@@ -354,6 +353,12 @@
                                 </div>
                             </div>
                         </section>
+                    
+                        <section>
+                            <div class="row">
+                                <label class="label col col-12 searchQueryAlert" style="color: red; font-weight: bold; display: none"></label>
+                            </div>
+                        </section>
                         <section>
                             <div class="row">
                                 <label class="cel-gap label col-xs-12">Queue Number : </label>
@@ -391,13 +396,13 @@
                     <input type="hidden" class="delAllval" name="patType" id="patType" value="staffSection" >
                     <input type="hidden" class="delAllval" name="patCat" id="patCat" value="" >
                     <input type="hidden" class="delAllvalInt" name="staff_id" id="staff_id" value="0" >
-                    <input type="hidden" class="delAllval" class="delAllval" name="department_id" id="department_id" value="0" >
-                    <input type="hidden" class="delAllval" class="delAllval" name="departmentname" id="departmentname" value="" >
-                    <input type="hidden" class="delAllval" name="icno" id="icno" value="" >
-                    <input type="hidden" class="delAllval" name="pname" id="pname" value="" >
+                    <input type="hidden" class="delAllval refreshVal" class="delAllval" name="department_id" id="department_id" value="0" >
+                    <input type="hidden" class="delAllval refreshVal" class="delAllval" name="departmentname" id="departmentname" value="" >
+                    <input type="hidden" class="delAllval refreshVal" name="icno" id="icno" value="" >
+                    <input type="hidden" class="delAllval refreshVal" name="pname" id="pname" value="" >
                     <input type="hidden" class="delAllvalInt" name="isnew" id="isnew" value="0" >
                 </form>
-                <fieldset>
+                <fieldset>  
                     <section>
                         <div class="row">
                             <label class="label col col-12 saveQueAlert" style="color: red; font-weight: bold; display: none"></label>
@@ -419,7 +424,7 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
+                <button type="button" class="close" onclick="closeTokenMoDal();" >
                     <span aria-hidden="true">x</span>
                     <span class="sr-only">Close</span>
                 </button>
@@ -451,7 +456,7 @@
             </div>
             <!-- Modal Footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" onclick="closeTokenMoDal();" >Close</button>
             </div>
         </div>
     </div>
@@ -540,7 +545,12 @@
         $('#transModel').modal('show');
         $('#patCat').val(dt);
     }
-
+    
+    function closeTokenMoDal(){
+        location.reload();
+    }
+    
+    
     function closemoDal() {
         $("#category").val('');
         $("#searchcat").val('');
@@ -561,6 +571,8 @@
         //$('#transModelToken').modal('hide');
         $('.saveQueAlert').html('');
         $('.saveQueAlert').css('display', 'none');
+        $('.searchQueryAlert').html('');
+        $('.searchQueryAlert').css('display', 'none');
     }
 
     function submitPatientRegistrationForm() {
@@ -568,7 +580,7 @@
         var cat = $("#patCat").val();
         var staff_id = $("#staff_id").val();
         var dept_id = $("#department_id").val();
-        var dept = $("#department").val();
+        var dept = $("#departmentname").val();
         var ic_number = $("#icno").val();
         var name = $("#pname").val();
         var isnew = $("#isnew").val();
@@ -668,6 +680,8 @@
         $('#searchcat option:first').prop('selected', true);
         $("#search").val("");
         $("#patType").val(dt);
+        $('.refreshVal').val('');
+        $('.delAllvalInt').val(0);
         $("#isnew").val(0);
     }
 
@@ -677,47 +691,62 @@
         var sdt = $(".search" + pttype).val();
         var stype = $("#patType").val();
         $("#isnew").val(0);
-
-        url = "{!! URL::to('getAddPatientResult') !!}";
-        $.ajax({
-            url: url,
-            async: false,
-            type: 'POST',
-            data: {_token: "{{ csrf_token() }}", scat: scat, sdt: sdt, stype: stype},
-        }).done(function (response) {
-            $('#regResult').css('display', 'block');
-            $('#regResult').html(response);
-        });
-        url = "{!! URL::to('getAddPatientResultdata') !!}";
-        $.ajax({
-            url: url,
-            async: false,
-            type: 'POST',
-            data: {_token: "{{ csrf_token() }}", scat: scat, sdt: sdt, stype: stype},
-        }).done(function (response) {
-            if (response != 1) {
-                //console.log(response);
-                //alert(response['department']);
-                $("#staff_id").val(response['staffid']);
-                $("#icno").val(response['ic']);
-                $("#pname").val(response['name']);
-                $("#department_id").val(response['departmentid']);
-                $("#departmentname").val(response['department']);
-            }
-        });
+        
+        var searchTrig = true;
+        if(sdt == ''){
+            $('.searchQueryAlert').html('Please Give Your Search Parameter.');
+            $('.searchQueryAlert').css('display', 'block');
+            searchTrig = false;
+        }
+        
+        if(searchTrig){
+            //##################################################################
+            url = "{!! URL::to('getAddPatientResult') !!}";
+            $.ajax({
+                url: url,
+                async: false,
+                type: 'POST',
+                data: {_token: "{{ csrf_token() }}", scat: scat, sdt: sdt, stype: stype},
+            }).done(function (responsedt) {
+                if(responsedt != 0){
+                    $('.searchQueryAlert').html('');
+                    $('.searchQueryAlert').css('display', 'none');
+                    $('#regResult').css('display', 'block');
+                    $('#regResult').html(responsedt);
+                } else {
+                    $('#regResult').html('');
+                    $('#regResult').css('display', 'none');
+                    $('.refreshVal').val('');
+                    $('.delAllvalInt').val(0);
+                    $('.searchQueryAlert').html('Alert : Your search criteria not matched. Try again !.');
+                    $('.searchQueryAlert').css('display', 'block');
+                }
+                
+            });
+            //##################################################################
+            url = "{!! URL::to('getAddPatientResultdata') !!}";
+            $.ajax({
+                url: url,
+                async: false,
+                type: 'POST',
+                data: {_token: "{{ csrf_token() }}", scat: scat, sdt: sdt, stype: stype},
+            }).done(function (response) {
+                if (response != 0) {
+                    if (response != 1) {
+                        $("#staff_id").val(response['staffid']);
+                        $("#icno").val(response['ic']);
+                        $("#pname").val(response['name']);
+                        $("#department_id").val(response['departmentid']);
+                        $("#departmentname").val(response['department']);
+                    }
+                }    
+            });
+            //##################################################################
+        }
     }
 
 </script>    
 <!-- ##################################  Out Patient Start   ################################################# -->
-
-
-
-
-
-
-
-
-
 
 
 <!-- ##################################  TY2 Patient Start   ################################################# -->
@@ -784,7 +813,6 @@
                 return false;
             } else {
                 trig = false;
-                //
             }    
         });
         if(trig){
@@ -900,8 +928,8 @@
                         </section>
                         <?php */ ?>
                     </fieldset>
-                    <input type="hidden" class="delAllval" name="patType" id="patType" value="ty2Section" >
-                    <input type="hidden" class="delAllval" name="patCat" id="patCat" value="company" >
+                    <input type="hidden" class="delAllval" name="patTypety2" id="patTypety2" value="ty2Section" >
+                    <input type="hidden" class="delAllval" name="patCatty2" id="patCatty2" value="company" >
                 </form>
                 <fieldset>
                     <section>
@@ -958,19 +986,8 @@
         </div>
     </div>
 </div>
-<script>
 
-
-
-
-
-
-</script>
 <!-- ##################################  TY2 Patient End   ################################################# -->
-
-
-
-
 
 
 <?php /* ?>
