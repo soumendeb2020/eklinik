@@ -462,14 +462,14 @@ class HomeController extends Controller {
     }
     
     public function savenewty2() { 
-        //echo "<pre>"; print_r($_POST); exit;
+        #echo "<pre>"; print_r($_POST); exit;
         $cname = $_POST['companyname'];  
         $name = $_POST['name'];
         $sex = $_POST['sex'];
         $icno = $_POST['icno'];
         $ty2queueno = $_POST['ty2queueno'];
-        $patType = $_POST['patType'];
-        $patCat = $_POST['patCat'];
+        $patType = $_POST['patTypety2'];
+        $patCat = $_POST['patCatty2'];
         
         $saveCompany['name'] = $cname;
         $saveCompany['is_active'] = 1;

@@ -14,7 +14,6 @@ Auth::routes();
 //Route::get('login', 'Auth\LoginController@login')->name('login');
 //Route::post('login','Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
-
 Route::get('/home', 'HomeController@index')->name('home');
 
  
@@ -25,7 +24,7 @@ Route::post('saveNewPatient', array('as' => 'saveNewPatient', 'uses' => 'HomeCon
 Route::post('getExistingCompany', array('as' => 'getExistingCompany', 'uses' => 'HomeController@getExistingCompany'));
 Route::post('savenewty2', array('as' => 'savenewty2', 'uses' => 'HomeController@savenewty2'));
 
-
+Route::get('patientprofile', array('as' => 'patientprofilepath', 'uses' => 'PatientController@profile'));
 
 
 

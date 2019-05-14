@@ -89,8 +89,9 @@
                                             <td><span type="button" class=" center-block btn btn-success btn-lg padding-5 ">{{ $p->is_active == 1 ? 'Waiting' : 'Serving' }}</span></td>
                                             <td>
                                                 <button class="btn btn-info" onclick=""><i class="glyphicon glyphicon-edit"></i>Profile</button>
+                                                
                                                 <!--<button class="btn btn-danger" data-toggle="modal" data-target="#labForm" onclick=""><i class="glyphicon glyphicon-tint"></i></button>-->
-                                                <button class="btn btn-default"  onclick=""><i class="glyphicon glyphicon-bell"></i></button>
+                                                <a href="{{ route('patientprofilepath') }}"><button class="btn btn-default"  onclick=""><i class="glyphicon glyphicon-bell"></i></button></a>
                                             </td>
                                         </tr>
                                     @endforeach

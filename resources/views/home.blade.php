@@ -780,12 +780,17 @@
     function addMoreEmp(){
         var newTr = '<tr class="removeaddedtr">'+
                         '<td><div class="input"><input type="text" class="delAllTY2val" name="name[]" id="name" value=""></div></td>'+
-                        '<td><div class="input"><input type="text" class="delAllTY2val" name="sex[]" id="name" value=""></div></td>'+
+                        '<td width="75"><div class="input"><select name="sex[]" id="name" class="delAllTY2val dropdown-wrap" ><option value="Male">Male</option><option value="Female">Female</option></select></div></td>'+
                         '<td><div class="input"><input type="text" class="delAllTY2val" name="icno[]" id="name" value=""></div></td>'+
                         '<td onclick="deleteCurTr(this)" align="center">X</td>'+
                     '</tr>';
         $('.newEmpDt').append(newTr);
     }
+    
+    
+    
+    
+    
     
     function deleteCurTr(dt){
         $(dt).parent('tr').remove();
@@ -871,7 +876,14 @@
                                 <tbody class="newEmpDt">
                                   <tr>
                                       <td><div class="input"><input type="text" class="delAllTY2val" name="name[]" id="name" value=""></div></td>
-                                      <td><div class="input"><input type="text" class="delAllTY2val" name="sex[]" id="name" value=""></div></td>
+                                      <td width="75">
+                                          <div class="input">
+                                                <select name="sex[]" id="name" class="delAllTY2val dropdown-wrap" >
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                </select> 
+                                          </div>
+                                      </td>
                                       <td><div class="input"><input type="text" class="delAllTY2val" name="icno[]" id="name" value=""></div></td>
                                       <td align="center"></td>
                                   </tr>

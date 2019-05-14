@@ -14,21 +14,21 @@
                 <td>{{$d['name']}}</td>
             </tr>
             <tr>
+                <td>I/C:</td>
+                <td>{{$d['ic']}}</td>
+            </tr> 
+            <tr>
+                <td>Related:</td>
+                <td>{{$d['related']}}</td>
+            </tr>
+            <tr>
                 <td>Staff Id:</td>
                 <td>{{$d['staffid']}}</td>
             </tr>
             <tr>
                 <td>Department:</td>
                 <td>{{$d['department']}}</td>
-            </tr>
-            <tr>
-                <td>I/C:</td>
-                <td>{{$d['ic']}}</td>
-            </tr>  
-            <tr>
-                <td>Related:</td>
-                <td>{{$d['related']}}</td>
-            </tr>
+            </tr> 
         </tbody>
     </table>
 </div>
@@ -41,7 +41,7 @@
     <table class="table table-striped table-bordered table-hover" width="100%">
         <tbody>
             <tr>
-                <td rowspan="5">
+                <td rowspan="4">
                     <input onclick="changeStaffData('{{$d['id']}}')" type="radio" name="dtinp" value="1"><br>
                     <img src="https://via.placeholder.com/80" alt="" />
                 </td>
@@ -49,20 +49,16 @@
                 <td>{{$d['name']}}</td>
             </tr>
             <tr>
+                <td>I/C:</td>
+                <td>{{$d['ic']}}</td>
+            </tr>  
+            <tr>
                 <td>Staff Id:</td>
                 <td>{{$d['staffid']}}</td>
             </tr>
             <tr>
                 <td>Department:</td>
                 <td>{{$d['department']}}</td>
-            </tr>
-            <tr>
-                <td>I/C:</td>
-                <td>{{$d['ic']}}</td>
-            </tr>  
-            <tr>
-                <td>Related:</td>
-                <td>{{$d['related']}}</td>
             </tr>
         </tbody>
     </table>

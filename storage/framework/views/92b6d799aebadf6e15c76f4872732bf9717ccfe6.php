@@ -86,8 +86,9 @@
                                             <td><span type="button" class=" center-block btn btn-success btn-lg padding-5 "><?php echo e($p->is_active == 1 ? 'Waiting' : 'Serving'); ?></span></td>
                                             <td>
                                                 <button class="btn btn-info" onclick=""><i class="glyphicon glyphicon-edit"></i>Profile</button>
+                                                
                                                 <!--<button class="btn btn-danger" data-toggle="modal" data-target="#labForm" onclick=""><i class="glyphicon glyphicon-tint"></i></button>-->
-                                                <button class="btn btn-default"  onclick=""><i class="glyphicon glyphicon-bell"></i></button>
+                                                <a href="<?php echo e(route('patientprofilepath')); ?>"><button class="btn btn-default"  onclick=""><i class="glyphicon glyphicon-bell"></i></button></a>
                                             </td>
                                         </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
