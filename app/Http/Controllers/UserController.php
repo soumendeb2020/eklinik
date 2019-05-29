@@ -20,8 +20,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $result = User::latest()->paginate();
-
+       // $result = User::latest()->paginate();
+        $result = User::orderBy('id')->paginate();
         return view('user.index', compact('result'));
     }
 
@@ -46,10 +46,11 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'bail|required|min:2',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-            'roles' => 'required|min:1'
+            'name' => 'bail|required|min:2',  
+            'username' => 'required',
+            'email' => 'required',
+            'password' => 'required|min:8'
+           // 'roles' => 'required|min:1'
         ]);
 
         // hash password
@@ -106,8 +107,10 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'name' => 'bail|required|min:2',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'roles' => 'required|min:1'
+            //'email' => 'required|email|unique:users,email,' . $id,
+            'username' => 'unique:users,username,' . $id
+            //'username' => 'required|username|unique:users,username,' . $id
+           // 'roles' => 'required|min:1'
         ]);
 
         // Get the user

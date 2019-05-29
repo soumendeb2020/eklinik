@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\Input;
+use \Crypt;
 
 class HomeController extends Controller {
 
@@ -28,11 +28,12 @@ class HomeController extends Controller {
         return view('home')->with(compact('department'));
     }
 
-    public function getAddPatientResult() { 
+    public function getAddPatientResult(Request $request) {
+        //echo "ok"; exit;
         $searchby = $_POST['scat'];
         $searchname = $_POST['sdt'];
         $type = $_POST['stype'];
-
+        //echo "<pre>"; print_r($_POST); exit;
         if ($type == 'staffSection') {
             if ($searchby == 'sid') {
                 $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $searchname)->first();
@@ -55,6 +56,7 @@ class HomeController extends Controller {
                 }
             } else if ($searchby == 'ic') {
                 $det = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_KPBARU', '=', $searchname)->first();
+                //echo "<pre>"; print_r($det); exit;
                 if($det){
                     $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
                     $staffdet = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->first();
@@ -180,7 +182,7 @@ class HomeController extends Controller {
 
         } else if ($type == 'otherSection') {
             if ($searchby == 'ic') {
-                $det = DB::table('patient')->select('patient.*')->where('ic_number', '=', $searchname)->where('utype', '=', 'other')->first();
+                $det = DB::table('patients')->select('patients.*')->where('ic_number', '=', $searchname)->where('utype', '=', 'other')->first();
                 
                 if($det){
                     $data['name'] = $det->name;
@@ -196,11 +198,11 @@ class HomeController extends Controller {
                 }
                 
             } else if ($searchby == 'name') {
-                $cnt = DB::table('patient')->select('patient.*')->where('name', '=', $searchname)->where('utype', '=', 'other')->count();
+                $cnt = DB::table('patients')->select('patients.*')->where('name', '=', $searchname)->where('utype', '=', 'other')->count();
                 if($cnt == 0){
                     return 0;
                 } else if($cnt > 1){
-                    $det = DB::table('patient')->select('patient.*')->where('name', '=', $searchname)->where('utype', '=', 'other')->get();
+                    $det = DB::table('patients')->select('patients.*')->where('name', '=', $searchname)->where('utype', '=', 'other')->get();
                     $k = 1;
                     foreach ($det as $d){
                         $dt['id'] = $k;
@@ -216,7 +218,7 @@ class HomeController extends Controller {
                     $data['group'] = "otherSection";
                     return View('ajax.getAddPatientResultList')->with(compact('data'));
                 } else if($cnt == 1){
-                    $det = DB::table('patient')->select('patient.*')->where('name', '=', $searchname)->where('utype', '=', 'other')->first();
+                    $det = DB::table('patients')->select('patients.*')->where('name', '=', $searchname)->where('utype', '=', 'other')->first();
                     $data['name'] = $det->name;
                     $data['staffid'] = $det->staff_id;
                     $data['departmentid'] = '';
@@ -337,7 +339,7 @@ class HomeController extends Controller {
 
         } else if ($type == 'otherSection') {
             if ($searchby == 'ic') {
-                $det = DB::table('patient')->select('patient.*')->where('ic_number', '=', $searchname)->where('utype', '=', 'other')->first();
+                $det = DB::table('patients')->select('patients.*')->where('ic_number', '=', $searchname)->where('utype', '=', 'other')->first();
                 if($det){
                     $data['name'] = $det->name;
                     $data['staffid'] = $det->staff_id;
@@ -349,7 +351,7 @@ class HomeController extends Controller {
                     $data = 0;
                 }
             } else if ($searchby == 'name') {
-                $det = DB::table('patient')->select('patient.*')->where('name', '=', $searchname)->where('utype', '=', 'other')->first();
+                $det = DB::table('patients')->select('patients.*')->where('name', '=', $searchname)->where('utype', '=', 'other')->first();
                 if($det){
                     $data['name'] = $det->name;
                     $data['staffid'] = $det->staff_id;
@@ -363,9 +365,9 @@ class HomeController extends Controller {
             }
         }
         return $data;
-    }
+    } 
 
-    public function saveNewPatient() {
+    public function saveNewPatient(Request $request) {
         //echo "<pre>"; print_r($_POST); exit;    
         ///    $_POST['staff_id']
         
@@ -376,6 +378,8 @@ class HomeController extends Controller {
         } else if($_POST['type'] == 'staffSection'){
             $typename = 'staff';
         }
+        
+        $deptId = $_POST['department_id'];
         
         if($_POST['dept_id'] != ''){
             if($_POST['dept_id'] != 0){
@@ -388,14 +392,13 @@ class HomeController extends Controller {
             $dname = '';
         }
         
-        $patientExist = DB::table('patient')->select('patient.*')->where('ic_number', '=', $_POST['ic_number'])->first();
+        $patientExist = DB::table('patients')->select('patients.*')->where('ic_number', '=', $_POST['ic_number'])->first();
         
         //echo "<pre>"; print_r($patientExist); echo "ok"; //exit;
         
         if($patientExist){
             $lid = $patientExist->id;
         } else {
-
             $savedata['staff_id'] = $_POST['staff_id'] != '' ? $_POST['staff_id'] : 0; 
             $savedata['dept_id'] =  $_POST['dept_id'] != '' ? $_POST['dept_id'] : 0;
             $savedata['dept_name'] = $dname;
@@ -404,19 +407,17 @@ class HomeController extends Controller {
             $savedata['utype'] = $typename;
             $savedata['ptype'] = $_POST['cat'];
             $savedata['created_at'] = date("Y-m-d h:i:s", time());
-            $savedata['updated_at'] = date("Y-m-d h:i:s", time());
-            $lid = DB::table('patient')->insertGetId($savedata);
+            $savedata['updated_at'] = date("Y-m-d h:i:s", time()); 
+            $lid = DB::table('patients')->insertGetId($savedata);
         }
 
         $dept = DB::table('department')->select('department.*')->where('id', '=', $_POST['department_id'])->first();
-        
-        
+
         $queueExist = DB::table('queuelist')->select('queuelist.*')->where('name', '=', $_POST['queueno'])->first();
         if($queueExist){
             $lqno = $queueExist->id;
             $qname = $_POST['queueno'];
         } else {
-            
             $saveque['name'] = $_POST['queueno'];
             $saveque['is_active'] = 1;
             $saveque['created_at'] = date("Y-m-d h:i:s", time());
@@ -425,8 +426,9 @@ class HomeController extends Controller {
             $qname = $_POST['queueno'];
         }
         
-        $count = DB::table('patientqueue')->where('queueno', '=', $qname)->count();   
-        
+        $count = DB::table('patientqueues')->where('queueno', '=', $qname)->count();   
+
+        $savePatQue['parent_id'] = 0;
         $savePatQue['patient_id'] = $lid;
         $savePatQue['staff_id'] = $_POST['staff_id'];    
         $savePatQue['ic_number'] = $_POST['ic_number'];
@@ -434,31 +436,54 @@ class HomeController extends Controller {
         $savePatQue['symptopms'] = $_POST['symptopms'];
         $savePatQue['department_id'] = $_POST['department_id'];
         $savePatQue['depart_name'] = $dept->name;
-        $savePatQue['utype'] = $_POST['cat'];
-        $savePatQue['ptype'] = $_POST['type'];
+        $savePatQue['utype'] = $typename;
+        $savePatQue['ptype'] = $_POST['cat'];
         $savePatQue['queue_id'] = $lqno;
         $savePatQue['queueno'] = $qname;
-        $savePatQue['token_no'] = "C-".str_pad($count + 1, 5, '0', STR_PAD_LEFT);
-        $savePatQue['ptype'] = 1;
+        
+        if($deptId == 5){
+            $savePatQue['token_no'] = "TY2-".str_pad($count + 1, 5, '0', STR_PAD_LEFT);
+        } else if($deptId == 4){
+            $savePatQue['token_no'] = "L-".str_pad($count + 1, 5, '0', STR_PAD_LEFT);    
+        } else if($deptId == 3){
+            $savePatQue['token_no'] = "D-".str_pad($count + 1, 5, '0', STR_PAD_LEFT);
+        } else {
+            $savePatQue['token_no'] = "C-".str_pad($count + 1, 5, '0', STR_PAD_LEFT);
+        }
+
+        $savePatQue['q_status'] = 0;
+        $savePatQue['is_active'] = 1;
         $savePatQue['created_time'] = date("h:i:s a", time());
         $savePatQue['created_at'] = date("Y-m-d h:i:s", time());
         $savePatQue['updated_at'] = date("Y-m-d h:i:s", time());
-        
-        if(DB::table('patientqueue')->insert($savePatQue)){
-            return $savePatQue;
-        } else {
-            return 0;
+        $patQId = DB::table('patientqueues')->insertGetId($savePatQue);
+
+        if($dept->id == 4){
+            $labReq['q_id'] = $patQId;
+            $labReq['q_no'] = '';
+            $labReq['symptomp'] = $_POST['symptopms'];
+            $labReq['bloodtest'] = $_POST['bloodtestchk'];
+            $labReq['electrolytestest'] = $_POST['electrolytestestchk'];
+            $labReq['fbs'] = $_POST['fbschk'];
+            $labReq['lipids'] = $_POST['lipidschk'];
+            $labReq['renalfunction'] = $_POST['renalfunctionchk'];
+            $labReq['ultrasound'] = $_POST['ultrasoundchk'];
+            $labReq['remarks'] = "";      
+            $labReq['is_active'] = 1;
+            $labReq['created_at'] = date("Y-m-d h:i:s", time());
+            $labReq['updated_at'] = date("Y-m-d h:i:s", time());        
+            $labReqId = DB::table('laboratoryrequests')->insertGetId($labReq);
         }
+
+        return $savePatQue;
+
     }
 
-    
-    
     public function getExistingCompany() { 
         //echo "<pre>"; print_r($_POST); exit;
         $cname = $_POST['cname'];  
         $data = DB::table('company')->select('company.*')->where('name', 'like', $cname.'%')->get();
         return View('ajax.getExistingCompany')->with(compact('data'));
-
     }
     
     public function savenewty2() { 
@@ -501,7 +526,6 @@ class HomeController extends Controller {
             $saveque['updated_at'] = date("Y-m-d h:i:s", time());
             $lqno = DB::table('ty2queuelist')->insertGetId($saveque);
             $qname = $ty2queueno;
-        
         }
         
         $count = DB::table('ty2queuelist')->where('name', '=', $qname)->count();
@@ -522,7 +546,22 @@ class HomeController extends Controller {
 
     }
     
+
+    public function getConsultancyqueuedata(Request $request){
+        $dept_id = Input::post('type'); 
+        $patientList = array();
+        $arr = DB::table('patientqueues')->select('patientqueues.*')->where('is_active', '=', 1)->where('department_id', '=', $dept_id)->orderBy('id', 'desc')->get();
+        foreach ($arr as $k => $v) {
+            $tokval = DB::table('patientqueues')->select('patientqueues.*')->where('patient_id', '=', $v->id)->orderBy('id', 'desc')->first();
+            $patientList[$k]['pqueue'] = $v;
+            $patientList[$k]['patientdet'] = DB::table('patients')->select('patients.*')->where('id', '=', $v->patient_id)->first();
+        }
+        
+        return View('ajax.getConsultancyqueuedata')->with(compact('patientList'));
+    }
     
     
+
+
     
 }

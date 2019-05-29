@@ -4,7 +4,12 @@
     {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Name']) !!}
     @if ($errors->has('name')) <p class="help-block">{{ $errors->first('name') }}</p> @endif
 </div>
-
+<!-- username Form Input -->
+<div class="form-group @if ($errors->has('username')) has-error @endif">
+    {!! Form::label('username', 'Username') !!}
+    {!! Form::text('username', null, ['class' => 'form-control', 'placeholder' => 'Email']) !!}
+    @if ($errors->has('username')) <p class="help-block">{{ $errors->first('username') }}</p> @endif
+</div>
 <!-- email Form Input -->
 <div class="form-group @if ($errors->has('email')) has-error @endif">
     {!! Form::label('email', 'Email') !!}

@@ -89,14 +89,16 @@
                 <a href="#"><i class="fa fa-lg fa-fw fa-table txt-color-yellow"></i> <span class="menu-item-parent">Laboratory</span></a>
                 <ul>
                     <li>
-                        <a href="{{ route('laboratory.index') }}">Normal Tables</a>
+                        <a href="{{ route('laboratory.index') }}">Patient List</a>
                     </li>
+                    <!--
                     <li>
                         <a href="{{ route('laboratory.index') }}">Data Tables <span class="badge inbox-badge bg-color-greenLight hidden-mobile">responsive</span></a>
                     </li>
                     <li>
                         <a href="{{ route('laboratory.index') }}">Jquery Grid</a>
                     </li>
+                    -->
                 </ul>
             </li> 
             @endcan

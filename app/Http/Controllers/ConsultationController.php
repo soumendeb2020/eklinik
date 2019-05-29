@@ -14,14 +14,18 @@ class ConsultationController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $patientList = DB::table('patient')->select('patient.*')->orderBy('id', 'desc')->get();
-        foreach ($patientList as $k => $v) {
-            $tokval = DB::table('patientqueue')->select('patientqueue.*')->where('patient_id', '=', $v->id)->orderBy('id', 'desc')->first();
-            $patientList[$k]->token_no = $tokval->token_no;
-            $patientList[$k]->symptopms = $tokval->symptopms;
+        $patientList = array();
+        $arr = DB::table('patientqueues')->select('patientqueues.*')->where('is_active', '=', 1)->whereIn('department_id', [1, 2])->orderBy('id', 'asc')->get();
+
+        //$patientList = DB::table('patients')->select('patients.*')->orderBy('id', 'desc')->get();
+        foreach ($arr as $k => $v) {
+            $tokval = DB::table('patientqueues')->select('patientqueues.*')->where('patient_id', '=', $v->id)->orderBy('id', 'desc')->first();
+            $patientList[$k]['pqueue'] = $v;
+            $patientList[$k]['patientdet'] = DB::table('patients')->select('patients.*')->where('id', '=', $v->patient_id)->first();
         }
+        $department = DB::table('department')->select('department.*')->whereIn('id', [1, 2])->where('is_active', '=', 1)->get();
         //echo "<pre>"; print_r($patientList); exit;
-        return view('consultation.index')->with(compact('patientList'));
+        return view('consultation.index')->with(compact('patientList','department'));
     }
 
     /**

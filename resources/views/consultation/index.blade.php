@@ -1,8 +1,5 @@
-
 @extends('layouts.app')
-
 @section('title', 'Roles & Permissions')
-
 @section('content')
 
 <!--  <div id="main" role="main"> -->
@@ -17,15 +14,53 @@
 <!-- MAIN CONTENT -->
 <!-- <div id="content"> -->
 
+<!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">-->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.css"/>
+<script>
+    function getDepartment(th){
+        if(th == 0){
+            $('#constable').html('<tr><td colspan="7">Choose Your Consultant Room</td></tr>');
+        } else {
+            //$('.alldept').css('display', 'none');
+            //$('.dept' + th).css('display', 'block');
+            url = "{!! URL::to('getConsultancyqueuedata') !!}";
+            $.ajax({
+                url: url,
+                async: false,
+                type: 'POST',
+                data: {_token: "{{ csrf_token() }}", type: th},
+            }).done(function (response) {
+                $('#constable').html(response);
+            });
+        }        
+    }
+       
+    $(document).ready(function () {
+        $('#constable').html('<tr><td colspan="7">Choose Your Consultant Room</td></tr>');
+        $('.deptSelectVal').val(0);
+    });
+</script>
+<!---------------------->
 <div class="row">
-    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-        <h1 class="page-title txt-color-blueDark">
-            <i class="fa fa-table fa-fw "></i>
-            Patient
-            <span>>
-                Listing
-            </span>
-        </h1>
+    <div class="col-xs-12 col-sm-7 col-md-12 col-lg-12">
+        <div class="row">
+            <div class="cel-gap col-xs-8">
+                <h1 class="page-title txt-color-blueDark">
+                    <i class="fa fa-table fa-fw "></i>
+                    Patient <span> >  Listing </span>
+                </h1>
+            </div>
+            <div class="cel-gap col-xs-4">
+                <label class="input" style="margin: 12px 0 28px;">
+                    <select class="deptSelectVal searchcat dropdown-wrap searchcatdependentSection delDeptval" onchange="getDepartment(this.value);" name="department" id="department" >
+                        <option value="0" >Select Room No</option>
+                        @foreach($department as $d)
+                        <option value="{{$d->id}}" >{{$d->name}}</option>
+                        @endforeach
+                    </select> 
+                </label>
+            </div>
+        </div>
     </div>
     <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
         <!--<ul id="sparks" class="">
@@ -64,8 +99,8 @@
                     <div class="jarviswidget-editbox">
                     </div>
                     <div class="widget-body no-padding">
-                        <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
-                            <thead>
+                        <table id="dt_basic" class="consultancy table table-striped table-bordered table-hover" width="100%">
+                            <thead> 
                                 <tr>
                                     <th data-hide="phone">Queue Num</th>
                                     <th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> IC No</th>
@@ -74,33 +109,9 @@
                                     <th>Sympthom</th>
                                     <th data-hide="phone,tablet"><i class="fa fa-fw fa-map-marker txt-color-blue hidden-md hidden-sm hidden-xs"></i> Status</th>
                                     <th data-hide="phone,tablet">Action</th>
-
                                 </tr>
                             </thead>
-                            <tbody>
-                                @if (!empty($patientList))
-                                    @foreach ($patientList as $p)
-                                        <tr>
-                                            <td>{{$p->token_no}}</td>
-                                            <td>{{$p->ic_number}}</td>
-                                            <td>{{$p->name}}</td>
-                                            <td>{{$p->created_at}}</td>
-                                            <td>{{$p->symptopms}}</td>
-                                            <td><span type="button" class=" center-block btn btn-success btn-lg padding-5 ">{{ $p->is_active == 1 ? 'Waiting' : 'Serving' }}</span></td>
-                                            <td>
-                                                <button class="btn btn-info" onclick=""><i class="glyphicon glyphicon-edit"></i>Profile</button>
-                                                
-                                                <!--<button class="btn btn-danger" data-toggle="modal" data-target="#labForm" onclick=""><i class="glyphicon glyphicon-tint"></i></button>-->
-                                                <a href="{{ route('patientprofilepath') }}"><button class="btn btn-default"  onclick=""><i class="glyphicon glyphicon-bell"></i></button></a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="7">No Data Found</td>
-                                    </tr>
-                                @endif
-                            </tbody>
+                            <tbody id="constable"></tbody>
                         </table>
                     </div>
                 </div>
@@ -305,4 +316,6 @@
         </div>
     </div>
 </div>
+<!-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script> -->
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
 @endsection

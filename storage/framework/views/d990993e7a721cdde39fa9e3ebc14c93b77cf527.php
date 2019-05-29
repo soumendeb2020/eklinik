@@ -383,7 +383,7 @@
                                 <label class="cel-gap label col-xs-12">Department: </label>
                                 <div class="cel-gap col-xs-12">
                                     <label class="input">
-                                        <select class="searchcat dropdown-wrap searchcatdependentSection delDeptval" name="department" id="department" >
+                                        <select class="searchcat dropdown-wrap searchcatdependentSection delDeptval" onchange="getLabTestData(this.value);" name="department" id="department" >
                                             <?php $__currentLoopData = $department; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <option value="<?php echo e($d->id); ?>" ><?php echo e($d->name); ?></option>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -392,6 +392,36 @@
                                 </div>
                             </div>
                         </section>
+                        <section id="labtestSec" style="display: none">
+                            <div class="row">
+                                 <div class="cel-gap col-xs-12">Tests</div>
+                                <div class="cel-gap col-xs-6">
+                                    <input name="bloodtest" id="bloodtest" type="checkbox" onchange="makeTestVal(this.value, 'bloodtest');" value="bloodtest" />
+                                    <span>Blood Test</span>
+                                </div>
+                                <div class="cel-gap col-xs-6">
+                                    <input name="lipids" id="lipids" type="checkbox" onchange="makeTestVal(this.value, 'lipids');" value="lipids" />
+                                    <span>Lipids</span>
+                                </div>
+                                <div class="cel-gap col-xs-6">
+                                    <input name="electrolytestest" id="electrolytestest" type="checkbox" onchange="makeTestVal(this.value, 'electrolytestest');" value="electrolytestest" />
+                                    <span>Electrolytes Test</span>
+                                </div>
+                                <div class="cel-gap col-xs-6">
+                                    <input name="renalfunction" id="renalfunction" type="checkbox" onchange="makeTestVal(this.value, 'renalfunction');" value="renalfunction" />
+                                    <span>Renal Function</span>
+                                </div>
+                                <div class="cel-gap col-xs-6">
+                                    <input name="fbs" id="fbs" type="checkbox" onchange="makeTestVal(this.value, 'fbs');" value="fbs" />
+                                    <span>FBS</span>
+                                </div>
+                                <div class="cel-gap col-xs-6">
+                                    <input name="ultrasound" id="ultrasound" type="checkbox" onchange="makeTestVal(this.value, 'ultrasound');" value="ultrasound" />
+                                    <span>Ultrasound</span>
+                                </div>
+                            </div>
+                        </section>
+
                     <input type="hidden" class="delAllval" name="patType" id="patType" value="staffSection" >
                     <input type="hidden" class="delAllval" name="patCat" id="patCat" value="" >
                     <input type="hidden" class="delAllvalInt" name="staff_id" id="staff_id" value="0" >
@@ -400,7 +430,15 @@
                     <input type="hidden" class="delAllval refreshVal" name="icno" id="icno" value="" >
                     <input type="hidden" class="delAllval refreshVal" name="pname" id="pname" value="" >
                     <input type="hidden" class="delAllvalInt" name="isnew" id="isnew" value="0" >
-                </form>
+                    
+                    <input type="hidden" class="delAllval delAllvalInt" name="bloodtestchk" id="bloodtestchk" value="0" >
+                    <input type="hidden" class="delAllval delAllvalInt" name="lipidschk" id="lipidschk" value="0" >
+                    <input type="hidden" class="delAllval delAllvalInt" name="electrolytestestchk" id="electrolytestestchk" value="0" >
+                    <input type="hidden" class="delAllval delAllvalInt" name="renalfunctionchk" id="renalfunctionchk" value="0" >
+                    <input type="hidden" class="delAllval delAllvalInt" name="fbschk" id="fbschk" value="0" >
+                    <input type="hidden" class="delAllval delAllvalInt" name="ultrasoundchk" id="ultrasoundchk" value="0" >
+                    
+                </form> 
                 <fieldset>  
                     <section>
                         <div class="row">
@@ -523,7 +561,38 @@
         $printSection.appendChild(domClone);
         window.print();
     }
-
+    
+    function makeTestVal(dtval, dtid){
+        if($('#' + dtid).is(":checked")){
+            $("#" + dtid + "chk").val(1);
+        }else {
+            $("#" + dtid + "chk").val(0);
+        }
+    }
+    
+    function getLabTestData(dt){
+        if(dt != 4){
+            $('#labtestSec').css('display', 'none');
+            
+            $("#bloodtestchk").val(0);
+            $("#lipidschk").val(0);
+            $("#electrolytestestchk").val(0);
+            $("#renalfunctionchk").val(0);
+            $("#fbschk").val(0);
+            $("#ultrasoundchk").val(0);
+            
+            $("#bloodtest").prop("checked", false);
+            $("#lipids").prop("checked", false);
+            $("#electrolytestest").prop("checked", false);
+            $("#renalfunction").prop("checked", false);
+            $("#fbs").prop("checked", false);
+            $("#ultrasound").prop("checked", false);
+        } else {
+            $('#labtestSec').css('display', 'block');
+        }
+    }
+    
+   
     function myPrintFunction() {
         //window.print();
         $("#modalDiv").printThis({
@@ -549,7 +618,7 @@
         location.reload();
     }
     
-    
+    //  bloodtestchk lipidschk electrolytestestchk renalfunctionchk fbschk ultrasoundchk
     function closemoDal() {
         $("#category").val('');
         $("#searchcat").val('');
@@ -566,6 +635,14 @@
         $('.delvalcat2').val('ic');
         $('.delDeptval').val('1');
         $("#isnew").val('');
+        
+        $("#bloodtestchk").val(0);
+        $("#lipidschk").val(0);
+        $("#electrolytestestchk").val(0);
+        $("#renalfunctionchk").val(0);
+        $("#fbschk").val(0);
+        $("#ultrasoundchk").val(0);
+        
         $('#transModel').modal('hide');
         //$('#transModelToken').modal('hide');
         $('.saveQueAlert').html('');
@@ -586,7 +663,21 @@
         var queueno = $("#queueno").val();
         var symptopms = $("#sympthom").val();
         var department_id = $("#department").val();
-
+        
+        var bloodtestchk = $("#bloodtestchk").val();
+        var lipidschk = $("#lipidschk").val();
+        var electrolytestestchk = $("#electrolytestestchk").val();
+        var renalfunctionchk = $("#renalfunctionchk").val();
+        var fbschk = $("#fbschk").val();
+        var ultrasoundchk = $("#ultrasoundchk").val();
+        
+        $("#bloodtestchk").val(0);
+        $("#lipidschk").val(0);
+        $("#electrolytestestchk").val(0);
+        $("#renalfunctionchk").val(0);
+        $("#fbschk").val(0);
+        $("#ultrasoundchk").val(0);
+        
         var triger = 1;
 
         if (ic_number == '') {
@@ -623,9 +714,10 @@
                 url: url,
                 async: false,
                 type: 'POST',
-                data: {_token: "<?php echo e(csrf_token()); ?>", type: patType, cat: cat, staff_id: staff_id, dept_id: dept_id, ic_number: ic_number, name: name, queueno: queueno, symptopms: symptopms, dept: dept, department_id: department_id},
+                data: {_token: "<?php echo e(csrf_token()); ?>", type: patType, cat: cat, staff_id: staff_id, dept_id: dept_id, ic_number: ic_number, name: name, queueno: queueno, symptopms: symptopms, dept: dept, department_id: department_id, bloodtestchk: bloodtestchk, lipidschk: lipidschk, electrolytestestchk: electrolytestestchk, renalfunctionchk: renalfunctionchk, fbschk: fbschk, ultrasoundchk: ultrasoundchk},
             }).done(function (response) {
                 if (response != 0) {
+                    
                     $('#cosuting').html(response['depart_name']);
                     $('#token').html(response['token_no']);
                     $('#datef').html(response['created_at']);
@@ -640,6 +732,14 @@
                     $("#icnodt").val('');
                     $("#sympthom").val('');
                     $("#department").val('');
+
+                    $("#bloodtestchk").val(0);
+                    $("#lipidschk").val(0);
+                    $("#electrolytestestchk").val(0);
+                    $("#renalfunctionchk").val(0);
+                    $("#fbschk").val(0);
+                    $("#ultrasoundchk").val(0);
+        
                     $('.delAllval').val('');
                     $('.delAllvalInt').val(0);
                     $('.delvalcat').val('staffSection');
@@ -647,6 +747,7 @@
                     $('.delvalcat2').val('ic');
                     $('.delDeptval').val('1');
                     $("#isnew").val('');
+                    
                 }
             });
         } else {
@@ -785,12 +886,7 @@
                     '</tr>';
         $('.newEmpDt').append(newTr);
     }
-    
-    
-    
-    
-    
-    
+
     function deleteCurTr(dt){
         $(dt).parent('tr').remove();
     }

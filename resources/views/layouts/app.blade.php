@@ -46,7 +46,22 @@
         <link rel="apple-touch-icon" sizes="76x76" href="img/splash/touch-icon-ipad.png">
         <link rel="apple-touch-icon" sizes="120x120" href="img/splash/touch-icon-iphone-retina.png">
         <link rel="apple-touch-icon" sizes="152x152" href="img/splash/touch-icon-ipad-retina.png">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
+        <script>
+                if (!window.jQuery) {
+                        document.write('<script src="js/libs/jquery-3.2.1.min.js"><\/script>');
+                }
+        </script>
 
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script>
+                if (!window.jQuery.ui) {
+                        document.write('<script src="js/libs/jquery-ui.min.js"><\/script>');
+                }
+        </script>
+        <script src="{{ URL::asset('js/bootstrap/bootstrap.min.js')}}"></script>
     </head>
 
     <!--
