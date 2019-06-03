@@ -1,0 +1,470 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Authorizable;
+use App\Post;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use \Crypt;
+use DB;
+use App\User;
+use App\Consultation;
+use App\Prescribtion;
+use App\Laboratory;
+use App\Laboratoryrequest;
+use Carbon\Carbon;
+
+class PatientController extends Controller {
+    
+    use Authorizable;
+
+    public function profile($id = null) {
+        //$result = User::latest()->paginate();
+        if ($id != ''){
+            $qid = $id;
+            $pq_id = \Crypt::decrypt($qid);
+
+            $pq = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
+            $patientData['queueId'] = $qid;
+            $patientData['pqueue'] = $pq;
+            $patient_detail = DB::table('patients')->select('patients.*')->where('id', '=', $pq->patient_id)->first();
+            $patientData['patientdet'] = $patient_detail;
+            /*
+            $labqid = '';
+            if($pq->parent_id!= ''){
+
+            } else {
+                
+            } */
+            $dataLab = array();
+            $parentpq = DB::table('patientqueues')->select('patientqueues.*')->where('patient_id', '=', $pq->patient_id)->where('depart_name', '=', 'Laboratory')->get();
+            $k = 1;
+            foreach($parentpq as $pq){
+                $dataLab[$k]['labreq'] = DB::table('laboratoryrequests')->select('laboratoryrequests.*')->where('q_id', '=', $pq->id)->first();
+                $dataLab[$k]['labtest'] = DB::table('laboratories')->select('laboratories.*')->where('q_id', '=', $pq->id)->first();
+                $k++;
+            }
+            
+
+            
+            
+            $labtestlist = DB::table('laboratoryrequests')->select('laboratoryrequests.*')->where('q_id', '=', $pq->id)->first();
+            $patientData['labtstlist'] = $dataLab;
+
+            if ($patient_detail->staff_id != 0) {
+                $staff_detail = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $patient_detail->staff_id)->first();
+                $patientData['email'] = $staff_detail->HR_EMAIL;
+                $patientData['phone'] = $staff_detail->HR_TELBIMBIT;
+                if ($patient_detail->utype == 'staff') {
+                    $patientData['dob'] = $staff_detail->HR_TARIKH_LAHIR;
+                } else if ($patient_detail->utype == 'dependent') {
+                    $dependent_detail = DB::table('hr_maklumat_tanggungan')->select('hr_maklumat_tanggungan.*')->where('HR_NO_PEKERJA', '=', $patient_detail->staff_id)->first();
+                    $patientData['dob'] = $dependent_detail->HR_TARIKH_LAHIR;
+                } else {
+                    $patientData['dob'] = '';
+                }
+            } else {
+                $patientData['email'] = '';
+                $patientData['phone'] = '';
+                $patientData['dob'] = '';
+            }
+
+            if ($patientData['dob'] != '') {
+                $patientData['age'] = \Carbon::parse($patientData['dob'])->age;
+            } else {
+                $patientData['age'] = '';
+            }
+            
+            
+            
+            $drugs = DB::table('drug_list')->select('drug_list.*')->where('drug_name', '!=', '')->get();
+            //echo "<pre>"; print_r($drugs); exit;
+            //echo $pq_id; echo "<pre>"; print_r($patientData); exit;
+            return view('patient.profile', compact('patientData','drugs'));
+        } else {
+            return redirect()->back();
+        }
+    }
+
+    public function getPrescription(){
+        echo "ok"; exit;
+    }
+    
+    public function savePrescription(Request $request) {
+        //echo "<pre>"; print_r($request); exit;
+        $encPatientQueueId = Input::get('pid');
+        $pq_id = \Crypt::decrypt(Input::post('pqid'));
+        //$pq_id = \Crypt::decrypt(Input::post('pid'));
+        $patientQueue = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
+        if($patientQueue){
+            
+        } else {
+            
+        }
+        
+        $consSubmit = Input::post('consSubmit');
+        $qno = Input::post('qno');
+        $symptomp = Input::post('symptomp');
+        $temperature = Input::post('temperature');
+        $bp = Input::post('blood_presure');
+        $bs = Input::post('blood_sugar');
+        $rs = Input::post('result');
+        
+        if(Input::get('is_medical_certificate') !== ''){
+            $is_medical_certificate = Input::post('is_medical_certificate');
+            $medical_certificate = Input::post('medical_certificate');
+        } else {
+            $is_medical_certificate = '';
+            $medical_certificate = '';
+        }
+        
+        if(Input::get('is_time_slip') !== ''){
+            $is_time_slip = Input::post('is_time_slip');
+            $time_slip = Input::post('time_slip');
+        } else {
+            $is_time_slip = '';
+            $time_slip = '';
+        }
+        
+        if($consSubmit == 0){
+            $consultation = new Consultation;
+
+            $consultation->q_id = $pq_id;
+            $consultation->qno = $qno;
+            $consultation->symptomp = $symptomp;
+            $consultation->temperature = $temperature;
+            $consultation->blood_presure = $bp;
+            $consultation->blood_sugar = $bs;
+            $consultation->result  = $rs;
+            $consultation->is_medical_certificate = $is_medical_certificate;
+            $consultation->medical_certificate = $medical_certificate;
+            $consultation->is_time_slip = $is_time_slip;
+            $consultation->time_slip  = $time_slip;
+            $consultation->is_active = 1;
+            $consultation->created_at = date('Y-m-d H:i:s');
+            $consultation->updated_at = date('Y-m-d H:i:s');
+            $consultation->save();
+
+            $lastInsertIdCons = $consultation->id;
+
+            if ($request->has('drugs')) {
+                //$drugsList = Input::post('drugs');
+                $drugsId = Input::post('drugs');
+                $qtyList = Input::post('qty');
+                $dossageList = Input::post('dossage');
+                $descList = Input::post('desc');
+                $noteList = Input::post('note');
+
+                foreach ($drugsId as $k => $v) {
+                    if($v['value'] != ''){
+                        $drugDet = DB::table('drug_list')->select('drug_list.*')->where('id', '=', $drugsId)->first();
+                        //echo "<pre>"; print_r($drugDet); 
+                        $prescribtion = new Prescribtion;
+                        $prescribtion->patient_id = $patientQueue->patient_id;
+                        $prescribtion->queue_id = $patientQueue->id;
+                        $prescribtion->consutants_id = $lastInsertIdCons;
+                        $prescribtion->drugs_id = $drugDet->id;
+                        $prescribtion->drugs = $drugDet->drug_name;
+                        $prescribtion->qty = $qtyList[$k]['value'];
+                        $prescribtion->dossage = $dossageList[$k]['value'];
+                        $prescribtion->description = $descList[$k]['value'];
+                        $prescribtion->note = $noteList[$k]['value'];
+                        $prescribtion->is_active = 1;
+                        $prescribtion->created_at = date('Y-m-d H:i:s');
+                        $prescribtion->updated_at = date('Y-m-d H:i:s');
+                        $prescribtion->save();
+                    }
+                }
+            }
+            
+        } else {
+            $consultation = Consultation::find($consSubmit);
+
+            $consultation->q_id = $pq_id;
+            $consultation->qno = $qno;
+            $consultation->symptomp = $symptomp;
+            $consultation->temperature = $temperature;
+            $consultation->blood_presure = $bp;
+            $consultation->blood_sugar = $bs;
+            $consultation->result  = $rs;
+            $consultation->is_medical_certificate = $is_medical_certificate;
+            $consultation->medical_certificate = $medical_certificate;
+            $consultation->is_time_slip = $is_time_slip;
+            $consultation->time_slip  = $time_slip;
+            $consultation->is_active = 1;
+            $consultation->created_at = date('Y-m-d H:i:s');
+            $consultation->updated_at = date('Y-m-d H:i:s');
+            $consultation->save();
+            
+            $lastInsertIdCons = $consSubmit;
+            
+            if ($request->has('drugs')) {
+                Prescribtion::where('consutants_id', '=', $consSubmit)->delete();
+                $drugsId = Input::post('drugs');
+                $drugDet = DB::table('drug_list')->select('drug_list.*')->where('id', '=', $drugsId)->first();
+                
+                $qtyList = Input::post('qty');
+                $dossageList = Input::post('dossage');
+                $descList = Input::post('desc');
+                $noteList = Input::post('note');
+                foreach ($drugsId as $k => $v) {
+                    if($v['value'] != ''){
+                        $drugDet = DB::table('drug_list')->select('drug_list.*')->where('id', '=', $drugsId)->first();
+                        $prescribtion = new Prescribtion;
+                        $prescribtion->patient_id = $patientQueue->patient_id;
+                        $prescribtion->queue_id = $patientQueue->id;
+                        $prescribtion->consutants_id = $lastInsertIdCons;
+                        $prescribtion->drugs_id = $drugDet->id;
+                        $prescribtion->drugs = $drugDet->drug_name;
+                        $prescribtion->qty = $qtyList[$k]['value'];
+                        $prescribtion->dossage = $dossageList[$k]['value'];
+                        $prescribtion->description = $descList[$k]['value'];
+                        $prescribtion->note = $noteList[$k]['value'];
+                        $prescribtion->is_active = 1;
+                        $prescribtion->created_at = date('Y-m-d H:i:s');
+                        $prescribtion->updated_at = date('Y-m-d H:i:s');
+                        $prescribtion->save();
+                    }
+                }
+            }
+        }
+
+        return $lastInsertIdCons;
+        //return redirect()->route('patientprofilepath',[$encPatientQueueId]);
+    }
+
+    public function laboratoryrequest(Request $request) {
+        
+        $pq_id = \Crypt::decrypt(Input::post('labreqpid'));
+        
+        $patientQueue = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
+
+        $remarks = Input::post('remarks');       
+        $bloodtest = $request->has('bloodtest') ? 1: 0;
+        $lipids = $request->has('lipids') ? 1: 0;
+        $electrolytestest = $request->has('electrolytestest') ? 1: 0;
+        $renalfunction = $request->has('renalfunction') ? 1: 0;
+        $fbs = $request->has('fbs') ? 1: 0;
+        $ultrasound = $request->has('ultrasound') ? 1: 0;
+        
+        
+        $savePatQue['parent_id'] = $patientQueue->id;
+        $savePatQue['patient_id'] = $patientQueue->patient_id;
+        $savePatQue['staff_id'] = $patientQueue->staff_id;
+        $savePatQue['ic_number'] = $patientQueue->ic_number;
+        $savePatQue['name'] = $patientQueue->name;
+        $savePatQue['symptopms'] = $patientQueue->symptopms;
+        $savePatQue['department_id'] = 4;
+        $savePatQue['depart_name'] = 'Laboratory';
+        $savePatQue['utype'] = $patientQueue->utype;
+        $savePatQue['ptype'] = $patientQueue->ptype;
+        $savePatQue['queue_id'] = $patientQueue->queue_id;
+        $savePatQue['queueno'] = $patientQueue->queueno;
+
+        $count = DB::table('patientqueues')->where('queueno', '=', $patientQueue->queueno)->count();
+        $qno = "L-".str_pad($count + 1, 5, '0', STR_PAD_LEFT);
+        $savePatQue['token_no'] = $qno;    
+
+        $savePatQue['q_status'] = $patientQueue->q_status;
+        $savePatQue['is_active'] = 1;
+        $savePatQue['created_time'] = date("h:i:s a", time());
+        $savePatQue['created_at'] = date("Y-m-d h:i:s", time());
+        $savePatQue['updated_at'] = date("Y-m-d h:i:s", time());
+        $patId = DB::table('patientqueues')->insertGetId($savePatQue);
+  
+        $labReq['q_id'] = $patId;
+        $labReq['q_no'] = '';
+        $labReq['symptomp'] = $patientQueue->symptopms;
+        $labReq['bloodtest'] = $bloodtest;
+        $labReq['electrolytestest'] = $electrolytestest;
+        $labReq['fbs'] = $fbs;
+        $labReq['lipids'] = $lipids;
+        $labReq['renalfunction'] = $renalfunction;
+        $labReq['ultrasound'] = $ultrasound;
+        $labReq['remarks'] = $remarks;      
+        $labReq['is_active'] = 1;
+        $labReq['created_at'] = date("Y-m-d h:i:s", time());
+        $labReq['updated_at'] = date("Y-m-d h:i:s", time());        
+        $labReqId = DB::table('laboratoryrequests')->insertGetId($labReq); 
+        
+        DB::table('patientqueues')->where("id", '=',  $patientQueue->id)->update(['is_active'=> 0]);
+
+        return redirect('/consultations');
+    }
+    
+    public function  laboratoryPassForm(Request $request){
+        $pq_id = \Crypt::decrypt(Input::post('id'));
+        if( DB::table('laboratories')->where('q_id', '=', $pq_id)->exists() ){
+            $dt = DB::table('patientqueues')->where('id', '=', $pq_id)->first();
+            //echo "<pre>"; print_r($dt); exit;
+            if($dt->parent_id != ''){
+                DB::table('patientqueues')->where('id', $dt->parent_id)->update(array('is_active' => 1));
+                DB::table('patientqueues')->where('id', $dt->id)->update(array('is_active' => 0));
+            } else {
+                //echo "ok"; exit;
+                $patientQueue = DB::table('patientqueues')->where('id', '=', $pq_id)->first();
+                
+                $savePatQue['parent_id'] = $patientQueue->id;
+                $savePatQue['patient_id'] = $patientQueue->patient_id;
+                $savePatQue['staff_id'] = $patientQueue->staff_id;
+                $savePatQue['ic_number'] = $patientQueue->ic_number;
+                $savePatQue['name'] = $patientQueue->name;
+                $savePatQue['symptopms'] = $patientQueue->symptopms;
+                $savePatQue['department_id'] = 1;
+                $savePatQue['depart_name'] = 'Consultation 1';
+                $savePatQue['utype'] = $patientQueue->utype;
+                $savePatQue['ptype'] = $patientQueue->ptype;
+                $savePatQue['queue_id'] = $patientQueue->queue_id;
+                $savePatQue['queueno'] = $patientQueue->queueno;
+
+                $count = DB::table('patientqueues')->where('queueno', '=', $patientQueue->queueno)->count();
+                $qno = "C-".str_pad($count + 1, 5, '0', STR_PAD_LEFT);
+                $savePatQue['token_no'] = $qno;    
+
+                $savePatQue['q_status'] = $patientQueue->q_status;
+                $savePatQue['is_active'] = 1;
+                $savePatQue['created_time'] = date("h:i:s a", time());
+                $savePatQue['created_at'] = date("Y-m-d h:i:s", time());
+                $savePatQue['updated_at'] = date("Y-m-d h:i:s", time());
+                $patId = DB::table('patientqueues')->insertGetId($savePatQue);
+                
+                DB::table('patientqueues')->where("id", '=',  $patientQueue->id)->update(['is_active'=> 0]);
+            }
+            
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+
+    public function  consultancyPassForm(){
+        $pq_id = \Crypt::decrypt(Input::post('id'));
+        if( DB::table('patientqueues')->where('id', '=', $pq_id)->exists() ){
+            $dt = DB::table('patientqueues')->where('id', '=', $pq_id)->first();
+            $patientQueue = DB::table('patientqueues')->where('id', '=', $pq_id)->first();
+
+            if( DB::table('patientqueues')->where('parent_id', '=', $pq_id)->where('ic_number', '=', $patientQueue->ic_number)->where('department_id', '=', 3)->exists() ){
+                return 0;
+            } else {
+                $savePatQue['parent_id'] = $patientQueue->id;
+                $savePatQue['patient_id'] = $patientQueue->patient_id; 
+                $savePatQue['staff_id'] = $patientQueue->staff_id;
+                $savePatQue['ic_number'] = $patientQueue->ic_number;
+                $savePatQue['name'] = $patientQueue->name;
+                $savePatQue['symptopms'] = $patientQueue->symptopms;
+                $savePatQue['department_id'] = 3;
+                $savePatQue['depart_name'] = 'Dispensary';
+                $savePatQue['utype'] = $patientQueue->utype;
+                $savePatQue['ptype'] = $patientQueue->ptype;
+                $savePatQue['queue_id'] = $patientQueue->queue_id;
+                $savePatQue['queueno'] = $patientQueue->queueno;
+
+                $count = DB::table('patientqueues')->where('queueno', '=', $patientQueue->queueno)->count();
+                $qno = "D-".str_pad($count + 1, 5, '0', STR_PAD_LEFT);
+                $savePatQue['token_no'] = $qno;    
+
+                $savePatQue['q_status'] = $patientQueue->q_status;
+                $savePatQue['is_active'] = 1;
+                $savePatQue['created_time'] = date("h:i:s a", time());
+                $savePatQue['created_at'] = date("Y-m-d h:i:s", time());
+                $savePatQue['updated_at'] = date("Y-m-d h:i:s", time());
+                $patId = DB::table('patientqueues')->insertGetId($savePatQue);
+
+                DB::table('patientqueues')->where("id", '=',  $patientQueue->id)->update(['is_active'=> 0]);
+                return 1;
+            }
+            
+
+        } else {
+            return 0;
+        }
+        
+    }
+    
+    
+    public function labpatientprofile($id = null) {
+        //$result = User::latest()->paginate();
+        if ($id != ''){
+            $qid = $id;
+            $pq_id = \Crypt::decrypt($qid);
+            
+            $pq = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
+            //echo $pq_id; echo "<pre>"; print_r($pq); 
+            
+            
+            $countReq = DB::table('laboratoryrequests')->select('laboratoryrequests.*')->where('q_id', '=', $pq_id)->count();
+            
+            if($countReq > 0){
+                $labreq = DB::table('laboratoryrequests')->select('laboratoryrequests.*')->where('q_id', '=', $pq_id)->first();
+                $labreqCount = 1;
+            } else {
+                $labreq = array();
+                $labreqCount = 0;
+            }
+            
+            //echo "<pre>"; print_r($labreq); 
+            //exit;
+            $patientData['queueId'] = $qid;
+            $patientData['pqueue'] = $pq;
+            $patient_detail = DB::table('patients')->select('patients.*')->where('id', '=', $pq->patient_id)->first();
+            $patientData['patientdet'] = $patient_detail;
+            if ($patient_detail->staff_id != 0) {
+                $staff_detail = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $patient_detail->staff_id)->first();
+                $patientData['email'] = $staff_detail->HR_EMAIL;
+                $patientData['phone'] = $staff_detail->HR_TELBIMBIT;
+                if ($patient_detail->utype == 'staff') {
+                    $patientData['dob'] = $staff_detail->HR_TARIKH_LAHIR;
+                } else if ($patient_detail->utype == 'dependent') {
+                    $dependent_detail = DB::table('hr_maklumat_tanggungan')->select('hr_maklumat_tanggungan.*')->where('HR_NO_PEKERJA', '=', $patient_detail->staff_id)->first();
+                    $patientData['dob'] = $dependent_detail->HR_TARIKH_LAHIR;
+                } else {
+                    $patientData['dob'] = '';
+                }
+            } else {
+                $patientData['email'] = '';
+                $patientData['phone'] = '';
+                $patientData['dob'] = '';
+            }
+
+            if ($patientData['dob'] != '') {
+                $patientData['age'] = \Carbon::parse($patientData['dob'])->age;
+            } else {
+                $patientData['age'] = '';
+            }
+            //echo "<pre>"; print_r($labreq); echo $labreqCount; echo "<pre>"; print_r($patientData); exit;
+            return view('patient.labpatientprofile', compact('patientData', 'labreqCount', 'labreq'));
+        } else {
+            return redirect()->back();
+        }
+    }
+    
+
+    private function syncPermissions(Request $request, $user) {
+        // Get the submitted roles
+        $roles = $request->get('roles', []);
+        $permissions = $request->get('permissions', []);
+
+        // Get the roles
+        $roles = Role::find($roles);
+
+        // check for current role changes
+        if (!$user->hasAllRoles($roles)) {
+            // reset all direct permissions for user
+            $user->permissions()->sync([]);
+        } else {
+            // handle permissions
+            $user->syncPermissions($permissions);
+        }
+
+        $user->syncRoles($roles);
+
+        return $user;
+    }
+
+    
+
+    
+}

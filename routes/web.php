@@ -27,6 +27,7 @@ Route::post('savenewty2', array('as' => 'savenewty2', 'uses' => 'HomeController@
 
 Route::get('patientprofile/{id}', array('as' => 'patientprofilepath', 'uses' => 'PatientController@profile'));
 Route::post('savePrescription', array('as' => 'savePrescription', 'uses' => 'PatientController@savePrescription'));
+Route::get('savePrescription', array('as' => 'getPrescription', 'uses' => 'PatientController@getPrescription'));
 Route::post('saveLaboratorytest', array('as' => 'saveLaboratorytest', 'uses' => 'LaboratoryController@saveLaboratorytest'));
 Route::post('laboratoryrequest', array('as' => 'laboratoryrequest', 'uses' => 'PatientController@laboratoryrequest'));
 
