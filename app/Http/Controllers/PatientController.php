@@ -25,19 +25,21 @@ class PatientController extends Controller {
         if ($id != ''){
             $qid = $id;
             $pq_id = \Crypt::decrypt($qid);
-
+            
             $pq = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
+            
+             
+            $curicno = $pq->ic_number;
+            $curtoken = $pq->token_no;
+            
+            $othpqlist = DB::table('patientqueues')->select('patientqueues.*')->where('ic_number', '=', $curicno)->where('token_no', '!=', $curtoken)->get();
+            //echo "<pre>"; print_r($pq); echo "<pre>"; print_r($othpqlist); exit;
+            
             $patientData['queueId'] = $qid;
             $patientData['pqueue'] = $pq;
             $patient_detail = DB::table('patients')->select('patients.*')->where('id', '=', $pq->patient_id)->first();
             $patientData['patientdet'] = $patient_detail;
-            /*
-            $labqid = '';
-            if($pq->parent_id!= ''){
 
-            } else {
-                
-            } */
             $dataLab = array();
             $parentpq = DB::table('patientqueues')->select('patientqueues.*')->where('patient_id', '=', $pq->patient_id)->where('depart_name', '=', 'Laboratory')->get();
             $k = 1;
@@ -46,10 +48,7 @@ class PatientController extends Controller {
                 $dataLab[$k]['labtest'] = DB::table('laboratories')->select('laboratories.*')->where('q_id', '=', $pq->id)->first();
                 $k++;
             }
-            
 
-            
-            
             $labtestlist = DB::table('laboratoryrequests')->select('laboratoryrequests.*')->where('q_id', '=', $pq->id)->first();
             $patientData['labtstlist'] = $dataLab;
 
@@ -76,13 +75,9 @@ class PatientController extends Controller {
             } else {
                 $patientData['age'] = '';
             }
-            
-            
-            
+
             $drugs = DB::table('drug_list')->select('drug_list.*')->where('drug_name', '!=', '')->get();
-            //echo "<pre>"; print_r($drugs); exit;
-            //echo $pq_id; echo "<pre>"; print_r($patientData); exit;
-            return view('patient.profile', compact('patientData','drugs'));
+            return view('patient.profile', compact('patientData', 'othpqlist', 'drugs'));
         } else {
             return redirect()->back();
         }
@@ -93,10 +88,12 @@ class PatientController extends Controller {
     }
     
     public function savePrescription(Request $request) {
-        //echo "<pre>"; print_r($request); exit;
+        
+        //echo "<pre>"; print_r($_POST); exit;
+        
+        
         $encPatientQueueId = Input::get('pid');
         $pq_id = \Crypt::decrypt(Input::post('pqid'));
-        //$pq_id = \Crypt::decrypt(Input::post('pid'));
         $patientQueue = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
         if($patientQueue){
             
@@ -111,6 +108,16 @@ class PatientController extends Controller {
         $bp = Input::post('blood_presure');
         $bs = Input::post('blood_sugar');
         $rs = Input::post('result');
+        
+        $medical_certificate = Input::post('medical_certificate');
+        $stdate = Input::post('stdate');
+        $enddate = Input::post('enddate');
+        $totaldays = Input::post('totaldays');
+        $time_slip = Input::post('time_slip');
+        $onlydate = Input::post('onlydate');
+        $sttime = Input::post('sttime');
+        $endtime = Input::post('endtime');
+        $totaltime = Input::post('totaltime');
         
         if(Input::get('is_medical_certificate') !== ''){
             $is_medical_certificate = Input::post('is_medical_certificate');
@@ -138,10 +145,15 @@ class PatientController extends Controller {
             $consultation->blood_presure = $bp;
             $consultation->blood_sugar = $bs;
             $consultation->result  = $rs;
-            $consultation->is_medical_certificate = $is_medical_certificate;
-            $consultation->medical_certificate = $medical_certificate;
-            $consultation->is_time_slip = $is_time_slip;
+            $consultation->medical_certificate  = $medical_certificate;
+            $consultation->stdate  = $stdate;
+            $consultation->enddate  = $enddate;
+            $consultation->totaldays  = $totaldays;
             $consultation->time_slip  = $time_slip;
+            $consultation->onlydate  = $onlydate;
+            $consultation->sttime  = $sttime;
+            $consultation->endtime  = $endtime;
+            $consultation->totaltime  = $totaltime;
             $consultation->is_active = 1;
             $consultation->created_at = date('Y-m-d H:i:s');
             $consultation->updated_at = date('Y-m-d H:i:s');
@@ -160,7 +172,6 @@ class PatientController extends Controller {
                 foreach ($drugsId as $k => $v) {
                     if($v['value'] != ''){
                         $drugDet = DB::table('drug_list')->select('drug_list.*')->where('id', '=', $drugsId)->first();
-                        //echo "<pre>"; print_r($drugDet); 
                         $prescribtion = new Prescribtion;
                         $prescribtion->patient_id = $patientQueue->patient_id;
                         $prescribtion->queue_id = $patientQueue->id;
@@ -188,11 +199,16 @@ class PatientController extends Controller {
             $consultation->temperature = $temperature;
             $consultation->blood_presure = $bp;
             $consultation->blood_sugar = $bs;
-            $consultation->result  = $rs;
-            $consultation->is_medical_certificate = $is_medical_certificate;
-            $consultation->medical_certificate = $medical_certificate;
-            $consultation->is_time_slip = $is_time_slip;
+            $consultation->result  = $rs; 
+            $consultation->medical_certificate  = $medical_certificate;
+            $consultation->stdate  = $stdate;
+            $consultation->enddate  = $enddate;
+            $consultation->totaldays  = $totaldays;
             $consultation->time_slip  = $time_slip;
+            $consultation->onlydate  = $onlydate;
+            $consultation->sttime  = $sttime;
+            $consultation->endtime  = $endtime;
+            $consultation->totaltime  = $totaltime;
             $consultation->is_active = 1;
             $consultation->created_at = date('Y-m-d H:i:s');
             $consultation->updated_at = date('Y-m-d H:i:s');
@@ -232,7 +248,6 @@ class PatientController extends Controller {
         }
 
         return $lastInsertIdCons;
-        //return redirect()->route('patientprofilepath',[$encPatientQueueId]);
     }
 
     public function laboratoryrequest(Request $request) {
@@ -248,8 +263,7 @@ class PatientController extends Controller {
         $renalfunction = $request->has('renalfunction') ? 1: 0;
         $fbs = $request->has('fbs') ? 1: 0;
         $ultrasound = $request->has('ultrasound') ? 1: 0;
-        
-        
+
         $savePatQue['parent_id'] = $patientQueue->id;
         $savePatQue['patient_id'] = $patientQueue->patient_id;
         $savePatQue['staff_id'] = $patientQueue->staff_id;
@@ -298,12 +312,10 @@ class PatientController extends Controller {
         $pq_id = \Crypt::decrypt(Input::post('id'));
         if( DB::table('laboratories')->where('q_id', '=', $pq_id)->exists() ){
             $dt = DB::table('patientqueues')->where('id', '=', $pq_id)->first();
-            //echo "<pre>"; print_r($dt); exit;
             if($dt->parent_id != ''){
                 DB::table('patientqueues')->where('id', $dt->parent_id)->update(array('is_active' => 1));
                 DB::table('patientqueues')->where('id', $dt->id)->update(array('is_active' => 0));
             } else {
-                //echo "ok"; exit;
                 $patientQueue = DB::table('patientqueues')->where('id', '=', $pq_id)->first();
                 
                 $savePatQue['parent_id'] = $patientQueue->id;
@@ -332,7 +344,6 @@ class PatientController extends Controller {
                 
                 DB::table('patientqueues')->where("id", '=',  $patientQueue->id)->update(['is_active'=> 0]);
             }
-            
             return 1;
         } else {
             return 0;
@@ -377,7 +388,6 @@ class PatientController extends Controller {
                 return 1;
             }
             
-
         } else {
             return 0;
         }
@@ -386,17 +396,11 @@ class PatientController extends Controller {
     
     
     public function labpatientprofile($id = null) {
-        //$result = User::latest()->paginate();
         if ($id != ''){
             $qid = $id;
             $pq_id = \Crypt::decrypt($qid);
-            
             $pq = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
-            //echo $pq_id; echo "<pre>"; print_r($pq); 
-            
-            
             $countReq = DB::table('laboratoryrequests')->select('laboratoryrequests.*')->where('q_id', '=', $pq_id)->count();
-            
             if($countReq > 0){
                 $labreq = DB::table('laboratoryrequests')->select('laboratoryrequests.*')->where('q_id', '=', $pq_id)->first();
                 $labreqCount = 1;
@@ -404,9 +408,7 @@ class PatientController extends Controller {
                 $labreq = array();
                 $labreqCount = 0;
             }
-            
-            //echo "<pre>"; print_r($labreq); 
-            //exit;
+
             $patientData['queueId'] = $qid;
             $patientData['pqueue'] = $pq;
             $patient_detail = DB::table('patients')->select('patients.*')->where('id', '=', $pq->patient_id)->first();
@@ -433,8 +435,8 @@ class PatientController extends Controller {
                 $patientData['age'] = \Carbon::parse($patientData['dob'])->age;
             } else {
                 $patientData['age'] = '';
-            }
-            //echo "<pre>"; print_r($labreq); echo $labreqCount; echo "<pre>"; print_r($patientData); exit;
+            }           
+            
             return view('patient.labpatientprofile', compact('patientData', 'labreqCount', 'labreq'));
         } else {
             return redirect()->back();
@@ -443,28 +445,17 @@ class PatientController extends Controller {
     
 
     private function syncPermissions(Request $request, $user) {
-        // Get the submitted roles
         $roles = $request->get('roles', []);
         $permissions = $request->get('permissions', []);
-
-        // Get the roles
         $roles = Role::find($roles);
-
-        // check for current role changes
         if (!$user->hasAllRoles($roles)) {
-            // reset all direct permissions for user
             $user->permissions()->sync([]);
         } else {
-            // handle permissions
             $user->syncPermissions($permissions);
         }
-
         $user->syncRoles($roles);
-
         return $user;
     }
 
-    
-
-    
+        
 }

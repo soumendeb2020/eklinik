@@ -1605,11 +1605,15 @@ display: none;
                 type: 'POST',
                 data: {_token: "{{ csrf_token() }}", pqid: pqid, btsypt: btsypt, btdate: btdate, btglucose: btglucose, bthb: bthb, btrefno: btrefno, elecdate: elecdate, bicarbonate: bicarbonate, chloride: chloride, elecrefno: elecrefno, fbsdate: fbsdate, fbs: fbs, fbsrefno: fbsrefno, lipdate: lipdate, hdl_Cholesterol: hdl_Cholesterol, ldl_Cholesterol: ldl_Cholesterol, total_Cholesterol: total_Cholesterol, total_Cholesterol_ratio: total_Cholesterol_ratio, triglyceride: triglyceride, gggg: gggg, liprefno: liprefno, rfdate: rfdate, urea: urea, creatinine: creatinine, uric_acid: uric_acid, calcium: calcium, corrected_calcium: corrected_calcium, phospate: phospate, rfrefno: rfrefno, usdate: usdate, presentation_lie: presentation_lie, heart_rate: heart_rate, biparietal_diameter: biparietal_diameter, femur_length: femur_length, estimated_present: estimated_present, sex: sex, abnormalities: abnormalities, usrefno: usrefno},
             }).done(function (response) {
-                console.log(response);
+                $.toast({
+                    heading: 'Success',
+                    text: 'Data Updated Successfully.',
+                    icon: 'success'
+                })
             });
 
             //$('#prescriptionForm').submit();
-            
+
         }
         
         $(document).ready(function () {

@@ -4,8 +4,8 @@
 <!-- MAIN CONTENT -->
 
 <style>
-    div.anonymous, div.end_user, div.agent, div.manager {
-display: none;
+div.anonymous, div.end_user, div.agent, div.manager {
+    display: none;
 }
 .emp-profile{
     padding: 3%;
@@ -133,13 +133,10 @@ display: none;
                             '<input type="button" id="" name="" class="ibtnDel btn btn-md btn-danger " value="Delete">'+
                         '</td>'+
                     '</tr>';
-
         $('.newEmpDt').append(newTr);
     }
-   
+
     function submitPrescriptionForm(){
-        
-        
         var consSubmit = $("#consSubmit").val();
         var pqid = '{{ $patientData['queueId'] }}';  
         
@@ -152,6 +149,7 @@ display: none;
         var blood_sugar = $("#blood_sugar").val();
         var result = $("#result").val();
         
+        /*
         if($("#is_medical_certificate").prop('checked') == true){
             var is_medical_certificate = 'yes';
             var medical_certificate = $("#medical_certificate").val();
@@ -167,7 +165,21 @@ display: none;
             var is_time_slip = '';
             var time_slip = $("#time_slip").val();
         }
+        */
         
+       
+       var medical_certificate = $("#medical_certificate").val();
+       var stdate = $("#stdate").val();
+       var enddate = $("#enddate").val();
+       var totaldays = $("#totaldays").val();
+       
+       var time_slip = $("#time_slip").val();
+       var onlydate = $("#onlydate").val();
+       var sttime = $("#sttime").val();
+       var endtime = $("#endtime").val();
+       var totaltime = $("#totaltime").val();
+       
+       
         var drugs = [];
         $('.drugsprescription').each(function(){
             drugs.push({ value: this.value }); 
@@ -197,16 +209,15 @@ display: none;
             url: url,
             async: false,
             type: 'POST',
-            data: {_token: "{{ csrf_token() }}", consSubmit: consSubmit, pqid: pqid, symptomp: symptomp, qno: qno, temperature: temperature, blood_presure: blood_presure, blood_sugar: blood_sugar, result: result, is_medical_certificate: is_medical_certificate, medical_certificate: medical_certificate, is_time_slip: is_time_slip, time_slip: time_slip, drugs: drugs, qty: qty, dossage: dossage, desc: desc, note: note},
+            data: {_token: "{{ csrf_token() }}", consSubmit: consSubmit, pqid: pqid, symptomp: symptomp, qno: qno, temperature: temperature, blood_presure: blood_presure, blood_sugar: blood_sugar, result: result,  medical_certificate: medical_certificate, stdate: stdate, enddate: enddate, totaldays: totaldays, time_slip: time_slip, onlydate: onlydate, sttime: sttime, endtime: endtime, totaltime: totaltime, drugs: drugs, qty: qty, dossage: dossage, desc: desc, note: note},
         }).done(function (response) {
-            $('#consSubmit').val(response);
+            // ####$('#consSubmit').val(response);
+            window.location.href = "{{ URL::to('consultations/') }}";
         });
-
         //$('#prescriptionForm').submit();
     }
     
     function addBloodtest(){
-        // '<td><span id="incre"></span></td>'+
         var newTr = '<tr>'+
                         '<td><input type="date" name="btdate[]" id="btdate[]" class="btdate" ></td>'+
                         '<td><input type="text" name="btglucose[]" id="btglucose[]" class="form-control btglucose" ></td>'+
@@ -262,7 +273,31 @@ display: none;
                                     <span class="label label-success" title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> Mon, Jan 7: 8.00 hours</span>
                                     <ul role="group">
                                         <li>
-                                            <span><i class="fa fa-clock-o"></i> 8.00</span> – <a href="javascript:void(0);">Appointment</a>
+                                            <span><i class="fa fa-clock-o"></i> 8.00</span> <a href="javascript:void(0);">Appointment</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <?php if(count($othpqlist) > 0){ ?>
+                                    <?php foreach($othpqlist as $key => $list){ ?>
+                                        <li class="parent_li" role="treeitem">
+                                            <span class="label label-success" title="Collapse this branch"><i class="fa fa-lg fa-minus-circle"></i> Tue, Jan 8: 8.00 hours</span>
+                                            <ul role="group">
+                                                <li>
+                                                    <span><i class="fa fa-clock-o"></i> 6.00</span> <a href="javascript:void(0);">Appointment</a>
+                                                </li>
+                                                <li>
+                                                    <span><i class="fa fa-clock-o"></i> 2.00</span> <a href="javascript:void(0);">Appointment</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    <?php } ?>    
+                                <?php } ?>
+                                {{--
+                                <li class="parent_li" role="treeitem">
+                                    <span class="label label-success" title="Collapse this branch"><i class="fa fa-lg fa-plus-circle"></i> Mon, Jan 7: 8.00 hours</span>
+                                    <ul role="group">
+                                        <li>
+                                            <span><i class="fa fa-clock-o"></i> 8.00</span> <a href="javascript:void(0);">Appointment</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -270,10 +305,10 @@ display: none;
                                     <span class="label label-success" title="Collapse this branch"><i class="fa fa-lg fa-minus-circle"></i> Tue, Jan 8: 8.00 hours</span>
                                     <ul role="group">
                                         <li>
-                                            <span><i class="fa fa-clock-o"></i> 6.00</span> – <a href="javascript:void(0);">Appointment</a>
+                                            <span><i class="fa fa-clock-o"></i> 6.00</span> <a href="javascript:void(0);">Appointment</a>
                                         </li>
                                         <li>
-                                            <span><i class="fa fa-clock-o"></i> 2.00</span> – <a href="javascript:void(0);">Appointment</a>
+                                            <span><i class="fa fa-clock-o"></i> 2.00</span> <a href="javascript:void(0);">Appointment</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -281,22 +316,26 @@ display: none;
                                     <span class="label label-warning" title="Collapse this branch"><i class="fa fa-lg fa-minus-circle"></i> Wed, Jan 9: 6.00 hours</span>
                                     <ul role="group">
                                         <li>
-                                            <span><i class="fa fa-clock-o"></i> 3.00</span> – <a href="javascript:void(0);">Appointment</a>
+                                            <span><i class="fa fa-clock-o"></i> 3.00</span> <a href="javascript:void(0);">Appointment</a>
                                         </li>
                                     </ul>
-                                </li><li>
-                                    <span><i class="fa fa-clock-o"></i> 3.00</span> – <a href="javascript:void(0);">Appointment</a>
                                 </li>
+                                <li>
+                                    <span><i class="fa fa-clock-o"></i> 3.00</span> <a href="javascript:void(0);">Appointment</a>
+                                </li>
+                                --}}
                             </ul>
                         </li>
+                        {{--
                         <li class="parent_li" role="treeitem">
                             <span class="label label-danger" title="Collapse this branch"><i class="fa fa-lg fa-minus-circle"></i> Wed, Jan 9: 4.00 hours</span>
                             <ul role="group">
                                 <li>
-                                    <span><i class="fa fa-clock-o"></i> 2.00</span> – <a href="javascript:void(0);">Appointment</a>
+                                    <span><i class="fa fa-clock-o"></i> 2.00</span> <a href="javascript:void(0);">Appointment</a>
                                 </li>
                             </ul>
                         </li>
+                        --}}
                     </ul>
                 </div>
 
@@ -396,7 +435,7 @@ display: none;
                                                         <div class="form-group">
                                                             <div class="col-md-7 "></div>
                                                             <div class="col-md-4 ">
-                                                                <label for="inputName">Queue Number</label>  
+                                                                <label for="inputName">Queue Number </label>  
                                                                 <input type="text" readonly="" class="form-control" value="{{ $patientData['pqueue']->token_no }}" id="qno" name="qno" placeholder="Patients queue no">
                                                             </div>
                                                             <div class="col-md-1"><button onclick="passConstoDispancery('{{ $patientData['queueId'] }}')" class="btn btn-success"><i class="glyphicon glyphicon-bell"></i></button>					                                            </div>
@@ -497,16 +536,118 @@ display: none;
                                                         </div> 
                                                     </div>
                                                     <div class="form-group">
-                                                        <div class="col-md-16">
-                                                            <label for="inputName">Medical Certificate</label>
-                                                            <input type="checkbox" id="is_medical_certificate" name="is_medical_certificate" value="yes">
-                                                            <input type="text" class="form-control" id="medical_certificate" name="medical_certificate" placeholder="How many days">
+                                                        <div class="col-md-12">
+                                                            <input type="checkbox" onchange="makePropreAction('mc');" id="is_medical_certificate" name="is_medical_certificate" value="yes">
+                                                            <label for="inputName">Medical Certificate</label> 
+                                                            <div class="mcdata" style=" display: none">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="row">
+                                                                            <div class="col-md-3">
+                                                                                <label for="inputName">Start Date</label>
+                                                                            </div>
+                                                                            <div class="col-md-9">
+                                                                                <input type="text" name="txtFrom" id="txtFrom" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="row">
+                                                                            <div class="col-md-3">
+                                                                                <label for="inputName">End Date</label>
+                                                                            </div>
+                                                                            <div class="col-md-9">
+                                                                                <input type="text" name="txtTo" id="txtTo" />
+                                                                            </div>
+                                                                        </div> 
+                                                                    </div>
+                                                                </div>
+  
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="row">
+                                                                            <div class="col-md-3">
+                                                                                <label for="inputName">Total Days</label>
+                                                                            </div>
+                                                                            <div class="col-md-9">
+                                                                                <input id="totDays" name="totDays" type="text" class="time" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <input type="hidden" class="form-control" id="medical_certificateWWW" name="medical_certificate" placeholder="How many days">
                                                         </div>
-                                                        <div class="col-md-16">
+                                                    </div> 
+                                                    
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <input type="checkbox" onchange="makePropreAction('tc');" id="is_time_slip" name="is_time_slip" value="yes">
                                                             <label for="inputName">Time Slip</label>
-                                                            <input type="checkbox" id="is_time_slip" name="is_time_slip" value="yes">
-                                                            <input type="text" class="form-control" id="time_slip" name="time_slip" placeholder="How many hours">
-                                                        </div>
+                                                            <div class="tcdata" style=" display: none">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="row">
+                                                                            <div class="col-md-3">
+                                                                                <label for="inputName">Date</label>
+                                                                            </div>
+                                                                            <div class="col-md-9">
+                                                                                <input type="text" id="txtFroms" name="txtFroms" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="clear-fix"></div>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="row">
+                                                                            <div class="col-md-3">
+                                                                                <label for="inputName">Start Time</label>
+                                                                            </div>
+                                                                            <div class="col-md-9">
+                                                                                <input onchange="getTimeDiff('st');" id="startTime" name="startTime" type="text" class="time" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="row">
+                                                                            <div class="col-md-3">
+                                                                                <label for="inputName">End Time</label>
+                                                                            </div>
+                                                                            <div class="col-md-9">
+                                                                                <input id="endTime" onchange="getTimeDiff('end');" name="endTime" type="text" class="time" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="row">
+                                                                            <div class="col-md-3">
+                                                                                <label for="inputName">Total Hour</label>
+                                                                            </div>
+                                                                            <div class="col-md-9">
+                                                                                <input id="tothour" type="text" class="time" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <input type="hidden" class="form-control" id="time_slipxxxx" name="time_slipxxxx" placeholder="How many hours">
+                                                            
+                                                            <input type="hidden" name="medical_certificate" id="medical_certificate" value="0">
+                                                            <input type="hidden" name="stdate" id="stdate" value="">
+                                                            <input type="hidden" name="enddate" id="enddate" value="">
+                                                            <input type="hidden" name="totaldays" id="totaldays" value="">
+
+                                                            <input type="hidden" name="time_slip" id="time_slip" value="0">
+                                                            <input type="hidden" name="onlydate" id="onlydate" value="">
+                                                            <input type="hidden" name="sttime" id="sttime" value="">
+                                                            <input type="hidden" name="endtime" id="endtime" value="">
+                                                            <input type="hidden" name="totaltime" id="totaltime" value="">
+                                                            
+                                                        </div> 
                                                     </div>
                                                     <div class="clearfix"></div>
                                                     <div class="col-md-2">
@@ -515,7 +656,65 @@ display: none;
                                                     <div class="clearfix"></div>
                                                 
                                             </div>
-                                            
+                                            <script>
+                                                function getTimeDiff(typedt){
+                                                    var sttime = $('#startTime').val();
+                                                    var endtime = $('#endTime').val();
+
+                                                    if(sttime < endtime){ 
+                                                        if(sttime != '' && endtime != ''){
+                                                            var diff = ( new Date("1970-1-1 " + endtime) - new Date("1970-1-1 " + sttime) ) / 1000 / 60 / 60; 
+                                                            $('#tothour').val(diff + " hours");
+                                                            $('#sttime').val(sttime);
+                                                            $('#endtime').val(endtime);
+                                                            $('#totaltime').val(diff);
+                                                        }
+                                                    } else {
+                                                        $('#endTime').val('');
+                                                        $('#tothour').val('');
+                                                        $('#sttime').val('');
+                                                        $('#endtime').val('');
+                                                        $('#totaltime').val('');
+                                                    }
+                                                }
+ 
+                                                function makePropreAction(dtid){
+                                                    if(dtid == 'mc'){
+                                                        if($('#is_medical_certificate'). prop("checked") == true){
+                                                            $('.mcdata').css('display', 'block');
+                                                            $('#medical_certificate').val(1);
+                                                            $('#stdate').val('');
+                                                            $('#enddate').val('');
+                                                            $('#totaldays').val('');
+                                                            
+                                                        } else {
+                                                            $('.mcdata').css('display', 'none');
+                                                            $('#medical_certificate').val(0);
+                                                            $('#stdate').val('');
+                                                            $('#enddate').val('');
+                                                            $('#totaldays').val('');
+                                                        }
+                                                    }
+                                                    if(dtid == 'tc'){
+                                                        if($('#is_time_slip'). prop("checked") == true){
+                                                            $('.tcdata').css('display', 'block');
+                                                            $('#time_slip').val(1);
+                                                            $('#onlydate').val('');
+                                                            $('#sttime').val('');
+                                                            $('#endtime').val('');
+                                                            $('#totaltime').val('');
+                                                        } else {
+                                                            $('.tcdata').css('display', 'none');
+                                                            $('#time_slip').val(0);
+                                                            $('#onlydate').val('');
+                                                            $('#sttime').val('');
+                                                            $('#endtime').val('');
+                                                            $('#totaltime').val('');
+                                                        }
+                                                    }
+                                                }      
+                                            </script>
+
                                             <div class="tab-pane" id="tab2"> 
                                                 <div class="form-group">
                                                     <label for="inputName">Remarks </label>
@@ -1130,6 +1329,29 @@ display: none;
         
         
         $(document).ready(function () {
+            //#######################################
+            $("#is_medical_certificate").prop("checked", false);
+            $("#is_time_slip").prop("checked", false);
+            
+            $('#txtFrom').val('');
+            $('#txtTo').val('');
+            $('#totDays').val('');
+            $('#txtFroms').val('');
+            $('#startTime').val('');
+            $('#endTime').val('');
+            $('#tothour').val('');
+            /////////////////////////////////////////
+            $('#medical_certificate').val(0);
+            $('#time_slip').val(0);
+
+            $('#stdate').val('');
+            $('#enddate').val('');
+            $('#totaldays').val('');
+            $('#onlydate').val('');
+            $('#sttime').val('');
+            $('#endtime').val('');
+            $('#totaltime').val('');
+            //#######################################
             var counter = 0;
             $("#addrow").on("click", function () {
                 var newRow = $("<tr>");
@@ -1563,7 +1785,7 @@ display: none;
             $('#td').click(function () {
                 $('#calendar').fullCalendar('changeView', 'agendaDay');
             });
-            $('.selectpicker').selectpicker();
+            //$('.selectpicker').selectpicker();
         })
         $(document).ready(function () {
             $('.tree > ul').attr('role', 'tree').find('ul').attr('role', 'group');
@@ -1583,5 +1805,106 @@ display: none;
         $('#tabs').tabs();
         $('#tabs2').tabs();
     </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.css" />
+    
+    <script type="text/javascript">
+        $(function () {
+            $("#txtFrom").datepicker({
+                numberOfMonths: 1,
+                dateFormat: 'yy-mm-dd',
+                minDate: 'today',
+                onSelect: function (selected) {
+                    var dt = new Date(selected);
+                    $('#stdate').val(selected);
+                    dt.setDate(dt.getDate() + 1);
+                    $("#txtTo").datepicker("option", "minDate", dt);
+                    
+                    if( $('#txtTo').val() != '' ){
+                        var txtstart = new Date($('#txtFrom').val());
+                        var txtend = new Date($('#txtTo').val());
+                        var diff = (txtend - txtstart);
+                        var days = diff/1000/60/60/24;
+                        //alert(days);
+                        $('#totDays').val( days + " Days" );
+                        $('#totaldays').val(days);
+                    } else {
+                        $('#totDays').val('');
+                        $('#totaldays').val('');
+                    }
+                }
+            });
+            
+            $("#txtTo").datepicker({
+                numberOfMonths: 1,
+                dateFormat: 'yy-mm-dd',
+                minDate: 'today' + 1,
+                onSelect: function (selected) {
+                    var dt = new Date(selected);
+                    $('#enddate').val(selected);
+                    dt.setDate(dt.getDate() - 1);
+                    $("#txtFrom").datepicker("option", "maxDate", dt);
+                    
+                    if( $('#txtFrom').val() != '' ){
+                        var txtstart = new Date($('#txtFrom').val());
+                        var txtend = new Date($('#txtTo').val());
+                        var diff = (txtend - txtstart);
+                        var days = diff/1000/60/60/24;
+                        //alert(days);
+                        $('#totDays').val( days + " Days" );
+                        $('#totaldays').val(days);
+                    } else {
+                        $('#totDays').val('');
+                        $('#totaldays').val('');
+                    }
+                }
+            });
+            
+            $("#txtFroms").datepicker({
+                numberOfMonths: 1,
+                dateFormat: 'yy-mm-dd',
+                minDate: 'today',
+                onSelect: function (selected) {
+                    var dt = new Date(selected);
+                    $('#onlydate').val(selected);
+                    dt.setDate(dt.getDate() + 1);
+                    $("#txtTo").datepicker("option", "minDate", dt);
+                }
+            });
+        });
+        $(function() {
+            //$('#startTime').timepicker({ 'scrollDefault': 'now' });
+            //$('#endTime').timepicker({ 'scrollDefault': 'now' });
 
+            $("#startTime").timepicker({
+                controlType: 'select',
+                'timeFormat': 'H:i',
+                oneLine: true,
+            });
+            
+            $("#endTime").timepicker({
+                controlType: 'select',
+                'timeFormat': 'H:i',
+                oneLine: true,
+            });
+            
+            /*
+            var $minimumStartTime = $("startTime").val();
+            var $minimumEndTime = $("endTime").val();
+
+            $.timepicker.timeRange(
+                $minimumStartTime,
+                $minimumEndTime,
+                {
+                    minInterval: (1000*60*60), // 1hr
+                    timeFormat: 'HH:mm',
+                    start: {}, // start picker options
+                    end: {} // end picker options
+                }
+            )
+            */
+            
+        });
+    </script>
+    
 @endsection

@@ -114,7 +114,7 @@
                 <div class="jarviswidget" id="wid-id-4" data-widget-colorbutton="false" data-widget-editbutton="false">
                     <header >
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                        <h2>Room 1 Queue List </h2>
+                        <h2>Consutation 1 Queue List </h2>
                     </header>
                     <div>
                         <div class="jarviswidget-editbox">
@@ -129,15 +129,25 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1001</td>
-                                        <td>Joyah bt Mat</td>
-                                        <td><button type="button" class="btn btn-success btn-lg ">Serving</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>1002</td>
-                                        <td>Reza b Mat</td>
-                                        <td><button type="button" class="btn btn-warning btn-lg ">Waiting</button></td>
+                                    @if(!empty($patientList1))
+                                        @foreach($patientList1 as $p1)
+                                        <tr>
+                                            <td>{{$p1['pqueue']->token_no}}</td>
+                                            <td>{{$p1['patientdet']->name}}</td>
+                                            <td>
+                                                @if($p1['pqueue']->is_active == 1)
+                                                    <button type="button" class="btn btn-success btn-lg ">Waiting</button>
+                                                @else
+                                                    <button type="button" class="btn btn-success btn-lg ">Complete</button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="3">Queue Not Exist</td>
+                                        </tr>
+                                    @endif    
                                 </tbody>
                             </table>
                         </div>
@@ -148,7 +158,7 @@
                 <div class="jarviswidget" id="wid-id-4" data-widget-colorbutton="false" data-widget-editbutton="false">
                     <header >
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                        <h2>Room 2 Queue List </h2>
+                        <h2>Consutation 2 Queue List </h2>
                     </header>
                     <div>
                         <div class="jarviswidget-editbox">
@@ -163,15 +173,25 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>2001</td>
-                                        <td>Joyah bt Mat</td>
-                                        <td><button type="button" class="btn btn-warning btn-lg ">Waiting</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2002</td>
-                                        <td>Reza b Mat</td>
-                                        <td><button type="button" class="btn btn-warning btn-lg ">Waiting</button></td>
+                                    @if(!empty($patientList2))
+                                        @foreach($patientList2 as $p1)
+                                        <tr>
+                                            <td>{{$p1['pqueue']->token_no}}</td>
+                                            <td>{{$p1['patientdet']->name}}</td>
+                                            <td>
+                                                @if($p1['pqueue']->is_active == 1)
+                                                    <button type="button" class="btn btn-success btn-lg ">Waiting</button>
+                                                @else
+                                                    <button type="button" class="btn btn-success btn-lg ">Complete</button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="3">Queue Not Exist</td>
+                                        </tr>
+                                    @endif 
                                 </tbody>
                             </table>
                         </div>
@@ -182,7 +202,7 @@
                 <div class="jarviswidget" id="wid-id-4" data-widget-colorbutton="false" data-widget-editbutton="false">
                     <header >
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                        <h2>Counter 1 Queue List </h2>
+                        <h2>Laboratory Queue List </h2>
                     </header>
                     <div>
                         <div class="jarviswidget-editbox">
@@ -197,15 +217,25 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1001</td>
-                                        <td>Joyah bt Mat</td>
-                                        <td><button type="button" class="btn btn-warning btn-lg ">Waiting</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2002</td>
-                                        <td>Reza b Mat</td>
-                                        <td><button type="button" class="btn btn-warning btn-lg ">Waiting</button></td>
+                                    @if(!empty($labpatientList))
+                                        @foreach($labpatientList as $p1)
+                                        <tr>
+                                            <td>{{$p1['pqueue']->token_no}}</td>
+                                            <td>{{$p1['patientdet']->name}}</td>
+                                            <td>
+                                                @if($p1['pqueue']->is_active == 1)
+                                                    <button type="button" class="btn btn-success btn-lg ">Waiting</button>
+                                                @else
+                                                    <button type="button" class="btn btn-success btn-lg ">Complete</button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="3">Queue Not Exist</td>
+                                        </tr>
+                                    @endif 
                                 </tbody>
                             </table>
                         </div>
