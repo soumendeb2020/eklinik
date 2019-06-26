@@ -84,7 +84,7 @@ class PatientController extends Controller {
     }
 
     public function getPrescription(){
-        echo "ok"; exit;
+        //echo "ok"; exit;
     }
     
     public function savePrescription(Request $request) {
@@ -342,7 +342,48 @@ class PatientController extends Controller {
                 $savePatQue['updated_at'] = date("Y-m-d h:i:s", time());
                 $patId = DB::table('patientqueues')->insertGetId($savePatQue);
                 
-                DB::table('patientqueues')->where("id", '=',  $patientQueue->id)->update(['is_active'=> 0]);
+                // ## DB::table('patientqueues')->where("id", '=',  $patientQueue->id)->update(['is_active'=> 0]);
+
+                //   ######################################
+                $dt = DB::table('patientqueues')->where('id', '=', $pq_id)->first();
+                $patientQueue = DB::table('patientqueues')->where('id', '=', $pq_id)->first();
+
+                if( DB::table('patientqueues')->where('parent_id', '=', $pq_id)->where('ic_number', '=', $patientQueue->ic_number)->where('department_id', '=', 3)->exists() ){
+                    return 0;
+                } else {
+                    $savePatQue['parent_id'] = $patientQueue->id;
+                    $savePatQue['patient_id'] = $patientQueue->patient_id; 
+                    $savePatQue['staff_id'] = $patientQueue->staff_id;
+                    $savePatQue['ic_number'] = $patientQueue->ic_number; 
+                    $savePatQue['name'] = $patientQueue->name;
+                    $savePatQue['symptopms'] = $patientQueue->symptopms;
+                    $savePatQue['department_id'] = 3;
+                    $savePatQue['depart_name'] = 'Dispensary';
+                    $savePatQue['utype'] = $patientQueue->utype;
+                    $savePatQue['ptype'] = $patientQueue->ptype;
+                    $savePatQue['queue_id'] = $patientQueue->queue_id;
+                    $savePatQue['queueno'] = $patientQueue->queueno;
+
+                    $count = DB::table('patientqueues')->where('queueno', '=', $patientQueue->queueno)->count();
+                    $qno = "D-".str_pad($count + 1, 5, '0', STR_PAD_LEFT);
+                    $savePatQue['token_no'] = $qno;    
+
+                    $savePatQue['q_status'] = $patientQueue->q_status;
+                    $savePatQue['is_active'] = 1;
+                    $savePatQue['created_time'] = date("h:i:s a", time());
+                    $savePatQue['created_at'] = date("Y-m-d h:i:s", time());
+                    $savePatQue['updated_at'] = date("Y-m-d h:i:s", time());
+                    $patId = DB::table('patientqueues')->insertGetId($savePatQue);
+
+                    DB::table('patientqueues')->where("id", '=',  $patientQueue->id)->update(['is_active'=> 0]);
+                    return 1;
+                }
+
+                //   ######################################
+
+
+
+
             }
             return 1;
         } else {
@@ -457,5 +498,24 @@ class PatientController extends Controller {
         return $user;
     }
 
+    
+    public function childdev(Request $request) {
+        $tst = "Test child";
+        //echo $tst; exit;
+        
+        return view('patient.child', compact('tst'));
+    }
+    
+    
+    public function motherdev(Request $request) {
+        $tst = "Test mother";
+        //echo $tst; exit;
+        
+        return view('patient.mother', compact('tst'));
+    }
+    
+    
+    
+    
         
 }

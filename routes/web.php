@@ -36,7 +36,8 @@ Route::get('labpatientprofile/{id}', array('as' => 'labpatientprofile', 'uses' =
 Route::post('laboratoryPassForm', array('as' => 'laboratoryPassForm', 'uses' => 'PatientController@laboratoryPassForm'));
 Route::post('consultancyPassForm', array('as' => 'consultancyPassForm', 'uses' => 'PatientController@consultancyPassForm'));
 
- 
+Route::get('motherdev', array('as' => 'motherdev', 'uses' => 'PatientController@motherdev'));
+Route::get('childdev', array('as' => 'childdev', 'uses' => 'PatientController@childdev'));
 
 
 
