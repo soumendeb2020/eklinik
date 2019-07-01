@@ -33,6 +33,15 @@ Route::post('laboratoryrequest', array('as' => 'laboratoryrequest', 'uses' => 'P
 
 Route::get('labpatientprofile/{id}', array('as' => 'labpatientprofile', 'uses' => 'PatientController@labpatientprofile'));
 
+Route::get('dispencery-profile/{id}', array('as' => 'dispenceryprofile', 'uses' => 'PatientController@dispenceryprofile'));
+
+Route::post('downloadmedicalcertificate/', array('as' => 'downloadmedicalcertificate', 'uses' => 'PatientController@downloadmedicalcertificate'));
+Route::post('dispencerytimeslip/', array('as' => 'dispencerytimeslip', 'uses' => 'PatientController@dispencerytimeslip'));
+
+Route::post('closeDispencery', array('as' => 'closeDispencery', 'uses' => 'PatientController@closeDispencery'));
+
+
+
 Route::post('laboratoryPassForm', array('as' => 'laboratoryPassForm', 'uses' => 'PatientController@laboratoryPassForm'));
 Route::post('consultancyPassForm', array('as' => 'consultancyPassForm', 'uses' => 'PatientController@consultancyPassForm'));
 

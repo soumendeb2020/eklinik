@@ -125,33 +125,40 @@
                                 <thead>
                                     <tr>
                                         <th data-hide="phone">Username</th>
+                                        <th data-hide="phone">Email</th>
                                         <th data-class="expand">Password</th>
                                         <th data-class="expand"></i>Job Title</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
+                                        <td>111111111111</td>
                                         <td>admin@mbpj.com</td>
                                         <td>secret</td>
                                         <td>admin</td>
                                     </tr>
                                     <tr>
+                                        <td>888888888888</td>
                                         <td>reception@mbpj.com</td>
                                         <td>secret</td>
                                         <td>staff</td>
                                     <tr>
+                                        <td>222222222222</td>
                                         <td>doctor@mbpj.com</td>
                                         <td>secret</td>
                                         <td>doctor</td>
                                     <tr>
+                                        <td>666666666666</td>
                                         <td>lab@mbpj.com</td>
                                         <td>secret</td>
                                         <td>laboratory</td>
                                     <tr>
+                                        <td>333333333333</td>
                                         <td>dispensary@mbpj.com</td>
                                         <td>secret</td>
                                         <td>dispensary</td>
                                     <tr>
+                                        <td>444444444444</td>
                                         <td>inventory@mbpj.com</td>
                                         <td>secret</td>
                                         <td>inventory</td>                                            

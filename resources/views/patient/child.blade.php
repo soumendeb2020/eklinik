@@ -177,14 +177,12 @@ div.anonymous, div.end_user, div.agent, div.manager {
                             <ul>
                                 <li>
                                     <span><i class="fa fa-lg fa-folder-close"></i> Spouse</span>
-
                                 </li>
                                 <li>
                                     <span><i class="fa fa-lg fa-folder-open"></i> Children</span>
                                     <ul>		
                                         <li>
                                             <span></i> Arif Haikal</span>
-
                                         </li>
                                     </ul>
                                 </li>
@@ -336,114 +334,114 @@ div.anonymous, div.end_user, div.agent, div.manager {
                                                                             </thead>
                                                                             <tbody>
                                                                                 <tr>
-                                                                                    <td >BCG</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
-                                                                                    <td >DA Semula Kedua</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;"type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
+                                                                                    <td>BCG</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
+                                                                                    <td>DA Semula Kedua</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;"type="text" ></td>
+                                                                                    <td><input type="text" ></td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td >Hepatitis B Pertama</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
-                                                                                    <td >MMR</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
+                                                                                    <td>Hepatitis B Pertama</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
+                                                                                    <td>MMR</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td >Hepatitis B Kedua</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
-                                                                                    <td >Pneumococcal Pertama</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
+                                                                                    <td>Hepatitis B Kedua</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
+                                                                                    <td>Pneumococcal Pertama</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td >Hepatitis B Ketiga</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
-                                                                                    <td >Pneumococcal Kedua</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
+                                                                                    <td>Hepatitis B Ketiga</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
+                                                                                    <td>Pneumococcal Kedua</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td ></td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
-                                                                                    <td >Pneumococcal Ketiga</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
+                                                                                    <td></td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
+                                                                                    <td>Pneumococcal Ketiga</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td >DTPa + Hib/IPV Pertama</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
-                                                                                    <td >Pneumococcal Keempat</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
+                                                                                    <td>DTPa + Hib/IPV Pertama</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
+                                                                                    <td>Pneumococcal Keempat</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td >DTPa + Hib/IPV Kedua</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
-                                                                                    <td >Semula Pertama</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
+                                                                                    <td>DTPa + Hib/IPV Kedua</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
+                                                                                    <td>Semula Pertama</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td >DTPa + Hib/IPV Ketiga</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
-                                                                                    <td >Semula Kedua</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
+                                                                                    <td>DTPa + Hib/IPV Ketiga</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
+                                                                                    <td>Semula Kedua</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td >Rotavirus Pertama</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
-                                                                                    <td >Cacar</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
+                                                                                    <td>Rotavirus Pertama</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
+                                                                                    <td>Cacar</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td >Rotavirus Kedua</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
-                                                                                    <td >Periksa Parut</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
+                                                                                    <td>Rotavirus Kedua</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
+                                                                                    <td>Periksa Parut</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td >DA Semula Pertama</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
-                                                                                    <td >Cacar Semula</td>
-                                                                                    <td ><input type="date" ></td>
-                                                                                    <td ><input style="width: 40px;" type="text" ></td>
-                                                                                    <td ><input type="text" ></td>
+                                                                                    <td>DA Semula Pertama</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
+                                                                                    <td>Cacar Semula</td>
+                                                                                    <td><input type="date" ></td>
+                                                                                    <td><input style="width: 40px;" type="text" ></td>
+                                                                                    <td><input type="text" ></td>
                                                                                 </tr>
                                                                             </tbody>
                                                                             <tfoot>
@@ -528,14 +526,14 @@ div.anonymous, div.end_user, div.agent, div.manager {
                                                                             </thead>
                                                                             <tbody>
                                                                                 <tr>
-                                                                                    <td ></td>
-                                                                                    <td ></td>
-                                                                                    <td ></td>
-                                                                                    <td ></td>
-                                                                                    <td ></td>
-                                                                                    <td ></td>
-                                                                                    <td ></td>
-                                                                                    <td ></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
+                                                                                    <td></td>
                                                                                 </tr>
                                                                             </tbody>
                                                                             <tfoot>

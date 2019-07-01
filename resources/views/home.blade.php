@@ -30,7 +30,7 @@
                             </div>
                         </div>
                     </div>
-                    <a data-toggle="modal" data-target="#transModelex" href="#">
+                    <a onclick="openAddPatientModal('outpatient');" href="JavaScript:Void(0);">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -52,7 +52,7 @@
                             </div>
                         </div>
                     </div>
-                    <a data-toggle="modal" data-target="#ty2Model" href="#">
+                    <a onclick="openAddTy2Modal('ty2');" href="JavaScript:Void(0);">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -74,7 +74,7 @@
                             </div>
                         </div>
                     </div>
-                    <a  data-toggle="modal" data-target="#motherModel" href="#">
+                    <a onclick="openAddPatientModal('mother');" href="JavaScript:Void(0);">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -96,7 +96,7 @@
                             </div>
                         </div>
                     </div>
-                    <a data-toggle="modal" data-target="#kidsModel" href="#">
+                    <a onclick="openAddPatientModal('child');" href="JavaScript:Void(0);">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

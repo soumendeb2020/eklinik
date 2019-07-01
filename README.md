@@ -1,60 +1,20 @@
-# Roles Permissions Laravel (RPL)
-A stater kit with Roles and Permissions implementation on Laravel 5.7
+# Introduction 
+TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
 
-### Install
-1. To use it just clone the repo and composer install.
-2. `cp .env.example .env`
-3. Update the database credentials in `.env`
-4. run `php artisan key:generate`
-5. To test the app run `php artisan db:seed`, our [interactive seeder](http://www.qcode.in/advance-interactive-database-seeding-in-laravel/) will take care of everything.
+# Getting Started
+TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
+1.	Installation process
+2.	Software dependencies
+3.	Latest releases
+4.	API references
 
-### Add a new Resource
-1. Create desired resource by running 
- ```bash
-## Create Comment model with migration and resource controller
-php artisan make:model Comment -mcr
-```
-2. Register route for it.
-```php
-Route::group( ['middleware' => ['auth']], function() {
-    ...
-    Route::resource('comments', 'CommentController');
-});
-```
+# Build and Test
+TODO: Describe and show how to build your code and run the tests. 
 
-3. Now implement your controllers methods and use the `Authorizable` trait
-```php
-use App\Authorizable;
+# Contribute
+TODO: Explain how other users and developers can contribute to make your code better. 
 
-class CommentController extends Controller
-{
-    use Authorizable;
-    ...
-```
-
-4. Now add the permissions for this new `Comment` model.
-```bash
-php artisan auth:permission Comment
-```
-
-That's it, you have added new resource controller which have full access control by laravel permissions.
- 
- ### auth:permission command
- This command can be user to add or remove permission for a given model
- 
- ```bash
-## add permission
-php artisan auth:permission Comment
-
-## remove permissions
-php artisan auth:permission Comment --remove
-```
-
-Checkout the official [laravel-permission package dock](https://github.com/spatie/laravel-permission) for more info.
-
-### Author
-Created by [QCode.in](http://www.qcode.in)
-
-## License
-
-[MIT license](http://opensource.org/licenses/MIT).
+If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
+- [ASP.NET Core](https://github.com/aspnet/Home)
+- [Visual Studio Code](https://github.com/Microsoft/vscode)
+- [Chakra Core](https://github.com/Microsoft/ChakraCore)

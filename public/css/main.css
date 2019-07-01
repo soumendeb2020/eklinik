@@ -1,0 +1,27 @@
+#fromHTMLtestdiv {
+  background-color: #fff;
+  margin-top: 50px;
+}
+.txt {
+	font-family: sans-serif; 
+	font-size: 18px; 
+	font-weight: bold; 
+	margin: 0 0 0px;
+	letter-spacing: 0.5px;
+}
+.normal-txt {
+	font-family: sans-serif; 
+	font-size: 18px; 
+	line-height: 34px;	
+	margin: 0 0 0px;
+	letter-spacing: 0.5px;
+	padding-left: 30px;
+}
+.txt-bot {
+	font-family: sans-serif; 
+	font-size: 18px; 
+	font-weight: bold; 
+	margin: 0 0 0px;
+	letter-spacing: 0.5px;
+	padding-left: 30px;
+}

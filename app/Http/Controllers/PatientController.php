@@ -88,10 +88,7 @@ class PatientController extends Controller {
     }
     
     public function savePrescription(Request $request) {
-        
         //echo "<pre>"; print_r($_POST); exit;
-        
-        
         $encPatientQueueId = Input::get('pid');
         $pq_id = \Crypt::decrypt(Input::post('pqid'));
         $patientQueue = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
@@ -158,7 +155,6 @@ class PatientController extends Controller {
             $consultation->created_at = date('Y-m-d H:i:s');
             $consultation->updated_at = date('Y-m-d H:i:s');
             $consultation->save();
-
             $lastInsertIdCons = $consultation->id;
 
             if ($request->has('drugs')) {
@@ -192,7 +188,6 @@ class PatientController extends Controller {
             
         } else {
             $consultation = Consultation::find($consSubmit);
-
             $consultation->q_id = $pq_id;
             $consultation->qno = $qno;
             $consultation->symptomp = $symptomp;
@@ -213,7 +208,6 @@ class PatientController extends Controller {
             $consultation->created_at = date('Y-m-d H:i:s');
             $consultation->updated_at = date('Y-m-d H:i:s');
             $consultation->save();
-            
             $lastInsertIdCons = $consSubmit;
             
             if ($request->has('drugs')) {
@@ -247,15 +241,46 @@ class PatientController extends Controller {
             }
         }
 
+        //   ######################################
+        $dt = DB::table('patientqueues')->where('id', '=', $pq_id)->first();
+        $patientQueueDt = DB::table('patientqueues')->where('id', '=', $pq_id)->first();
+        if( DB::table('patientqueues')->where('parent_id', '=', $pq_id)->where('ic_number', '=', $patientQueue->ic_number)->where('department_id', '=', 3)->exists() ){
+            return 0;
+        } else {
+            $savePatQue['parent_id'] = $patientQueueDt->id;
+            $savePatQue['patient_id'] = $patientQueueDt->patient_id; 
+            $savePatQue['staff_id'] = $patientQueueDt->staff_id;
+            $savePatQue['ic_number'] = $patientQueueDt->ic_number; 
+            $savePatQue['name'] = $patientQueueDt->name;
+            $savePatQue['symptopms'] = $patientQueueDt->symptopms;
+            $savePatQue['department_id'] = 3;
+            $savePatQue['depart_name'] = 'Dispensary';
+            $savePatQue['utype'] = $patientQueueDt->utype;
+            $savePatQue['ptype'] = $patientQueueDt->ptype;
+            $savePatQue['queue_id'] = $patientQueueDt->queue_id;
+            $savePatQue['queueno'] = $patientQueueDt->queueno;
+
+            $count = DB::table('patientqueues')->where('queueno', '=', $patientQueue->queueno)->count();
+            $qno = "D-".str_pad($count + 1, 5, '0', STR_PAD_LEFT);
+            $savePatQue['token_no'] = $qno;    
+
+            $savePatQue['q_status'] = $patientQueueDt->q_status;
+            $savePatQue['is_active'] = 1;
+            $savePatQue['created_time'] = date("h:i:s a", time());
+            $savePatQue['created_at'] = date("Y-m-d h:i:s", time());
+            $savePatQue['updated_at'] = date("Y-m-d h:i:s", time());
+            $patId = DB::table('patientqueues')->insertGetId($savePatQue);
+
+            DB::table('patientqueues')->where("id", '=',  $patientQueueDt->id)->update(['is_active'=> 0]);
+            return 1;
+        }
+        //   ######################################
         return $lastInsertIdCons;
     }
 
     public function laboratoryrequest(Request $request) {
-        
         $pq_id = \Crypt::decrypt(Input::post('labreqpid'));
-        
         $patientQueue = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
-
         $remarks = Input::post('remarks');       
         $bloodtest = $request->has('bloodtest') ? 1: 0;
         $lipids = $request->has('lipids') ? 1: 0;
@@ -308,7 +333,7 @@ class PatientController extends Controller {
         return redirect('/consultations');
     }
     
-    public function  laboratoryPassForm(Request $request){
+    public function laboratoryPassForm(Request $request){
         $pq_id = \Crypt::decrypt(Input::post('id'));
         if( DB::table('laboratories')->where('q_id', '=', $pq_id)->exists() ){
             $dt = DB::table('patientqueues')->where('id', '=', $pq_id)->first();
@@ -343,47 +368,6 @@ class PatientController extends Controller {
                 $patId = DB::table('patientqueues')->insertGetId($savePatQue);
                 
                 // ## DB::table('patientqueues')->where("id", '=',  $patientQueue->id)->update(['is_active'=> 0]);
-
-                //   ######################################
-                $dt = DB::table('patientqueues')->where('id', '=', $pq_id)->first();
-                $patientQueue = DB::table('patientqueues')->where('id', '=', $pq_id)->first();
-
-                if( DB::table('patientqueues')->where('parent_id', '=', $pq_id)->where('ic_number', '=', $patientQueue->ic_number)->where('department_id', '=', 3)->exists() ){
-                    return 0;
-                } else {
-                    $savePatQue['parent_id'] = $patientQueue->id;
-                    $savePatQue['patient_id'] = $patientQueue->patient_id; 
-                    $savePatQue['staff_id'] = $patientQueue->staff_id;
-                    $savePatQue['ic_number'] = $patientQueue->ic_number; 
-                    $savePatQue['name'] = $patientQueue->name;
-                    $savePatQue['symptopms'] = $patientQueue->symptopms;
-                    $savePatQue['department_id'] = 3;
-                    $savePatQue['depart_name'] = 'Dispensary';
-                    $savePatQue['utype'] = $patientQueue->utype;
-                    $savePatQue['ptype'] = $patientQueue->ptype;
-                    $savePatQue['queue_id'] = $patientQueue->queue_id;
-                    $savePatQue['queueno'] = $patientQueue->queueno;
-
-                    $count = DB::table('patientqueues')->where('queueno', '=', $patientQueue->queueno)->count();
-                    $qno = "D-".str_pad($count + 1, 5, '0', STR_PAD_LEFT);
-                    $savePatQue['token_no'] = $qno;    
-
-                    $savePatQue['q_status'] = $patientQueue->q_status;
-                    $savePatQue['is_active'] = 1;
-                    $savePatQue['created_time'] = date("h:i:s a", time());
-                    $savePatQue['created_at'] = date("Y-m-d h:i:s", time());
-                    $savePatQue['updated_at'] = date("Y-m-d h:i:s", time());
-                    $patId = DB::table('patientqueues')->insertGetId($savePatQue);
-
-                    DB::table('patientqueues')->where("id", '=',  $patientQueue->id)->update(['is_active'=> 0]);
-                    return 1;
-                }
-
-                //   ######################################
-
-
-
-
             }
             return 1;
         } else {
@@ -392,7 +376,7 @@ class PatientController extends Controller {
     }
 
 
-    public function  consultancyPassForm(){
+    public function consultancyPassForm(){
         $pq_id = \Crypt::decrypt(Input::post('id'));
         if( DB::table('patientqueues')->where('id', '=', $pq_id)->exists() ){
             $dt = DB::table('patientqueues')->where('id', '=', $pq_id)->first();
@@ -435,6 +419,135 @@ class PatientController extends Controller {
         
     }
     
+    
+    public function closeDispencery(Request $request) {
+        //echo "<pre>"; print_r($_POST); exit;
+        $encPatientQueueId = Input::get('pid');
+        $pq_id = \Crypt::decrypt(Input::post('pqid'));
+        //echo $pq_id; exit;
+        //$patientQueue = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
+        if( DB::table('patientqueues')->where('id', '=', $pq_id)->where('department_id', '=', 3)->exists() ){
+            DB::table('patientqueues')->where("id", '=',  $pq_id)->update(['is_active'=> 0]);
+            return 1;
+        } else {
+            return 0;
+        }
+        //   ######################################
+        return $lastInsertIdCons;
+    }
+    
+    
+    public function dispenceryprofile($id){
+        if ($id != ''){
+            $qid = $id;
+            $pq_id = \Crypt::decrypt($qid);
+            $pq = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
+            
+            //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            $curicno = $pq->ic_number;
+            $curtoken = $pq->token_no;
+            $othpqlist = DB::table('patientqueues')->select('patientqueues.*')->where('ic_number', '=', $curicno)->where('token_no', '!=', $curtoken)->get();
+            $patientData['queueId'] = $qid;
+            $patientData['pqueue'] = $pq;
+            $patient_detail = DB::table('patients')->select('patients.*')->where('id', '=', $pq->patient_id)->first();
+            $patientData['patientdet'] = $patient_detail;
+            
+            //  ###   Patient laboratory History
+            $dataLab = array();
+            $parentpq = DB::table('patientqueues')->select('patientqueues.*')->where('patient_id', '=', $pq->patient_id)->where('depart_name', '=', 'Laboratory')->get();
+            $k = 1;
+            foreach($parentpq as $pq){
+                $dataLab[$k]['labreq'] = DB::table('laboratoryrequests')->select('laboratoryrequests.*')->where('q_id', '=', $pq->id)->first();
+                $dataLab[$k]['labtest'] = DB::table('laboratories')->select('laboratories.*')->where('q_id', '=', $pq->id)->first();
+                $k++;
+            }
+            $labtestlist = DB::table('laboratoryrequests')->select('laboratoryrequests.*')->where('q_id', '=', $pq->id)->first();
+            $patientData['labtstlist'] = $dataLab;
+            
+            if ($patient_detail->staff_id != 0) {
+                $staff_detail = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NO_PEKERJA', '=', $patient_detail->staff_id)->first();
+                $patientData['email'] = $staff_detail->HR_EMAIL;
+                $patientData['phone'] = $staff_detail->HR_TELBIMBIT;
+                if ($patient_detail->utype == 'staff') {
+                    $patientData['dob'] = $staff_detail->HR_TARIKH_LAHIR;
+                } else if ($patient_detail->utype == 'dependent') {
+                    $dependent_detail = DB::table('hr_maklumat_tanggungan')->select('hr_maklumat_tanggungan.*')->where('HR_NO_PEKERJA', '=', $patient_detail->staff_id)->first();
+                    $patientData['dob'] = $dependent_detail->HR_TARIKH_LAHIR;
+                } else {
+                    $patientData['dob'] = '';
+                }
+            } else {
+                $patientData['email'] = '';
+                $patientData['phone'] = '';
+                $patientData['dob'] = '';
+            }
+
+            if ($patientData['dob'] != '') {
+                $patientData['age'] = \Carbon::parse($patientData['dob'])->age;
+            } else {
+                $patientData['age'] = '';
+            }
+            //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            if($pq->parent_id > 0){
+                $consult = DB::table('consultations')->select('consultations.*')->where('q_id', '=', $pq->parent_id)->first();
+                
+                $drugs = DB::table('prescribtions')->select('prescribtions.*')->where('consutants_id', '=', $consult->id)->get();
+            } else {
+                return redirect()->back();
+            }
+            
+            return view('patient.dispenceryprofile', compact('patientData', 'qid', 'pq', 'consult', 'othpqlist', 'drugs'));
+            
+        } else {
+            return redirect()->back();
+        }
+    }
+      
+    public function downloadmedicalcertificate(){
+
+        $qid = $_POST['qid'];
+        $pq_id = \Crypt::decrypt($qid);
+        
+        $pq = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
+        $parentq = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq->parent_id)->first();
+        $consult = DB::table('consultations')->select('consultations.*')->where('q_id', '=', $pq->parent_id)->first();
+        $dayinwordData = $this->numberTowords(intval($consult->totaldays));
+        if(intval($consult->totaldays) == 0){
+            $dayinword = " ";
+        } else if(intval($consult->totaldays) == 1){
+            $dayinword = $dayinwordData . " Day";
+        } else {
+            $dayinword = $dayinwordData . " Day's";
+        }
+        $cur_date = Carbon::now()->toDateTimeString();
+        
+        $department = 'Consutation';
+        
+        return view('patient.downloadmedicalcertificate', compact('pq','parentq','consult','dayinword', 'department', 'cur_date'));
+    }
+    
+    public function dispencerytimeslip(){
+
+        $qid = $_POST['qid'];
+        $pq_id = \Crypt::decrypt($qid);
+        
+        $pq = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
+        $parentq = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq->parent_id)->first();
+        $consult = DB::table('consultations')->select('consultations.*')->where('q_id', '=', $pq->parent_id)->first();
+        $dayinwordData = $this->numberTowords(intval($consult->totaldays));
+        if(intval($consult->totaldays) == 0){
+            $dayinword = " ";
+        } else if(intval($consult->totaldays) == 1){
+            $dayinword = $dayinwordData . " Day";
+        } else {
+            $dayinword = $dayinwordData . " Day's";
+        }
+        $cur_date = Carbon::now()->toDateTimeString();
+        
+        $department = 'Consutation';
+        
+        return view('patient.downloadtimeslip', compact('pq','parentq','consult','dayinword', 'department', 'cur_date'));
+    }
     
     public function labpatientprofile($id = null) {
         if ($id != ''){
@@ -516,6 +629,92 @@ class PatientController extends Controller {
     
     
     
-    
+    public function numberTowords($num){
+
+        $ones = array(
+        0 =>"ZERO",
+        1 => "ONE",
+        2 => "TWO",
+        3 => "THREE",
+        4 => "FOUR",
+        5 => "FIVE",
+        6 => "SIX",
+        7 => "SEVEN",
+        8 => "EIGHT",
+        9 => "NINE",
+        10 => "TEN",
+        11 => "ELEVEN",
+        12 => "TWELVE",
+        13 => "THIRTEEN",
+        14 => "FOURTEEN",
+        15 => "FIFTEEN",
+        16 => "SIXTEEN",
+        17 => "SEVENTEEN",
+        18 => "EIGHTEEN",
+        19 => "NINETEEN",
+        "014" => "FOURTEEN"
+        );
+
+        $tens = array( 
+        0 => "ZERO",
+        1 => "TEN",
+        2 => "TWENTY",
+        3 => "THIRTY", 
+        4 => "FORTY", 
+        5 => "FIFTY", 
+        6 => "SIXTY", 
+        7 => "SEVENTY", 
+        8 => "EIGHTY", 
+        9 => "NINETY" 
+        ); 
+
+        $hundreds = array( 
+        "HUNDRED", 
+        "THOUSAND", 
+        "MILLION", 
+        "BILLION", 
+        "TRILLION", 
+        "QUARDRILLION" 
+        ); /*limit t quadrillion */
+
+        $num = number_format($num,2,".",","); 
+        $num_arr = explode(".",$num); 
+        $wholenum = $num_arr[0]; 
+        $decnum = $num_arr[1]; 
+        $whole_arr = array_reverse(explode(",",$wholenum)); 
+        krsort($whole_arr,1); 
+        $rettxt = ""; 
+        foreach($whole_arr as $key => $i){
+
+            while(substr($i,0,1)=="0")
+                $i=substr($i,1,5);
+                if($i < 20){ 
+                    /* echo "getting:".$i; */
+                    $rettxt .= $ones[$i]; 
+                }elseif($i < 100){ 
+                    if(substr($i,0,1)!="0")  $rettxt .= $tens[substr($i,0,1)]; 
+                    if(substr($i,1,1)!="0") $rettxt .= " ".$ones[substr($i,1,1)]; 
+                }else{ 
+                    if(substr($i,0,1)!="0") $rettxt .= $ones[substr($i,0,1)]." ".$hundreds[0]; 
+                    if(substr($i,1,1)!="0")$rettxt .= " ".$tens[substr($i,1,1)]; 
+                    if(substr($i,2,1)!="0")$rettxt .= " ".$ones[substr($i,2,1)]; 
+                } 
+                if($key > 0){ 
+                    $rettxt .= " ".$hundreds[$key]." "; 
+                }
+        } 
+        if($decnum > 0){
+            $rettxt .= " and ";
+            if($decnum < 20){
+                $rettxt .= $ones[$decnum];
+            }elseif($decnum < 100){
+                $rettxt .= $tens[substr($decnum,0,1)];
+                $rettxt .= " ".$ones[substr($decnum,1,1)];
+            }
+        }
+        return $rettxt;
+    }
+
+
         
 }

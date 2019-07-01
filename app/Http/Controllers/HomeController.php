@@ -27,7 +27,7 @@ class HomeController extends Controller {
         toastr()->success('Have fun storming the castle!', 'Miracle Max Says');
 
         $patientList1 = array();
-        $arr1 = DB::table('patientqueues')->select('patientqueues.*')->whereIn('department_id', [1])->orderBy('id', 'asc')->limit(10)->get();
+        $arr1 = DB::table('patientqueues')->select('patientqueues.*')->where('is_active', 1)->whereIn('department_id', [1])->orderBy('id', 'asc')->limit(10)->get();
 
         foreach ($arr1 as $k => $v) {
             $tokval = DB::table('patientqueues')->select('patientqueues.*')->where('patient_id', '=', $v->id)->orderBy('id', 'desc')->first();
@@ -36,7 +36,7 @@ class HomeController extends Controller {
         }
         
         $patientList2 = array();
-        $arr2 = DB::table('patientqueues')->select('patientqueues.*')->whereIn('department_id', [2])->orderBy('id', 'asc')->limit(10)->get();
+        $arr2 = DB::table('patientqueues')->select('patientqueues.*')->where('is_active', 1)->whereIn('department_id', [2])->orderBy('id', 'asc')->limit(10)->get();
 
         foreach ($arr2 as $k => $v) {
             $tokval = DB::table('patientqueues')->select('patientqueues.*')->where('patient_id', '=', $v->id)->orderBy('id', 'desc')->first();
@@ -45,7 +45,7 @@ class HomeController extends Controller {
         }
         
         $labpatientList = array();
-        $labarr = DB::table('patientqueues')->select('patientqueues.*')->where('is_active', '=', 1)->where('department_id', '=', 4)->orderBy('id', 'asc')->limit(10)->get();
+        $labarr = DB::table('patientqueues')->select('patientqueues.*')->where('is_active', '=', 1)->where('is_active', 1)->where('department_id', '=', 4)->orderBy('id', 'asc')->limit(10)->get();
         foreach ($labarr as $k => $v) {
             $tokval = DB::table('patientqueues')->select('patientqueues.*')->where('patient_id', '=', $v->id)->orderBy('id', 'desc')->first();
             $labpatientList[$k]['pqueue'] = $v;
