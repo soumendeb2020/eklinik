@@ -442,7 +442,7 @@ class PatientController extends Controller {
             $qid = $id;
             $pq_id = \Crypt::decrypt($qid);
             $pq = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
-            
+            //echo $pq_id; exit;
             //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             $curicno = $pq->ic_number;
             $curtoken = $pq->token_no;
@@ -490,8 +490,20 @@ class PatientController extends Controller {
             //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             if($pq->parent_id > 0){
                 $consult = DB::table('consultations')->select('consultations.*')->where('q_id', '=', $pq->parent_id)->first();
+                //dd($consult);
+                if( $consult ){
+                    $consult = DB::table('consultations')->select('consultations.*')->where('q_id', '=', $pq->parent_id)->first();
+                    //echo $consult->id; exit;
+                    if( DB::table('prescribtions')->select('prescribtions.*')->where('consutants_id', '=', $consult->id)->exists() ){
+                        $drugs = DB::table('prescribtions')->select('prescribtions.*')->where('consutants_id', '=', $consult->id)->get();
+                    } else {
+                        $drugs = array();
+                    }    
+                } else {
+                    return redirect()->back();
+                }
                 
-                $drugs = DB::table('prescribtions')->select('prescribtions.*')->where('consutants_id', '=', $consult->id)->get();
+                 
             } else {
                 return redirect()->back();
             }

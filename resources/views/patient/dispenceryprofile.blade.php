@@ -370,8 +370,8 @@ div.anonymous, div.end_user, div.agent, div.manager {
 
                                                 @if ($consult->medical_certificate == 1 )
                                                     <div class="form-group">
-                                                        <label class="col-md-3" for="inputName" style="padding-right: 50px;">Medical Certificate</label>
-                                                        <div class="col-md-9">
+                                                        <label class="col-md-4" for="inputName" style="padding-right: 50px;">Medical Certificate</label>
+                                                        <div class="col-md-8">
                                                             <input type="button" class="btn btn-default" onclick="javascript:demoFromHTML('fromHTMLtestdiv','medical-certificate.pdf','mc')" id="addrowsms" value="Download PDF">
                                                         </div>
                                                     </div>
@@ -380,15 +380,15 @@ div.anonymous, div.end_user, div.agent, div.manager {
                                                 
                                                 @if ($consult->time_slip == 1 )
                                                     <div class="form-group">
-                                                        <label class="col-md-3" for="inputName" style="padding-right: 50px;">Time Slip</label>
-                                                        <div class="col-md-9">
+                                                        <label class="col-md-4" for="inputName" style="padding-right: 50px;">Time Slip</label>
+                                                        <div class="col-md-8">
                                                             <input type="button" class="btn btn-default" onclick="javascript:demoFromHTML('fromHTMLtestdiv','time-slip.pdf','ts')" id="addrowsts" value="Download PDF">
                                                         </div>    
                                                     </div>
                                                     <div class="form-group" style=" height: 30px"></div>
                                                 @endif
                                                 <div class="form-group">
-                                                    <button style="margin-left: 650px; width: 120px" type="button" class="btn btn-primary submitBtn" onclick="submitDispenceryForm()">Close</button>
+                                                    <button style="margin-left: 75%; width: 120px" type="button" class="btn btn-primary submitBtn" onclick="submitDispenceryForm()">Close</button>
                                                 </div>
                                             </div>
                                         </div>
