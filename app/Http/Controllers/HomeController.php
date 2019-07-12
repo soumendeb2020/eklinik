@@ -390,9 +390,19 @@ class HomeController extends Controller {
     } 
 
     public function saveNewPatient(Request $request) {
-
-        if($_POST['type'] == 'otherSection'){
+        //dd($_POST);
+        if($_POST['type'] == 'amSection'){
             $typename = 'other';
+            $utype_name = $_POST['type'];
+        } else if($_POST['type'] == 'wmSection'){    
+            $typename = 'other';
+            $utype_name = $_POST['type'];
+        } else if($_POST['type'] == 'okuSection'){    
+            $typename = 'other';
+            $utype_name = $_POST['type'];
+        } else if($_POST['type'] == 'wmasSection'){    
+            $typename = 'other';
+            $utype_name = $_POST['type'];
         } else if($_POST['type'] == 'dependentSection'){
             $typename = 'dependent';
         } else if($_POST['type'] == 'staffSection'){
@@ -423,6 +433,7 @@ class HomeController extends Controller {
             $savedata['ic_number'] = $_POST['ic_number'];
             $savedata['name'] = $_POST['name'];
             $savedata['utype'] = $typename;
+            $savedata['utype_name'] = $utype_name;
             $savedata['ptype'] = $_POST['cat'];
             $savedata['created_at'] = date("Y-m-d h:i:s", time());
             $savedata['updated_at'] = date("Y-m-d h:i:s", time()); 
@@ -455,6 +466,7 @@ class HomeController extends Controller {
         $savePatQue['department_id'] = $_POST['department_id'];
         $savePatQue['depart_name'] = $dept->name;
         $savePatQue['utype'] = $typename;
+        $savePatQue['utype_name'] = $utype_name;
         $savePatQue['ptype'] = $_POST['cat'];
         $savePatQue['queue_id'] = $lqno;
         $savePatQue['queueno'] = $qname;
@@ -499,12 +511,26 @@ class HomeController extends Controller {
     public function getExistingCompany() { 
         $cname = $_POST['cname'];  
         $data = DB::table('company')->select('company.*')->where('name', 'like', $cname.'%')->get();
+        //$emp = DB::table('company')->select('company.*')->where('name', 'like', $cname.'%')->get();
+        //echo "<pre>"; print_r($data); exit;
         return View('ajax.getExistingCompany')->with(compact('data'));
     }
     
+    public function getExistingEmpListById() { 
+        $ids = $_POST['ids'];  
+        $data = DB::table('company')->select('company.*')->where('id', '=', $ids)->get();
+        $emp = DB::table('companystaff')->select('companystaff.*')->where('company_id', '=', $ids)->get();
+        //echo "<pre>"; print_r($emp); exit;
+        return View('ajax.getExistingEmpListById')->with(compact('data','emp'));
+    }
+    
+    
     public function savenewty2() { 
-        #echo "<pre>"; print_r($_POST); exit;
-        $cname = $_POST['companyname'];  
+        //echo "<pre>"; print_r($_POST); exit;
+        $cname = $_POST['companyname']; 
+        $addr1 = $_POST['addr1'];
+        $addr2 = $_POST['addr2'];
+        $addr3 = $_POST['addr3'];
         $name = $_POST['name'];
         $sex = $_POST['sex'];
         $icno = $_POST['icno'];
@@ -512,23 +538,41 @@ class HomeController extends Controller {
         $patType = $_POST['patTypety2'];
         $patCat = $_POST['patCatty2'];
         
-        $saveCompany['name'] = $cname;
-        $saveCompany['is_active'] = 1;
-        $saveCompany['created_at'] = date("Y-m-d h:i:s", time());
-        $saveCompany['updated_at'] = date("Y-m-d h:i:s", time());
-        $lcoid = DB::table('company')->insertGetId($saveCompany);
+        $companyExist = DB::table('company')->select('company.*')->where('name', '=', $cname)->first();
+        if($companyExist){
+            $existCo = DB::table('company')->select('company.*')->where('name', '=', $cname)->first();
+            DB::table('company')->where('name', '=', $cname)->update(array('addr1' => $addr1, 'addr2' => $addr2, 'addr3' => $addr3,));
+            $lcoid = $existCo->id;
+        } else {
+            $saveCompany['name'] = $cname;
+            $saveCompany['addr1'] = $addr1;
+            $saveCompany['addr2'] = $addr2;
+            $saveCompany['addr3'] = $addr3;
+            $saveCompany['is_active'] = 1;
+            $saveCompany['created_at'] = date("Y-m-d h:i:s", time());
+            $saveCompany['updated_at'] = date("Y-m-d h:i:s", time());
+            $lcoid = DB::table('company')->insertGetId($saveCompany);
+        }
         
         foreach( $name as $k => $v ){
-            $saveEmployee['company_id'] = $lcoid;
-            $saveEmployee['company_name'] = $cname;
-            $saveEmployee['name'] = $v;
-            $saveEmployee['sex'] = $sex[$k];
-            $saveEmployee['ic_number'] = $icno[$k];
-            $saveEmployee['action'] = 0;
-            $saveEmployee['is_active'] = 1;
-            $saveEmployee['created_at'] = date("Y-m-d h:i:s", time());
-            $saveEmployee['updated_at'] = date("Y-m-d h:i:s", time());
-            $lempid = DB::table('companystaff')->insertGetId($saveEmployee);
+            
+            $empExist = DB::table('companystaff')->select('companystaff.*')->where('company_id', '=', $lcoid)->where('company_name', '=', $cname)->where('name', '=', $v)->first();
+            if($empExist){
+                $existEmp = DB::table('companystaff')->select('companystaff.*')->where('company_id', '=', $lcoid)->where('company_name', '=', $cname)->where('name', '=', $v)->first();
+                DB::table('companystaff')->where('company_id', '=', $lcoid)->where('company_name', '=', $cname)->where('name', '=', $v)->update(array('sex' => $sex[$k], 'ic_number' => $icno[$k]));
+                $lempid = $existEmp->id;
+            } else {
+                $saveEmployee['company_id'] = $lcoid;
+                $saveEmployee['company_name'] = $cname;
+                $saveEmployee['name'] = $v;
+                $saveEmployee['sex'] = $sex[$k];
+                $saveEmployee['ic_number'] = $icno[$k];
+                $saveEmployee['action'] = 0;
+                $saveEmployee['is_active'] = 1;
+                $saveEmployee['created_at'] = date("Y-m-d h:i:s", time());
+                $saveEmployee['updated_at'] = date("Y-m-d h:i:s", time());
+                $lempid = DB::table('companystaff')->insertGetId($saveEmployee);
+            }
         }    
 
         $queueExist = DB::table('ty2queuelist')->select('ty2queuelist.*')->where('name', '=', $ty2queueno)->first();
@@ -547,7 +591,10 @@ class HomeController extends Controller {
         $count = DB::table('ty2queuelist')->where('name', '=', $qname)->count();
         
         $savety2Que['company_id'] = $lcoid;
-        $savety2Que['company_name'] = $cname;    
+        $savety2Que['company_name'] = $cname; 
+        $savety2Que['addr1'] = $addr1;
+        $savety2Que['addr2'] = $addr2;
+        $savety2Que['addr3'] = $addr3;
         $savety2Que['queue_id'] = $lqno;
         $savety2Que['queueno'] = $qname;
         $savety2Que['token_no'] = "T-".str_pad($count + 1, 5, '0', STR_PAD_LEFT);

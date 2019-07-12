@@ -23,6 +23,7 @@ Route::post('getAddPatientResult', array('as' => 'getAddPatientResult', 'uses' =
 Route::post('getAddPatientResultdata', array('as' => 'getAddPatientResultdata', 'uses' => 'HomeController@getAddPatientResultdata'));
 Route::post('saveNewPatient', array('as' => 'saveNewPatient', 'uses' => 'HomeController@saveNewPatient'));
 Route::post('getExistingCompany', array('as' => 'getExistingCompany', 'uses' => 'HomeController@getExistingCompany'));
+Route::post('getExistingEmpListById', array('as' => 'getExistingEmpListById', 'uses' => 'HomeController@getExistingEmpListById'));
 Route::post('savenewty2', array('as' => 'savenewty2', 'uses' => 'HomeController@savenewty2'));
 
 Route::get('patientprofile/{id}', array('as' => 'patientprofilepath', 'uses' => 'PatientController@profile'));
@@ -48,7 +49,8 @@ Route::post('consultancyPassForm', array('as' => 'consultancyPassForm', 'uses' =
 Route::get('motherdev', array('as' => 'motherdev', 'uses' => 'PatientController@motherdev'));
 Route::get('childdev', array('as' => 'childdev', 'uses' => 'PatientController@childdev'));
 
-
+//      #####################       TY2     #################################### 
+Route::get('ty2profile/{id}', array('as' => 'ty2profile', 'uses' => 'Ty2Controller@ty2profile'));
 
 Route::group( ['middleware' => ['auth']], function() {
     Route::resource('users', 'UserController');

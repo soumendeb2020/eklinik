@@ -502,8 +502,6 @@ class PatientController extends Controller {
                 } else {
                     return redirect()->back();
                 }
-                
-                 
             } else {
                 return redirect()->back();
             }

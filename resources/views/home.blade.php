@@ -281,13 +281,16 @@
                                         <select onchange="getCategorySearch(this.value);" class="delvalcat dropdown-wrap" name="category" id="category">
                                             <option value="staffSection">Staff</option>
                                             <option value="dependentSection">Dependant</option>
-                                            <option value="otherSection">Others</option>
+                                            <option value="amSection">AM</option>
+                                            <option value="wmSection">WM</option>
+                                            <option value="okuSection">OKU</option>
+                                            <option value="wmasSection">WMAS</option>
                                         </select>
                                     </label>
                                 </div>
                             </div>
                         </section>
-                        <section class="modalSearcSec" id="staffSection" > 
+                        <section class="modalSearcSec staffSection" id="staffSection" > 
                             <div class="row">
                                 <label class="cel-gap label col-xs-12">Search By : </label>
                                 <div class="cel-gap col-xs-4">
@@ -309,7 +312,7 @@
                                 </div>
                             </div>
                         </section>
-                        <section class="modalSearcSec" id="dependentSection" style="display: none" >
+                        <section class="modalSearcSec dependentSection" id="dependentSection" style="display: none" >
                             <div class="row">
                                 <label class="cel-gap label col-xs-12">Search By : </label>
                                 <div class="cel-gap col-xs-4">
@@ -330,7 +333,7 @@
                                 </div>
                             </div>
                         </section>
-                        <section class="modalSearcSec" id="otherSection" style="display: none" >
+                        <section class="modalSearcSec amSection wmSection okuSection wmasSection" id="otherSection" style="display: none" >
                             <div class="row">
                                 <label class="cel-gap label col-xs-12">Search By : </label>
                                 <div class="cel-gap col-xs-4">
@@ -747,8 +750,8 @@
                 type: 'POST',
                 data: {_token: "{{ csrf_token() }}", type: patType, cat: cat, staff_id: staff_id, dept_id: dept_id, ic_number: ic_number, name: name, queueno: queueno, symptopms: symptopms, dept: dept, department_id: department_id, bloodtestchk: bloodtestchk, lipidschk: lipidschk, electrolytestestchk: electrolytestestchk, renalfunctionchk: renalfunctionchk, fbschk: fbschk, ultrasoundchk: ultrasoundchk},
             }).done(function (response) {
+                /*
                 if (response != 0) {
-                    
                     $('#cosuting').html(response['depart_name']);
                     $('#token').html(response['token_no']);
                     $('#datef').html(response['created_at']);
@@ -780,6 +783,7 @@
                     $("#isnew").val('');
                     
                 }
+                */
             });
         } else {
             $('.saveQueAlert').html('Alert : Please Fill All Fields or Check your all data is correct.');
@@ -807,7 +811,7 @@
         $('#regResult').css('display', 'none');
         $('#newPatient').css('display', 'none');
         $('.modalSearcSec').css('display', 'none');
-        $('#' + dt).css('display', 'block');
+        $('.' + dt).css('display', 'block');
         $('#searchcat option:first').prop('selected', true);
         $("#search").val("");
         $("#patType").val(dt);
@@ -938,14 +942,17 @@
         $('.savety2QueAlert').html('');
         $('.savety2QueAlert').css('display', 'none');
         var trig = false;
+        var slCount = 0;
         $('.delAllTY2val').each(function(){
             if (this.value == ''){
-                trig = true;
+                //trig = true;
                 return false;
             } else {
-                trig = false;
+                slCount = slCount + 1;
+                //trig = false;
             }    
         });
+        if(slCount > 0){ trig = false; } else { trig = true; }
         if(trig){
             $('.savety2QueAlert').html('Alert : Please Fill All Fields or Check your all data is correct.');
             $('.savety2QueAlert').css('display', 'block');
@@ -988,6 +995,37 @@
                                     </label>
                                 </div>
                             </div>
+
+                            <div class="row" style=" margin-top: 10px">
+                                <label class="label col col-3">Address Line 1 : </label>
+                                <div class="col col-9">
+                                    <label class="input">
+                                        <input type="text" class="delAllTY2val" name="addr1" id="addr1" value="">
+                                        <div id="suggesstion-box"></div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="row" style=" margin-top: 10px">
+                                <label class="label col col-3">Address Line 2 : </label>
+                                <div class="col col-9">
+                                    <label class="input">
+                                        <input type="text" class="delAllTY2val" name="addr2" id="addr2" value="">
+                                        <div id="suggesstion-box"></div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="row" style=" margin-top: 10px">
+                                <label class="label col col-3">Address Line 3 : </label>
+                                <div class="col col-9">
+                                    <label class="input">
+                                        <input type="text" class="delAllTY2val" name="addr3" id="addr3" value="">
+                                        <div id="suggesstion-box"></div>
+                                    </label>
+                                </div>
+                            </div>
+                            
                         </section>
                         <section>
                             <table class="table">

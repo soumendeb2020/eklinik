@@ -142,26 +142,37 @@
                                         <td>reception@mbpj.com</td>
                                         <td>secret</td>
                                         <td>staff</td>
+                                    </tr>    
                                     <tr>
                                         <td>222222222222</td>
                                         <td>doctor@mbpj.com</td>
                                         <td>secret</td>
                                         <td>doctor</td>
+                                    </tr>    
                                     <tr>
                                         <td>666666666666</td>
                                         <td>lab@mbpj.com</td>
                                         <td>secret</td>
                                         <td>laboratory</td>
+                                    </tr>    
                                     <tr>
                                         <td>333333333333</td>
                                         <td>dispensary@mbpj.com</td>
                                         <td>secret</td>
                                         <td>dispensary</td>
+                                    </tr>    
                                     <tr>
                                         <td>444444444444</td>
                                         <td>inventory@mbpj.com</td>
                                         <td>secret</td>
-                                        <td>inventory</td>                                            
+                                        <td>inventory</td>
+                                    </tr>  
+                                    <tr>
+                                        <td>555555555555</td>
+                                        <td>ty2@mbpj.com</td>
+                                        <td>secret</td>
+                                        <td>TY2</td>
+                                    </tr> 
                                 </tbody>
                             </table>
                         </div>
