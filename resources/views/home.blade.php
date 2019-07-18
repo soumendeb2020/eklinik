@@ -279,6 +279,7 @@
                                 <div class="cel-gap col-xs-12">
                                     <label class="input">
                                         <select onchange="getCategorySearch(this.value);" class="delvalcat dropdown-wrap" name="category" id="category">
+                                            <option value="">Select Category</option>
                                             <option value="staffSection">Staff</option>
                                             <option value="dependentSection">Dependant</option>
                                             <option value="amSection">AM</option>
@@ -308,7 +309,7 @@
                                     </label>
                                 </div>
                                 <div class="cel-gap col-xs-2">
-                                    <button type="button" onclick="getSearcResult();" class="btn btn-primary btn-submit submitBtn">Search</button>
+                                    <button type="button" onclick="getSearcResult('staff');" class="btn btn-primary btn-submit submitBtn">Search</button>
                                 </div>
                             </div>
                         </section>
@@ -329,7 +330,7 @@
                                     </label>
                                 </div>
                                 <div class="cel-gap col-xs-2">
-                                    <button type="button" onclick="getSearcResult();" class="btn btn-primary btn-submit submitBtn">Search</button>
+                                    <button type="button" onclick="getSearcResult('dependent');" class="btn btn-primary btn-submit submitBtn">Search</button>
                                 </div>
                             </div>
                         </section>
@@ -350,7 +351,7 @@
                                     </label>
                                 </div>
                                 <div class="cel-gap col-xs-2">
-                                    <button type="button" onclick="getSearcResult();" class="btn btn-primary btn-submit submitBtn">Search</button>
+                                    <button type="button" onclick="getSearcResult('other');" class="btn btn-primary btn-submit submitBtn">Search</button>
                                 </div>
                             </div>
                             <div class="row">
@@ -750,7 +751,6 @@
                 type: 'POST',
                 data: {_token: "{{ csrf_token() }}", type: patType, cat: cat, staff_id: staff_id, dept_id: dept_id, ic_number: ic_number, name: name, queueno: queueno, symptopms: symptopms, dept: dept, department_id: department_id, bloodtestchk: bloodtestchk, lipidschk: lipidschk, electrolytestestchk: electrolytestestchk, renalfunctionchk: renalfunctionchk, fbschk: fbschk, ultrasoundchk: ultrasoundchk},
             }).done(function (response) {
-                /*
                 if (response != 0) {
                     $('#cosuting').html(response['depart_name']);
                     $('#token').html(response['token_no']);
@@ -781,9 +781,7 @@
                     $('.delvalcat2').val('ic');
                     $('.delDeptval').val('1');
                     $("#isnew").val('');
-                    
                 }
-                */
             });
         } else {
             $('.saveQueAlert').html('Alert : Please Fill All Fields or Check your all data is correct.');
@@ -820,7 +818,7 @@
         $("#isnew").val(0);
     }
 
-    function getSearcResult() {
+    function getSearcResult(dtype) {
         var pttype = $("#patType").val();
         var scat = $(".searchcat" + pttype).val();
         var sdt = $(".search" + pttype).val();
@@ -869,8 +867,10 @@
                 if (response != 0) {
                     if (response != 1) {
                         $("#staff_id").val(response['staffid']);
-                        $("#icno").val(response['ic']);
-                        $("#pname").val(response['name']);
+                        if(dtype != 'staff'){
+                            $("#icno").val(response['ic']);
+                            $("#pname").val(response['name']);
+                        }
                         $("#department_id").val(response['departmentid']);
                         $("#departmentname").val(response['department']);
                     }

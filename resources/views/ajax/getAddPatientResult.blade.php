@@ -26,10 +26,12 @@
                 <td>Staff Id:</td>
                 <td>{{$data['staffid']}}</td>
             </tr>
+            {{--
             <tr>
                 <td>Department:</td>
                 <td>{{$data['department']}}</td>
             </tr>
+            --}}
         </tbody>
     </table>
 </div>

@@ -198,21 +198,61 @@ div.anonymous, div.end_user, div.agent, div.manager {
                     <div class="col-md-12">
                         
                         <div class="row">
-                            <div class="col-md-2">Company : </div>
+                            <div class="col-md-3">Company : </div>
                             <div class="col-md-9"><a href="JavaScript:Void(0);">{{ $company->name }}</a></div>
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-md-2">Address : </div>
+                            <div class="col-md-3">Address : </div>
                             <div class="col-md-9"><a href="JavaScript:Void(0);">{{ $company->addr1 }}, {{ $company->addr2 }}, {{ $company->addr3 }}</a></div>
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-md-2">Queue Number : </div>
+                            <div class="col-md-3">Queue Number : </div>
                             <div class="col-md-9"><a href="JavaScript:Void(0);">{{ $ty2que->queueno }}</a></div>
                         </div> 
                         <br>
+                        <div class="row">
+                            <div class="col-md-3">Recept Number : </div>
+                            <div class="col-md-9">
+                                <input style="width: 50%" type="text" name="glreceiptno" id="glreceiptno" value="" >
+                                <button type="button" name="save" onclick="savedataGroup()" >Save</button>
+                            </div>
+                        </div> 
+                        <br>
                     </div>
+                    <script>
+                        function savedataGroup(){
+                            var receptno = $('#glreceiptno').val();
+                            var ty2qid = $('#ty2qid').val();
+                            url = "{!! URL::to('savety2groupreceipt') !!}";
+                            $.ajax({
+                                url: url,
+                                async: false,
+                                type: 'POST',
+                                data: {_token: "{{ csrf_token() }}", receptno: receptno, ty2qid: ty2qid},
+                            }).done(function (response) {
+                                 location.reload(true);    
+                            });
+                        }
+                        
+                        function savedataSingle(ids){
+                            var receptno = $('#receiptno' + ids).val();
+                            url = "{!! URL::to('savety2receipt') !!}";
+                            $.ajax({
+                                url: url,
+                                async: false,
+                                type: 'POST',
+                                data: {_token: "{{ csrf_token() }}", receptno: receptno, ty2qid: ids},
+                            }).done(function (response) {
+                                 //location.reload(true);    
+                                 $('#recepttd'+ids).html(receptno);
+                                 $('#save' +ids).hide();
+                            });
+                        }
+                    </script>    
+                    <input type="hidden" class="delAllval" name="ty2qid" id="ty2qid" value="{{$ty2que->id}}" >
+                    <input type="hidden" class="delAllval" name="companyid" id="companyid" value="{{$company->id}}" >
                     <div class="col-md-12">
                         <div class="jarviswidget" id="135d560a5563120bd63103310c8a48ba" data-widget-editbutton="false">
                             <header>
@@ -250,12 +290,19 @@ div.anonymous, div.end_user, div.agent, div.manager {
                                                                         <td>{{ date('d-M-y', strtotime($ty2que->created_at)) }}</td>
                                                                         <td>{{$e->name}}</td>
                                                                         <td>{{$e->ic_number}}</td>
+                                                                        
                                                                         @if (!empty($e->receipt_no))
-                                                                            <td>{{$e->receipt_no}}</td>
+                                                                        <td id="recepttd{{$e->recid}}">{{$e->receipt_no}}</td>
                                                                         @else
-                                                                            <td>{{$e->receipt_no}}</td>
+                                                                        <td id="recepttd{{$e->recid}}"><input style="width: 100%" type="text" name="receiptno" id="receiptno{{$e->recid}}" value="" ></td>
                                                                         @endif
-                                                                        <td><button type="button" name="save" >Save</button></td>
+                                                                         
+                                                                        <td>
+                                                                            @if (empty($e->receipt_no))
+                                                                            <button id="save{{$e->recid}}" type="button" name="save" onclick="savedataSingle('{{$e->recid}}')" >Save</button>
+                                                                            @endif
+                                                                            <button type="button" name="print" onclick="myPrint('{{$e->recid}}')">Print</button>
+                                                                        </td>
                                                                     </tr>
                                                                 @endforeach
                                                             @else

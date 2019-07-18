@@ -77,7 +77,13 @@ class PatientController extends Controller {
             }
 
             $drugs = DB::table('drug_list')->select('drug_list.*')->where('drug_name', '!=', '')->get();
-            return view('patient.profile', compact('patientData', 'othpqlist', 'drugs'));
+            
+            $diagnosis = DB::table('diagnosis')->select('diagnosis.*')->where('is_active', '=', 1)->get();
+            $dossage = DB::table('dossage')->select('dossage.*')->where('is_active', '=', 1)->get();
+            $prescription_description = DB::table('prescription_description')->select('prescription_description.*')->where('is_active', '=', 1)->get();
+            $drug_description = DB::table('drug_description')->select('drug_description.*')->where('is_active', '=', 1)->get();
+            
+            return view('patient.profile', compact('patientData', 'othpqlist', 'drugs', 'diagnosis', 'drug_description', 'dossage', 'prescription_description'));
         } else {
             return redirect()->back();
         }
@@ -88,7 +94,7 @@ class PatientController extends Controller {
     }
     
     public function savePrescription(Request $request) {
-        //echo "<pre>"; print_r($_POST); exit;
+
         $encPatientQueueId = Input::get('pid');
         $pq_id = \Crypt::decrypt(Input::post('pqid'));
         $patientQueue = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
@@ -107,15 +113,15 @@ class PatientController extends Controller {
         $rs = Input::post('result');
         
         $medical_certificate = Input::post('medical_certificate');
-        $stdate = Input::post('stdate');
-        $enddate = Input::post('enddate');
+        $stdate = Carbon::createFromFormat('d/m/Y', Input::post('stdate'))->format('Y-m-d');
+        $enddate = Carbon::createFromFormat('d/m/Y', Input::post('enddate'))->format('Y-m-d');
         $totaldays = Input::post('totaldays');
         $time_slip = Input::post('time_slip');
-        $onlydate = Input::post('onlydate');
+        $onlydate = Carbon::createFromFormat('d/m/Y', Input::post('onlydate'))->format('Y-m-d');
         $sttime = Input::post('sttime');
         $endtime = Input::post('endtime');
         $totaltime = Input::post('totaltime');
-        
+
         if(Input::get('is_medical_certificate') !== ''){
             $is_medical_certificate = Input::post('is_medical_certificate');
             $medical_certificate = Input::post('medical_certificate');

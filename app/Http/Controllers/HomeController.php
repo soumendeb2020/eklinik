@@ -23,7 +23,7 @@ class HomeController extends Controller {
      */
     public function index() {
 
-        $department = DB::table('department')->select('department.*')->where('is_active', '=', 1)->get();
+        $department = DB::table('department')->select('department.*')->where('is_active', '=', 1)->where('id', '!=', 5)->get();
         toastr()->success('Have fun storming the castle!', 'Miracle Max Says');
 
         $patientList1 = array();
@@ -74,8 +74,14 @@ class HomeController extends Controller {
                     $data['department'] = $dept->GE_KETERANGAN_JABATAN;
                     $data['ic'] = $det->HR_NO_KPBARU;
                     $data['related'] = '';
+                    $data['dependendcount'] = DB::table('hr_maklumat_tanggungan')->select('hr_maklumat_tanggungan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->count();
+                    $data['dependend'] = DB::table('hr_maklumat_tanggungan')->join('ge_paramtable', 'hr_maklumat_tanggungan.HR_HUBUNGAN', '=', 'ge_paramtable.ORDINAL')
+                                                                            ->select('hr_maklumat_tanggungan.*', 'ge_paramtable.SHORT_DESCRIPTION', 'ge_paramtable.LONG_DESCRIPTION', 'ge_paramtable.LONG_DESCRIPTION')
+                                                                            ->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)
+                                                                            ->where('ge_paramtable.GROUPID', '=', 125)->get();
+                    //echo "<pre>"; print_r($data); exit;
                     
-                    return View('ajax.getAddPatientResult')->with(compact('data'));
+                    return View('ajax.getAddPatientListResult')->with(compact('data'));
                 } else {
                     return 0;
                 }
@@ -92,13 +98,20 @@ class HomeController extends Controller {
                     $data['department'] = $dept->GE_KETERANGAN_JABATAN;
                     $data['ic'] = $det->HR_NO_KPBARU;
                     $data['related'] = '';
+                    $data['dependendcount'] = DB::table('hr_maklumat_tanggungan')->select('hr_maklumat_tanggungan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->count();
+                    $data['dependend'] = DB::table('hr_maklumat_tanggungan')->join('ge_paramtable', 'hr_maklumat_tanggungan.HR_HUBUNGAN', '=', 'ge_paramtable.ORDINAL')
+                                                                            ->select('hr_maklumat_tanggungan.*', 'ge_paramtable.SHORT_DESCRIPTION', 'ge_paramtable.LONG_DESCRIPTION', 'ge_paramtable.LONG_DESCRIPTION')
+                                                                            ->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)
+                                                                            ->where('ge_paramtable.GROUPID', '=', 125)->get();
+                    //echo "ok"; exit;  
+                    //echo "<pre>"; print_r($data); exit;  
                     
-                    return View('ajax.getAddPatientResult')->with(compact('data'));
+                    return View('ajax.getAddPatientListResult')->with(compact('data'));
                 } else {
                     return 0;
                 }
             } else if ($searchby == 'name') {
-                $det = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NAMA_PEKERJA', '=', $searchname)->first();
+                //$det = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NAMA_PEKERJA', '=', $searchname)->first();
 
                 $cnt = DB::table('hr_maklumat_peribadi')->select('hr_maklumat_peribadi.*')->where('HR_NAMA_PEKERJA', '=', $searchname)->count();
                 if($cnt < 1){
@@ -137,8 +150,17 @@ class HomeController extends Controller {
                     $data['department'] = $dept->GE_KETERANGAN_JABATAN;
                     $data['ic'] = $det->HR_NO_KPBARU;
                     $data['related'] = '';
+                    $data['dependendcount'] = DB::table('hr_maklumat_tanggungan')->select('hr_maklumat_tanggungan.*')->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)->count();
+                    $data['dependend'] = DB::table('hr_maklumat_tanggungan')->join('ge_paramtable', 'hr_maklumat_tanggungan.HR_HUBUNGAN', '=', 'ge_paramtable.ORDINAL')
+                                                                            ->select('hr_maklumat_tanggungan.*', 'ge_paramtable.SHORT_DESCRIPTION', 'ge_paramtable.LONG_DESCRIPTION', 'ge_paramtable.LONG_DESCRIPTION')
+                                                                            ->where('HR_NO_PEKERJA', '=', $det->HR_NO_PEKERJA)
+                                                                            ->where('ge_paramtable.GROUPID', '=', 125)->get();
                     
-                    return View('ajax.getAddPatientResult')->with(compact('data'));
+                    
+                    
+                    //echo "<pre>"; print_r($data); exit;
+                    
+                    return View('ajax.getAddPatientListResult')->with(compact('data'));
                 }               
             }
         } else if ($type == 'dependentSection') {
@@ -258,7 +280,7 @@ class HomeController extends Controller {
         $searchby = $_POST['scat'];
         $searchname = $_POST['sdt'];
         $type = $_POST['stype'];
-
+        
         if ($type == 'staffSection') {
             if ($searchby == 'sid') {
                 $staff = DB::table('hr_maklumat_pekerjaan')->select('hr_maklumat_pekerjaan.*')->where('HR_NO_PEKERJA', '=', $searchname)->first();
@@ -405,8 +427,10 @@ class HomeController extends Controller {
             $utype_name = $_POST['type'];
         } else if($_POST['type'] == 'dependentSection'){
             $typename = 'dependent';
+            $utype_name = $_POST['type'];
         } else if($_POST['type'] == 'staffSection'){
             $typename = 'staff';
+            $utype_name = $_POST['type'];
         }
         
         $deptId = $_POST['department_id'];
@@ -554,27 +578,6 @@ class HomeController extends Controller {
             $lcoid = DB::table('company')->insertGetId($saveCompany);
         }
         
-        foreach( $name as $k => $v ){
-            
-            $empExist = DB::table('companystaff')->select('companystaff.*')->where('company_id', '=', $lcoid)->where('company_name', '=', $cname)->where('name', '=', $v)->first();
-            if($empExist){
-                $existEmp = DB::table('companystaff')->select('companystaff.*')->where('company_id', '=', $lcoid)->where('company_name', '=', $cname)->where('name', '=', $v)->first();
-                DB::table('companystaff')->where('company_id', '=', $lcoid)->where('company_name', '=', $cname)->where('name', '=', $v)->update(array('sex' => $sex[$k], 'ic_number' => $icno[$k]));
-                $lempid = $existEmp->id;
-            } else {
-                $saveEmployee['company_id'] = $lcoid;
-                $saveEmployee['company_name'] = $cname;
-                $saveEmployee['name'] = $v;
-                $saveEmployee['sex'] = $sex[$k];
-                $saveEmployee['ic_number'] = $icno[$k];
-                $saveEmployee['action'] = 0;
-                $saveEmployee['is_active'] = 1;
-                $saveEmployee['created_at'] = date("Y-m-d h:i:s", time());
-                $saveEmployee['updated_at'] = date("Y-m-d h:i:s", time());
-                $lempid = DB::table('companystaff')->insertGetId($saveEmployee);
-            }
-        }    
-
         $queueExist = DB::table('ty2queuelist')->select('ty2queuelist.*')->where('name', '=', $ty2queueno)->first();
         if($queueExist){
             $lqno = $queueExist->id;
@@ -602,7 +605,29 @@ class HomeController extends Controller {
         $savety2Que['created_time'] = date("h:i:s a", time());
         $savety2Que['created_at'] = date("Y-m-d h:i:s", time());
         $savety2Que['updated_at'] = date("Y-m-d h:i:s", time());
-        $lqty2que = DB::table('ty2queue')->insertGetId($savety2Que);    
+        $lqty2que = DB::table('ty2queue')->insertGetId($savety2Que);
+
+        foreach( $name as $k => $v ){
+            if($v != ''){
+                $empExist = DB::table('companystaff')->select('companystaff.*')->where('company_id', '=', $lcoid)->where('company_name', '=', $cname)->where('name', '=', $v)->first();
+                if($empExist){
+                    $existEmp = DB::table('companystaff')->select('companystaff.*')->where('company_id', '=', $lcoid)->where('company_name', '=', $cname)->where('name', '=', $v)->first();
+                    DB::table('companystaff')->where('company_id', '=', $lcoid)->where('company_name', '=', $cname)->where('name', '=', $v)->update(array('sex' => $sex[$k], 'ic_number' => $icno[$k]));
+                    $lempid = $existEmp->id;
+                } else {
+                    $saveEmployee['company_id'] = $lcoid;
+                    $saveEmployee['company_name'] = $cname;
+                    $saveEmployee['name'] = $v;
+                    $saveEmployee['sex'] = $sex[$k];
+                    $saveEmployee['ic_number'] = $icno[$k];
+                    $saveEmployee['action'] = 0;
+                    $saveEmployee['is_active'] = 1;
+                    $saveEmployee['created_at'] = date("Y-m-d h:i:s", time());
+                    $saveEmployee['updated_at'] = date("Y-m-d h:i:s", time());
+                    $lempid = DB::table('companystaff')->insertGetId($saveEmployee);
+                }  
+            }
+        }    
 
         return redirect()->route('home');
 

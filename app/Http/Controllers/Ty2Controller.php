@@ -40,6 +40,11 @@ class Ty2Controller extends Controller {
             $company = DB::table('company')->select('company.*')->where('id', '=', $ty2que->company_id)->first();
             $employees = DB::table('companystaff')->select('companystaff.*')->where('company_id', '=', $company->id)->get();
             
+            
+            $employees = DB::table('ty2recepts')->join('companystaff', 'ty2recepts.emp_id', '=', 'companystaff.id')
+                                                  ->select('ty2recepts.id as recid', 'ty2recepts.receipt_no', 'companystaff.*')
+                                                  ->where('ty2_qid', '=', $pq_id)->get();
+            
             //echo "<pre>"; print_r($ty2que);  echo "<pre>"; print_r($company); echo "<pre>"; print_r($employees); exit;
             
             return view('ty2.ty2profile', compact('ty2que', 'company', 'employees', 'qid'));
@@ -50,5 +55,20 @@ class Ty2Controller extends Controller {
         
     }
             
+     
+     public function savety2groupreceipt(Request $request) {
+        //echo "<pre>"; print_r($_POST); exit;
+        DB::table('ty2recepts')->where('ty2_qid', $_POST['ty2qid'])->update([ 'receipt_no' => $_POST['receptno'] ]);
+        return 1;
+     }
+    
+     public function savety2receipt(Request $request) {
+        //echo "<pre>"; print_r($_POST); exit;
+        DB::table('ty2recepts')->where('id', $_POST['ty2qid'])->update([ 'receipt_no' => $_POST['receptno'] ]);
+        return 1;
+         
+     }
+    
+    
     
 }

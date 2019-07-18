@@ -106,7 +106,7 @@ div.anonymous, div.end_user, div.agent, div.manager {
         //  '<input type="text" id="drugs[]" name="drugs[]" class="form-control drugsprescription" name="dose0">'+
         var newTr = '<tr>'+
                         '<td>'+
-                            '<select type="text" id="drugs[]" name="drugs[]" class="form-control drugsprescription" name="quantity0">'+
+                            '<select type="text" id="drugs[]" name="drugs[]" class="form-control drugsprescription">'+
                                 '<?php foreach($drugs as $d){ ?>'+
                                 '<option value="<?php echo $d->id; ?>"><?php echo $d->drug_name; ?></option>'+
                                 '<?php } ?>'+
@@ -114,20 +114,32 @@ div.anonymous, div.end_user, div.agent, div.manager {
                             
                         '</td>'+
                         '<td>'+
-                            '<select type="text" id="qty[]" name="qty[]" class="form-control qtyprescription" name="quantity0">'+
+                            '<select type="text" id="qty[]" name="qty[]" class="form-control qtyprescription">'+
                                 '<?php for($k = 1; $k <= 10; $k++){ ?>'+
                                 '<option value="<?php echo $k; ?>"><?php echo $k; ?></option>'+
                                 '<?php } ?>'+
                             '</select>'+
                         '</td>'+
                         '<td>'+
-                            '<input type="text" id="dossage[]" name="dossage[]" class="form-control dossageprescription" name="dose0">'+
+                            '<select type="text" id="dossage[]" name="dossage[]" class="form-control qtyprescription" >'+
+                                '<?php foreach($dossage as $do){ ?>'+
+                                '<option value="<?php echo $do->indo_name; ?>"><?php echo $do->indo_name; ?></option>'+
+                                '<?php } ?>'+
+                            '</select>'+
                         '</td>'+
                         '<td>'+
-                            '<input type="text" id="desc[]" name="desc[]" class="form-control descprescription" name="description0">'+
+                            '<select type="text" id="desc[]" name="desc[]" class="form-control qtyprescription" >'+
+                                '<?php foreach($drug_description as $dd){ ?>'+
+                                '<option value="<?php echo $dd->indo_name; ?>"><?php echo $dd->indo_name; ?></option>'+
+                                '<?php } ?>'+
+                            '</select>'+
                         '</td>'+
                         '<td>'+
-                            '<input type="text" id="note[]" name="note[]" class="form-control noteprescription" name="note0">'+
+                            '<select type="text" id="note[]" name="note[]" class="form-control qtyprescription" >'+
+                                '<?php foreach($prescription_description as $p){ ?>'+
+                                '<option value="<?php echo $p->indo_name; ?>"><?php echo $p->indo_name; ?></option>'+
+                                '<?php } ?>'+
+                            '</select>'+
                         '</td>'+
                         '<td>'+
                             '<input type="button" id="" name="" class="ibtnDel btn btn-md btn-danger " value="Delete">'+
@@ -444,13 +456,13 @@ div.anonymous, div.end_user, div.agent, div.manager {
                                                     <div class="clearfix"></div>
                                                     <div class="form-group">
                                                         <div class="col-md-12">
-                                                            <label for="inputName">Symptomps</label>
+                                                            <label for="inputName">Symptoms</label>
                                                             <textarea class="form-control" id="symptompdt" name="symptomp" placeholder="Describe symptoms of patient "> {{ $patientData['pqueue']->symptopms }} </textarea>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="col-md-12">
-                                                            <label for="inputName">Diagnose</label><br>
+                                                            <label for="inputName">Vital Sign:</label><br>
                                                             <label class="col-md-2" for="inputName">Temperature</label>
                                                             <input class="col-md-2" type="text" id="temperature" name="temperature" placeholder="(C)">
                                                             <label class="col-md-2" for="inputName">Blood Pressure</label>
@@ -467,8 +479,13 @@ div.anonymous, div.end_user, div.agent, div.manager {
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
-                                                            <label for="inputName">Result</label>
-                                                            <input class="form-control" id="result" name="result" placeholder="Diagnose result ">  </div>
+                                                            <label for="inputName">Diagnosis:</label>
+                                                            <select type="text" id="result" name="result" class="form-control qtyprescription">
+                                                                <?php foreach($diagnosis as $dg){ ?>
+                                                                    <option value="<?php echo $dg->indo_name; ?>"><?php echo $dg->indo_name; ?></option>
+                                                                <?php } ?>
+                                                            </select>
+                                                            {{--<input class="form-control" id="result" name="result" placeholder="Diagnose result ">  </div>--}}
                                                     </div>
                                                     <div class="form-group">   
                                                     </div>
@@ -481,10 +498,10 @@ div.anonymous, div.end_user, div.agent, div.manager {
                                                                         <thead>
                                                                             <tr>
                                                                                 <td>Drugs</td>
-                                                                                <td>Quantity</td>
+                                                                                <td>Qty & Unit</td>
                                                                                 <td>Dossage</td>
                                                                                 <td>Description</td>
-                                                                                <td>Note</td>
+                                                                                <td>Remark</td>
                                                                                 <td>Action</td>
                                                                             </tr>
                                                                         </thead>
@@ -1812,7 +1829,7 @@ div.anonymous, div.end_user, div.agent, div.manager {
         $(function () {
             $("#txtFrom").datepicker({
                 numberOfMonths: 1,
-                dateFormat: 'yy-mm-dd',
+                dateFormat: 'dd/mm/yy',
                 minDate: 'today',
                 onSelect: function (selected) {
                     var dt = new Date(selected);
@@ -1821,8 +1838,18 @@ div.anonymous, div.end_user, div.agent, div.manager {
                     $("#txtTo").datepicker("option", "minDate", dt);
                     
                     if( $('#txtTo').val() != '' ){
-                        var txtstart = new Date($('#txtFrom').val());
-                        var txtend = new Date($('#txtTo').val());
+                        
+                        var yourdatefr = $('#txtFrom').val().split("/").reverse();
+                        yourdatefrom = yourdatefr.join("-");
+                        var txtstart = new Date(yourdatefrom);
+                        
+                        var yourdateto = $('#txtTo').val().split("/").reverse();
+                        yourdatetodate = yourdateto.join("-");
+                        var txtend = new Date(yourdatetodate);
+                        
+                        
+                        //var txtstart = new Date($('#txtFrom').val());
+                        //var txtend = new Date($('#txtTo').val());
                         var diff = (txtend - txtstart);
                         var days = diff/1000/60/60/24;
                         //alert(days);
@@ -1837,7 +1864,7 @@ div.anonymous, div.end_user, div.agent, div.manager {
             
             $("#txtTo").datepicker({
                 numberOfMonths: 1,
-                dateFormat: 'yy-mm-dd',
+                dateFormat: 'dd/mm/yy',
                 minDate: 'today' + 1,
                 onSelect: function (selected) {
                     var dt = new Date(selected);
@@ -1846,8 +1873,15 @@ div.anonymous, div.end_user, div.agent, div.manager {
                     $("#txtFrom").datepicker("option", "maxDate", dt);
                     
                     if( $('#txtFrom').val() != '' ){
-                        var txtstart = new Date($('#txtFrom').val());
-                        var txtend = new Date($('#txtTo').val());
+                        
+                        var yourdatefr = $('#txtFrom').val().split("/").reverse();
+                        yourdatefrom = yourdatefr.join("-");
+                        var txtstart = new Date(yourdatefrom);
+                        
+                        var yourdateto = $('#txtTo').val().split("/").reverse();
+                        yourdatetodate = yourdateto.join("-");
+                        var txtend = new Date(yourdatetodate);
+
                         var diff = (txtend - txtstart);
                         var days = diff/1000/60/60/24;
                         //alert(days);
@@ -1862,7 +1896,7 @@ div.anonymous, div.end_user, div.agent, div.manager {
             
             $("#txtFroms").datepicker({
                 numberOfMonths: 1,
-                dateFormat: 'yy-mm-dd',
+                dateFormat: 'dd/mm/yy',
                 minDate: 'today',
                 onSelect: function (selected) {
                     var dt = new Date(selected);
