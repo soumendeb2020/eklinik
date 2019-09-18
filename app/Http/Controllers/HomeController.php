@@ -528,16 +528,18 @@ class HomeController extends Controller {
             $labReq['updated_at'] = date("Y-m-d h:i:s", time());        
             $labReqId = DB::table('laboratoryrequests')->insertGetId($labReq);
         }
-
         return $savePatQue;
     }
 
     public function getExistingCompany() { 
         $cname = $_POST['cname'];  
-        $data = DB::table('company')->select('company.*')->where('name', 'like', $cname.'%')->get();
-        //$emp = DB::table('company')->select('company.*')->where('name', 'like', $cname.'%')->get();
-        //echo "<pre>"; print_r($data); exit;
-        return View('ajax.getExistingCompany')->with(compact('data'));
+        $count = DB::table('company')->select('company.*')->where('name', 'like', $cname.'%')->count();
+        if($count){
+            $data = DB::table('company')->select('company.*')->where('name', 'like', $cname.'%')->get();
+            return View('ajax.getExistingCompany')->with(compact('data'));
+        } else {
+            return 0;
+        }
     }
     
     public function getExistingEmpListById() { 
@@ -591,7 +593,7 @@ class HomeController extends Controller {
             $qname = $ty2queueno;
         }
         
-        $count = DB::table('ty2queuelist')->where('name', '=', $qname)->count();
+        $count = DB::table('ty2queue')->where('queueno', '=', $qname)->count();
         
         $savety2Que['company_id'] = $lcoid;
         $savety2Que['company_name'] = $cname; 
@@ -614,6 +616,26 @@ class HomeController extends Controller {
                     $existEmp = DB::table('companystaff')->select('companystaff.*')->where('company_id', '=', $lcoid)->where('company_name', '=', $cname)->where('name', '=', $v)->first();
                     DB::table('companystaff')->where('company_id', '=', $lcoid)->where('company_name', '=', $cname)->where('name', '=', $v)->update(array('sex' => $sex[$k], 'ic_number' => $icno[$k]));
                     $lempid = $existEmp->id;
+                    
+                    $saveTY2queuePatients['tytq_id'] = $lqty2que;
+                    $saveTY2queuePatients['company_id'] = $lcoid;
+                    $saveTY2queuePatients['company_name'] = $cname;
+                    $saveTY2queuePatients['costaff_id'] = $existEmp->id;
+                    $saveTY2queuePatients['patient_id'] = 0;
+                    $saveTY2queuePatients['staff_id'] = "";
+                    $saveTY2queuePatients['ic_number'] = $existEmp->ic_number;
+                    $saveTY2queuePatients['name'] = $existEmp->name;
+                    $saveTY2queuePatients['symptopms'] = "";
+                    $saveTY2queuePatients['department_id'] = 0;
+                    $saveTY2queuePatients['depart_name'] = "";
+                    $saveTY2queuePatients['utype'] = "";
+                    $saveTY2queuePatients['utype_name'] = "";
+                    $saveTY2queuePatients['ptype'] = "";
+                    $saveTY2queuePatients['sex'] = $existEmp->sex;
+                    $saveTY2queuePatients['receipt_no'] = "";
+                    $saveTY2queuePatients['created_at'] = date("Y-m-d h:i:s", time());
+                    $saveTY2queuePatients['updated_at'] = date("Y-m-d h:i:s", time());
+                    $lastTY2queuePatients = DB::table('ty2queuepatients')->insertGetId($saveTY2queuePatients);
                 } else {
                     $saveEmployee['company_id'] = $lcoid;
                     $saveEmployee['company_name'] = $cname;
@@ -625,10 +647,31 @@ class HomeController extends Controller {
                     $saveEmployee['created_at'] = date("Y-m-d h:i:s", time());
                     $saveEmployee['updated_at'] = date("Y-m-d h:i:s", time());
                     $lempid = DB::table('companystaff')->insertGetId($saveEmployee);
+
+                    $saveTY2queuePatients['tytq_id'] = $lqty2que;
+                    $saveTY2queuePatients['company_id'] = $lcoid;
+                    $saveTY2queuePatients['company_name'] = $cname;
+                    $saveTY2queuePatients['costaff_id'] = $lempid;
+                    $saveTY2queuePatients['patient_id'] = 0;
+                    $saveTY2queuePatients['staff_id'] = "";
+                    $saveTY2queuePatients['ic_number'] = $icno[$k];
+                    $saveTY2queuePatients['name'] = $v;
+                    $saveTY2queuePatients['symptopms'] = "";
+                    $saveTY2queuePatients['department_id'] = 0;
+                    $saveTY2queuePatients['depart_name'] = "";
+                    $saveTY2queuePatients['utype'] = "";
+                    $saveTY2queuePatients['utype_name'] = "";
+                    $saveTY2queuePatients['ptype'] = "";
+                    $saveTY2queuePatients['sex'] = $sex[$k];
+                    $saveTY2queuePatients['receipt_no'] = "";
+                    $saveTY2queuePatients['created_at'] = date("Y-m-d h:i:s", time());
+                    $saveTY2queuePatients['updated_at'] = date("Y-m-d h:i:s", time());
+                    $lastTY2queuePatients = DB::table('ty2queuepatients')->insertGetId($saveTY2queuePatients);
                 }  
             }
         }    
-
+        
+        //echo "<pre>"; print_r($_POST); exit;
         return redirect()->route('home');
 
     }

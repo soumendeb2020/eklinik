@@ -41,7 +41,27 @@ Route::post('dispencerytimeslip/', array('as' => 'dispencerytimeslip', 'uses' =>
 
 Route::post('closeDispencery', array('as' => 'closeDispencery', 'uses' => 'PatientController@closeDispencery'));
 
+Route::resource('department', 'DepartmentController');
 
+Route::resource('counter', 'CounterController');
+ 
+//  calls  settings
+
+Route::get('settings', array('as' => 'settings', 'uses' => 'SettingsController@index'));
+Route::get('call', array('as' => 'call', 'uses' => 'CallController@index'));
+
+
+Route::get('reports/userreports', array('as' => 'reports/userreports', 'uses' => 'ReportsController@userreports'));
+Route::get('reports/quelist', array('as' => 'reports/quelist', 'uses' => 'ReportsController@quelist'));
+Route::get('reports/monthlyreports', array('as' => 'reports/monthlyreports', 'uses' => 'ReportsController@monthlyreports'));
+Route::get('reports/statisticalreports', array('as' => 'reports/statisticalreports', 'uses' => 'ReportsController@statisticalreports'));
+Route::get('reports/overtimereports', array('as' => 'reports/overtimereports', 'uses' => 'ReportsController@overtimereports'));
+
+
+
+//Route::get('department', 'DepartmentController@index')->name('department');
+
+  
 
 Route::post('laboratoryPassForm', array('as' => 'laboratoryPassForm', 'uses' => 'PatientController@laboratoryPassForm'));
 Route::post('consultancyPassForm', array('as' => 'consultancyPassForm', 'uses' => 'PatientController@consultancyPassForm'));
@@ -51,7 +71,11 @@ Route::get('childdev', array('as' => 'childdev', 'uses' => 'PatientController@ch
 
 //      #####################       TY2     #################################### 
 Route::get('ty2profile/{id}', array('as' => 'ty2profile', 'uses' => 'Ty2Controller@ty2profile'));
-
+Route::post('savety2groupreceipt', array('as' => 'savety2groupreceipt', 'uses' => 'Ty2Controller@savety2groupreceipt'));
+Route::post('savety2receipt', array('as' => 'savety2receipt', 'uses' => 'Ty2Controller@savety2receipt'));
+Route::post('createPrintHtml', array('as' => 'createPrintHtml', 'uses' => 'Ty2Controller@createPrintHtml'));
+Route::post('createPrintMedicineHtml', array('as' => 'createPrintMedicineHtml', 'uses' => 'PatientController@createPrintMedicineHtml'));
+ 
 Route::group( ['middleware' => ['auth']], function() {
     Route::resource('users', 'UserController');
     Route::resource('roles', 'RoleController');
@@ -63,4 +87,5 @@ Route::group( ['middleware' => ['auth']], function() {
     Route::resource('inventory', 'InventoryController');
     Route::resource('ty2', 'Ty2Controller');
     Route::resource('reports', 'ReportController');
+    
 });

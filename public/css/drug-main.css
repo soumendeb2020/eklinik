@@ -1,0 +1,29 @@
+.medicine-wrap {
+    margin: 0 0 60px; 
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+}
+.txt {
+	font-family: sans-serif; 
+	font-size: 18px; 
+	font-weight: bold;  
+	margin: 0 0 0px;
+	letter-spacing: 0.5px;
+}
+.normal-txt {
+	font-family: sans-serif; 
+	font-size: 18px; 
+	line-height: 34px;	
+	margin: 0 0 0px;
+	letter-spacing: 0.5px;
+	padding-left: 30px; 
+}
+.txt-bot {
+	font-family: sans-serif; 
+	font-size: 18px; 
+	font-weight: bold; 
+	margin: 0 0 0px;
+	letter-spacing: 0.5px;
+	padding-left: 30px;
+}

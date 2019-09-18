@@ -103,7 +103,34 @@ div.anonymous, div.end_user, div.agent, div.manager {
 </style>
 
 <script>
-
+    function printDispenceryForm(){
+        var id = '{{$qid}}';
+        url = "{!! URL::to('createPrintMedicineHtml') !!}";
+        $.ajax({
+            url: url,
+            async: false,
+            type: 'POST',
+            data: {_token: "{{ csrf_token() }}", id: id},
+        }).done(function (response) {
+            if(response != 0){
+                var content = '';
+                var printWindow = response;
+                var myWindow = window.open('', '', 'height=800,width=1100');
+                myWindow.document.write('<html><head><title>my div</title>');
+                myWindow.document.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" type="text/css" media="print" href="http://infrastep.com/eklinik/public/css/drug-main.css">');
+                myWindow.document.write('</head><body >');
+                myWindow.document.write(printWindow);
+                myWindow.document.write('</body></html>');
+                myWindow.document.close(); // necessary for IE >= 10
+                myWindow.onload=function(){ // necessary if the div contain images
+                    myWindow.focus(); // necessary for IE >= 10
+                    myWindow.print();
+                    myWindow.close();
+                };
+            }
+        });
+    } 
+    
     function submitDispenceryForm(){ 
         var pqid = '{{$qid}}';
         url = "{!! URL::to('closeDispencery') !!}";
@@ -387,6 +414,11 @@ div.anonymous, div.end_user, div.agent, div.manager {
                                                     </div>
                                                     <div class="form-group" style=" height: 30px"></div>
                                                 @endif
+                                                
+                                                <div class="form-group">
+                                                    <button style="margin-left: 75%; width: 120px" type="button" class="btn btn-primary submitBtn" onclick="printDispenceryForm()">Print</button>
+                                                </div>
+                                                
                                                 <div class="form-group">
                                                     <button style="margin-left: 75%; width: 120px" type="button" class="btn btn-primary submitBtn" onclick="submitDispenceryForm()">Close</button>
                                                 </div>

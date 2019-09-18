@@ -581,6 +581,12 @@
 </style>
 
 <script>
+    $(document).ready(function(){
+        $(".removeCompanyList").click(function(){
+            $("#suggesstion-box").html();
+            $("#suggesstion-box").hide();
+        });
+    });
     document.getElementById("btnPrint").onclick = function () {
         printElement(document.getElementById("printThis"));
     }
@@ -888,35 +894,40 @@
 <script>
     // AJAX call for autocomplete 
     function getCompanyList(){
-        var cname = $('#companyname').val()
+        var cname = $('#companyname').val();
+        var currentRequest = null;
         url = "{!! URL::to('getExistingCompany') !!}";
-        $.ajax({
+        currentRequest = $.ajax({
             type: "POST",
             url: url,
             async: false,
             data: {_token: "{{ csrf_token() }}", cname: cname},
             beforeSend: function () {
-                $("#search-box").css("background", "#FFF url(LoaderIcon.gif) no-repeat 165px");
+                //$("#search-box").css("background", "#FFF url(LoaderIcon.gif) no-repeat 165px");
+                if(currentRequest != null) {
+                    currentRequest.abort();
+                }
             },
             success: function (data) {
-                $("#suggesstion-box").show();
-                $("#suggesstion-box").html(data);
-                $("#search-box").css("background", "#FFF");
+                if(data != 0){
+                    $("#suggesstion-box").show();
+                    $("#suggesstion-box").html(data);
+                    $("#search-box").css("background", "#FFF");
+                } else{
+                    $("#suggesstion-box").html();
+                    $("#suggesstion-box").hide();
+                }
             }
-        });
+        }); 
     }
     //To select country name
-    function selectCountry(val) {
-        $("#companyname").val(val);
-        $("#suggesstion-box").hide();
-        
-    }
+
     
     function addMoreEmp(){
         var newTr = '<tr class="removeaddedtr">'+
-                        '<td><div class="input"><input type="text" class="delAllTY2val" name="name[]" id="name" value=""></div></td>'+
-                        '<td width="75"><div class="input"><select name="sex[]" id="name" class="delAllTY2val dropdown-wrap" ><option value="Male">Male</option><option value="Female">Female</option></select></div></td>'+
-                        '<td><div class="input"><input type="text" class="delAllTY2val" name="icno[]" id="name" value=""></div></td>'+
+                        '<td><div class="input"><input type="text" class="delAllTY2val removeCompanyList" name="name[]" id="name" value=""></div></td>'+
+                        '<td width="75"><div class="input"><select name="sex[]" id="name" class="delAllTY2val dropdown-wrap removeCompanyList" ><option value="Male">Male</option><option value="Female">Female</option></select></div></td>'+
+                        '<td><div class="input"><input type="text" class="delAllTY2val removeCompanyList" name="icno[]" id="name" value=""></div></td>'+
                         '<td onclick="deleteCurTr(this)" align="center">X</td>'+
                     '</tr>';
         $('.newEmpDt').append(newTr);
@@ -1000,7 +1011,7 @@
                                 <label class="label col col-3">Address Line 1 : </label>
                                 <div class="col col-9">
                                     <label class="input">
-                                        <input type="text" class="delAllTY2val" name="addr1" id="addr1" value="">
+                                        <input type="text" class="delAllTY2val removeCompanyList" name="addr1" id="addr1" value="">
                                         <div id="suggesstion-box"></div>
                                     </label>
                                 </div>
@@ -1010,7 +1021,7 @@
                                 <label class="label col col-3">Address Line 2 : </label>
                                 <div class="col col-9">
                                     <label class="input">
-                                        <input type="text" class="delAllTY2val" name="addr2" id="addr2" value="">
+                                        <input type="text" class="delAllTY2val removeCompanyList" name="addr2" id="addr2" value="">
                                         <div id="suggesstion-box"></div>
                                     </label>
                                 </div>
@@ -1020,7 +1031,7 @@
                                 <label class="label col col-3">Address Line 3 : </label>
                                 <div class="col col-9">
                                     <label class="input">
-                                        <input type="text" class="delAllTY2val" name="addr3" id="addr3" value="">
+                                        <input type="text" class="delAllTY2val removeCompanyList" name="addr3" id="addr3" value="">
                                         <div id="suggesstion-box"></div>
                                     </label>
                                 </div>
@@ -1039,16 +1050,16 @@
                                 </thead>
                                 <tbody class="newEmpDt">
                                   <tr>
-                                      <td><div class="input"><input type="text" class="delAllTY2val" name="name[]" id="name" value=""></div></td>
+                                      <td><div class="input"><input type="text" class="delAllTY2val removeCompanyList" name="name[]" id="name" value=""></div></td>
                                       <td width="75">
                                           <div class="input">
-                                                <select name="sex[]" id="name" class="delAllTY2val dropdown-wrap" >
+                                                <select name="sex[]" id="name" class="delAllTY2val dropdown-wrap removeCompanyList" >
                                                     <option value="Male">Male</option>
                                                     <option value="Female">Female</option>
                                                 </select> 
                                           </div>
                                       </td>
-                                      <td><div class="input"><input type="text" class="delAllTY2val" name="icno[]" id="name" value=""></div></td>
+                                      <td><div class="input"><input type="text" class="delAllTY2val removeCompanyList" name="icno[]" id="name" value=""></div></td>
                                       <td align="center"></td>
                                   </tr>
                                 </tbody>
@@ -1062,7 +1073,7 @@
                                 <label class="label col col-3">Queue Number : </label>
                                 <div class="col col-9">
                                     <label class="input">
-                                        <input type="text" class="delAllTY2val" name="ty2queueno" id="ty2queueno" value="">
+                                        <input type="text" class="delAllTY2val removeCompanyList" name="ty2queueno" id="ty2queueno" value="">
                                     </label>
                                 </div>
                             </div>

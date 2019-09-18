@@ -121,21 +121,21 @@ div.anonymous, div.end_user, div.agent, div.manager {
                             '</select>'+
                         '</td>'+
                         '<td>'+
-                            '<select type="text" id="dossage[]" name="dossage[]" class="form-control qtyprescription" >'+
+                            '<select type="text" id="dossage[]" name="dossage[]" class="form-control dossageprescription" >'+
                                 '<?php foreach($dossage as $do){ ?>'+
                                 '<option value="<?php echo $do->indo_name; ?>"><?php echo $do->indo_name; ?></option>'+
                                 '<?php } ?>'+
                             '</select>'+
                         '</td>'+
                         '<td>'+
-                            '<select type="text" id="desc[]" name="desc[]" class="form-control qtyprescription" >'+
+                            '<select type="text" id="desc[]" name="desc[]" class="form-control descprescription" >'+
                                 '<?php foreach($drug_description as $dd){ ?>'+
                                 '<option value="<?php echo $dd->indo_name; ?>"><?php echo $dd->indo_name; ?></option>'+
                                 '<?php } ?>'+
                             '</select>'+
                         '</td>'+
                         '<td>'+
-                            '<select type="text" id="note[]" name="note[]" class="form-control qtyprescription" >'+
+                            '<select type="text" id="note[]" name="note[]" class="form-control noteprescription" >'+
                                 '<?php foreach($prescription_description as $p){ ?>'+
                                 '<option value="<?php echo $p->indo_name; ?>"><?php echo $p->indo_name; ?></option>'+
                                 '<?php } ?>'+
@@ -224,7 +224,7 @@ div.anonymous, div.end_user, div.agent, div.manager {
             data: {_token: "{{ csrf_token() }}", consSubmit: consSubmit, pqid: pqid, symptomp: symptomp, qno: qno, temperature: temperature, blood_presure: blood_presure, blood_sugar: blood_sugar, result: result,  medical_certificate: medical_certificate, stdate: stdate, enddate: enddate, totaldays: totaldays, time_slip: time_slip, onlydate: onlydate, sttime: sttime, endtime: endtime, totaltime: totaltime, drugs: drugs, qty: qty, dossage: dossage, desc: desc, note: note},
         }).done(function (response) {
             // ####$('#consSubmit').val(response);
-            window.location.href = "{{ URL::to('consultations/') }}";
+            //window.location.href = "{{ URL::to('consultations/') }}";
         });
         //$('#prescriptionForm').submit();
     }
@@ -480,7 +480,7 @@ div.anonymous, div.end_user, div.agent, div.manager {
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label for="inputName">Diagnosis:</label>
-                                                            <select type="text" id="result" name="result" class="form-control qtyprescription">
+                                                            <select type="text" id="result" name="result" class="form-control">
                                                                 <?php foreach($diagnosis as $dg){ ?>
                                                                     <option value="<?php echo $dg->indo_name; ?>"><?php echo $dg->indo_name; ?></option>
                                                                 <?php } ?>

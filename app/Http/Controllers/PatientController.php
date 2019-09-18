@@ -94,7 +94,7 @@ class PatientController extends Controller {
     }
     
     public function savePrescription(Request $request) {
-
+        //echo "<pre>"; print_r($_POST); exit;
         $encPatientQueueId = Input::get('pid');
         $pq_id = \Crypt::decrypt(Input::post('pqid'));
         $patientQueue = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
@@ -113,11 +113,27 @@ class PatientController extends Controller {
         $rs = Input::post('result');
         
         $medical_certificate = Input::post('medical_certificate');
-        $stdate = Carbon::createFromFormat('d/m/Y', Input::post('stdate'))->format('Y-m-d');
-        $enddate = Carbon::createFromFormat('d/m/Y', Input::post('enddate'))->format('Y-m-d');
+        if(Input::post('stdate') != ''){
+            $stdate = Carbon::createFromFormat('d/m/Y', Input::post('stdate'))->format('Y-m-d');
+        } else {
+            $stdate = '';
+        }
+        
+        if(Input::post('enddate') != ''){
+            $enddate = Carbon::createFromFormat('d/m/Y', Input::post('enddate'))->format('Y-m-d');
+        } else {
+            $enddate = '';
+        }
+        
+        
         $totaldays = Input::post('totaldays');
         $time_slip = Input::post('time_slip');
-        $onlydate = Carbon::createFromFormat('d/m/Y', Input::post('onlydate'))->format('Y-m-d');
+        if(Input::post('onlydate') != ''){
+            $onlydate = Carbon::createFromFormat('d/m/Y', Input::post('onlydate'))->format('Y-m-d');
+        } else {
+            $onlydate = '';
+        }
+        
         $sttime = Input::post('sttime');
         $endtime = Input::post('endtime');
         $totaltime = Input::post('totaltime');
@@ -280,6 +296,8 @@ class PatientController extends Controller {
             DB::table('patientqueues')->where("id", '=',  $patientQueueDt->id)->update(['is_active'=> 0]);
             return 1;
         }
+        
+        echo "<pre>"; print_r($request->all()); exit;
         //   ######################################
         return $lastInsertIdCons;
     }
@@ -511,7 +529,7 @@ class PatientController extends Controller {
             } else {
                 return redirect()->back();
             }
-            
+            //dd($drugs);
             return view('patient.dispenceryprofile', compact('patientData', 'qid', 'pq', 'consult', 'othpqlist', 'drugs'));
             
         } else {
@@ -731,6 +749,44 @@ class PatientController extends Controller {
         return $rettxt;
     }
 
-
-        
+    
+    public function createPrintMedicineHtml(Request $request){
+        $data = $request->all();
+        //dd($data['id']);
+        if ($data['id'] != ''){
+            $qid = $data['id'];
+            $pq_id = \Crypt::decrypt($qid);
+            $pq = DB::table('patientqueues')->select('patientqueues.*')->where('id', '=', $pq_id)->first();
+            $curicno = $pq->ic_number;
+            $name = $pq->name;
+            //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            if($pq->parent_id > 0){
+                $consult = DB::table('consultations')->select('consultations.*')->where('q_id', '=', $pq->parent_id)->first();
+                if( $consult ){
+                    $consult = DB::table('consultations')->select('consultations.*')->where('q_id', '=', $pq->parent_id)->first();
+                    if( DB::table('prescribtions')->select('prescribtions.*')->where('consutants_id', '=', $consult->id)->exists() ){
+                        $drugs = DB::table('prescribtions')->select('prescribtions.*')->where('consutants_id', '=', $consult->id)->get();
+                        //dd($drugs);
+                        if(!empty($drugs)){
+                            $curDate = Carbon::now()->format('Y-m-d');
+                            return view('ajax.printdrugs', compact('drugs', 'curDate', 'curicno', 'name'));
+                        } else {
+                            return 0;
+                        }
+                    } else {
+                        return 0;
+                    }    
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+    
+    
+    
 }

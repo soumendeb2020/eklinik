@@ -150,8 +150,9 @@
             <!-- END RIBBON -->
 
             <!-- MAIN CONTENT -->
-            @yield('content')
-
+			<div id="content" style="opacity: 1;">
+				@yield('content')
+			</div>
             <!-- END MAIN CONTENT -->
 
         </div>

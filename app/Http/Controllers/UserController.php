@@ -9,8 +9,8 @@ use App\Authorizable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
-{
+class UserController extends Controller {
+
     use Authorizable;
 
     /**
@@ -18,9 +18,8 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-       // $result = User::latest()->paginate();
+    public function index() {
+        // $result = User::latest()->paginate();
         $result = User::orderBy('id')->paginate();
         return view('user.index', compact('result'));
     }
@@ -30,8 +29,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $roles = Role::pluck('name', 'id');
 
         return view('user.new', compact('roles'));
@@ -43,26 +41,24 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $this->validate($request, [
-            'name' => 'bail|required|min:2',  
+            'name' => 'bail|required|min:2',
             'username' => 'required',
             'email' => 'required',
             'password' => 'required|min:8'
-           // 'roles' => 'required|min:1'
+                // 'roles' => 'required|min:1'
         ]);
 
         // hash password
         $request->merge(['password' => bcrypt($request->get('password'))]);
 
         // Create the user
-        if ( $user = User::create($request->except('roles', 'permissions')) ) {
+        if ($user = User::create($request->except('roles', 'permissions'))) {
 
             $this->syncPermissions($request, $user);
 
             flash('User has been created.');
-
         } else {
             flash()->error('Unable to create user.');
         }
@@ -76,8 +72,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -87,8 +82,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $user = User::find($id);
         $roles = Role::pluck('name', 'id');
         $permissions = Permission::all('name', 'id');
@@ -103,14 +97,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         $this->validate($request, [
             'name' => 'bail|required|min:2',
             //'email' => 'required|email|unique:users,email,' . $id,
             'username' => 'unique:users,username,' . $id
-            //'username' => 'required|username|unique:users,username,' . $id
-           // 'roles' => 'required|min:1'
+                //'username' => 'required|username|unique:users,username,' . $id
+                // 'roles' => 'required|min:1'
         ]);
 
         // Get the user
@@ -120,7 +113,7 @@ class UserController extends Controller
         $user->fill($request->except('roles', 'permissions', 'password'));
 
         // check for password change
-        if($request->get('password')) {
+        if ($request->get('password')) {
             $user->password = bcrypt($request->get('password'));
         }
 
@@ -141,14 +134,13 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      * @internal param Request $request
      */
-    public function destroy($id)
-    {
-        if ( Auth::user()->id == $id ) {
+    public function destroy($id) {
+        if (Auth::user()->id == $id) {
             flash()->warning('Deletion of currently logged in user is not allowed :(')->important();
             return redirect()->back();
         }
 
-        if( User::findOrFail($id)->delete() ) {
+        if (User::findOrFail($id)->delete()) {
             flash()->success('User has been deleted');
         } else {
             flash()->success('User not deleted');
@@ -164,8 +156,7 @@ class UserController extends Controller
      * @param $user
      * @return string
      */
-    private function syncPermissions(Request $request, $user)
-    {
+    private function syncPermissions(Request $request, $user) {
         // Get the submitted roles
         $roles = $request->get('roles', []);
         $permissions = $request->get('permissions', []);
@@ -174,7 +165,7 @@ class UserController extends Controller
         $roles = Role::find($roles);
 
         // check for current role changes
-        if( ! $user->hasAllRoles( $roles ) ) {
+        if (!$user->hasAllRoles($roles)) {
             // reset all direct permissions for user
             $user->permissions()->sync([]);
         } else {
@@ -186,4 +177,5 @@ class UserController extends Controller
 
         return $user;
     }
+
 }

@@ -30,7 +30,7 @@
 
         <ul>
             <li class="active open">
-                <a href="{{ route('home') }}" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
+                <a href="{{ route('home') }}" title="Dashboard"><i class="fa fa-lg fa-fw fa-dashboard txt-color-blue"></i> <span class="menu-item-parent">Dashboard</span></a>
                 <!-- <ul style="display: block;">
                         <li class="active">
                                 <a href="/index" title="Dashboard"><span class="menu-item-parent">Analytics Dashboard</span></a>
@@ -42,7 +42,7 @@
             @auth()
             @can('view_queue')
             <li class="top-menu-invisible">
-                <a href="#"><i class="fa fa-lg fa-fw fa-cube txt-color-blue"></i> <span class="menu-item-parent">Queue System</span></a>
+                <a href="#"><i class="fa fa-lg fa-fw fa-th-large txt-color-blue"></i> <span class="menu-item-parent">Queue System</span></a>
                 <ul>
                     <li class="">
                         <a href="" title="Dashboard"><i class="fa fa-lg fa-fw fa-gear"></i> <span class="menu-item-parent">App Layouts</span></a>
@@ -55,7 +55,7 @@
                     </li>
                 </ul>
             </li>
-            @endcan
+            @endcan 
             @can('view_registration')
             <li>
                 <a href="#"><i class="fa fa-lg fa-fw fa-list txt-color-green"></i> <span class="menu-item-parent">Registration</span></a>
@@ -72,7 +72,7 @@
             @endcan
             @can('view_consultation')
             <li>
-                <a href="#"><i class="fa fa-lg fa-fw fa-bar-chart-o txt-color-red"></i> <span class="menu-item-parent">Consultation</span></a>
+                <a href="#"><i class="fa fa-lg fa-fw fa-ambulance txt-color-green"></i> <span class="menu-item-parent">Consultation</span></a>
                 <ul>
                     <li>
                         <a href="{{ route('consultations.index') }}">Patient List</a>
@@ -86,7 +86,7 @@
             @endcan
             @can('view_laboratory')
             <li>
-                <a href="#"><i class="fa fa-lg fa-fw fa-table txt-color-yellow"></i> <span class="menu-item-parent">Laboratory</span></a>
+                <a href="#"><i class="fa fa-lg fa-fw fa-flask txt-color-green"></i> <span class="menu-item-parent">Laboratory</span></a>
                 <ul>
                     <li>
                         <a href="{{ route('laboratory.index') }}">Patient List</a>
@@ -104,7 +104,7 @@
             @endcan
             @can('view_ty2')
             <li>
-                <a href="#"><i class="fa fa-lg fa-fw fa-pencil-square-o txt-color-orange" ></i> <span class="menu-item-parent">TY2</span></a>
+                <a href="#"><i class="fa fa-lg fa-fw fa-h-square txt-color-green" ></i> <span class="menu-item-parent">TY2</span></a>
                 <ul>
                     <li>
                         <a href="{{ route('ty2.index') }}">TY2 List</a>
@@ -118,7 +118,7 @@
             @endcan
             @can('view_dispensary')
             <li>
-                <a href="#"><i class="fa fa-lg fa-fw fa-cloud txt-color-purple"></i> <span class="menu-item-parent">Dispensary</span></a>
+                <a href="#"><i class="fa fa-lg fa-fw fa-medkit txt-color-green"></i> <span class="menu-item-parent">Dispensary</span></a>
                 <ul>
                     <li>
                         <a href="{{ route('dispensary.index') }}"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">List</span></a>
@@ -131,7 +131,7 @@
             @endcan
             @can('view_inventory')	
             <li>
-                <a href="#"><i class="fa fa-lg fa-fw fa-puzzle-piece txt-color-yellow"></i> <span class="menu-item-parent">Inventory</span></a>
+                <a href="#"><i class="fa fa-lg fa-fw fa-th-large txt-color-green"></i> <span class="menu-item-parent">Inventory</span></a>
                 <ul>
                     <li>
                         <a href="{{ route('inventory.index') }}"><i class="fa fa-file-text-o"></i> Inventory Status</a>
@@ -146,20 +146,89 @@
                 </ul>		
             </li>
             @endcan
+            
+            @can('view_users')
+            <li>
+                <a href="#"><i class="fa fa-lg fa-fw fa-th-large txt-color-green"></i> <span class="menu-item-parent">Department</span></a>
+                <ul>
+                    <li>
+                        <a href="{{ route('department.index') }}">Department</a>
+                    </li>	
+                 </ul>		
+            </li>
+            @endcan
+            
+            @can('view_users')
+            <li>
+                <a href="#"><i class="fa fa-lg fa-fw  fa-th-large txt-color-green"></i> <span class="menu-item-parent">Counter</span></a>
+                <ul>
+                    <li>
+                        <a href="{{ route('counter.index') }}">Counter</a>
+                    </li>	
+                 </ul>		
+            </li>
+            @endcan
+            
+            @can('view_users')
+            <li>
+                <a href="#"><i class="fa fa-lg fa-fw fa-th-large txt-color-green"></i> <span class="menu-item-parent">Call</span></a>
+                <ul>
+                    <li>
+                        <a href="{{ route('call') }}">Call</a>
+                    </li>	
+                 </ul>		
+            </li>
+            @endcan
+            
+            
+            
+            
             @can('view_report')
             <li>
-                <a href="#"><i class="fa fa-lg fa-fw fa-shopping-cart txt-color-red"></i> <span class="menu-item-parent">Reports</span></a>
+                <a href="#"><i class="fa fa-lg fa-fw fa-tags txt-color-green"></i> <span class="menu-item-parent">Reports</span></a>
                 <ul>
-                    <li><a href="{{ route('reports.index') }}">Patient Reports</a></li>
-                    <li><a href="{{ route('reports.index') }}">Consultation Reports</a></li>
-                    <li><a href="{{ route('reports.index') }}">Inventory Reports</a></li>
+                    @can('view_users')
+                    <li>
+                        <a href="{{ route('reports/userreports') }}">User Report</a>
+                    </li>
+                    @endcan
+                    
+                    @can('view_users')
+                    <li>
+                        <a href="{{ route('reports/quelist') }}">Queue List</a>
+                    </li>
+                    @endcan
+
+                    @can('view_roles')
+                    <li>
+                        <a href="{{ route('reports/monthlyreports') }}">Monthly Report</a>
+                    </li>
+                    @endcan
+
+                    @can('view_users')
+                    <li>
+                        <a href="{{ route('reports/statisticalreports') }}">Statistical Report</a>
+                    </li>
+                    @endcan
+
+                    @can('view_roles')
+                    <li>
+                        <a href="{{ route('reports/overtimereports') }}">Missed / Overtime Report</a>
+                    </li>
+                    @endcan
                 </ul>
             </li>
             @endcan
+            
             @can('view_setting')	
             <li>
-                <a href="#"><i class="fa fa-lg fa-fw fa-windows txt-color-blue"></i> <span class="menu-item-parent">Settings</span></a>
+                <a href="#"><i class="fa fa-lg fa-fw fa-wrench txt-color-green"></i> <span class="menu-item-parent">Settings</span></a>
                 <ul>
+                    @can('view_users')
+                    <li>
+                        <a href="{{ route('settings') }}">Settings</a>
+                    </li>
+                    @endcan
                     @can('view_users')
                     <li>
                         <a href="{{ route('users.index') }}">Users</a>
